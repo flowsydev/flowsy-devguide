@@ -35,13 +35,13 @@ const hasItems = computed(() => (cart.value?.totalItems ?? 0) > 0);
 Each component lives in its own folder with files separated by responsibility:
 
 ```
-components/ShoppingCartSummary/
-├── ShoppingCartSummary.vue          ← component SFC
-├── ShoppingCartSummary.model.ts     ← props and emits interfaces
-├── ShoppingCartSummary.lang.en.ts   ← English translations
-├── ShoppingCartSummary.stories.ts   ← Storybook stories
-├── ShoppingCartSummary.specs.ts     ← unit tests
-└── index.ts                         ← public export
+📁 components/ShoppingCartSummary/
+├── 📄 ShoppingCartSummary.vue          ← component SFC
+├── 📄 ShoppingCartSummary.model.ts     ← props and emits interfaces
+├── 📄 ShoppingCartSummary.lang.en.ts   ← English translations
+├── 📄 ShoppingCartSummary.stories.ts   ← Storybook stories
+├── 📄 ShoppingCartSummary.specs.ts     ← unit tests
+└── 📄 index.ts                         ← public export
 ```
 
 ### ShoppingCartSummary.model.ts
@@ -108,19 +108,19 @@ Rules:
 Avoid global folders by technical type (`components/`, `stores/`) at the root. Group by feature-set to maintain domain cohesion.
 
 ```text
-src/features/
-├── kernel/                     ← shared by all feature-sets
-│   ├── components/
-│   ├── composables/
-│   └── stores/
-└── shopping-cart/
-    └── shopping-cart/
-        ├── components/
-        ├── composables/
-        ├── model/
-        ├── router/
-        ├── stores/
-        └── translations/
+📁 src/features/
+├── 📁 kernel/                     ← shared by all feature-sets
+│   ├── 📁 components/
+│   ├── 📁 composables/
+│   └── 📁 stores/
+└── 📁 shopping-cart/
+    └── 📁 shopping-cart/
+        ├── 📁 components/
+        ├── 📁 composables/
+        ├── 📁 model/
+        ├── 📁 router/
+        ├── 📁 stores/
+        └── 📁 translations/
 ```
 
 For the complete folder structure, see [Vue Modular Architecture](../technologies/frontend/modular-architecture/concepts.md).

@@ -158,3 +158,16 @@ Example: `feat(sales): add CreateShoppingCart command`
 - Use `DateTimeOffset` for auditable timestamps.
 - Include timezone in external contracts (ISO-8601 offset).
 - Avoid `DateTime` without timezone in shared data.
+
+## Minimum Audit Properties
+
+Auditable entities should include at least:
+
+```csharp
+public DateTimeOffset CreatedAt { get; private set; }
+public Guid CreatedByUserId { get; private set; }
+public DateTimeOffset UpdatedAt { get; private set; }
+public Guid UpdatedByUserId { get; private set; }
+```
+
+When an entity keeps its own event log, event entries should include at least `EventTimestamp`, `EventType`, `Payload` and `OperationContext`.

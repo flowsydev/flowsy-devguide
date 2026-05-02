@@ -101,11 +101,11 @@ Configure `tsconfig.json` with strict mode:
 Within each feature-set, types are located in the `model/` folder:
 
 ```
-features/shopping-cart/shopping-cart/model/
-├── ShoppingCart.ts        ← main interfaces
-├── CartItem.ts
-├── CartStatus.ts          ← enums
-└── index.ts               ← re-exports everything
+📁 features/shopping-cart/shopping-cart/model/
+├── 📄 ShoppingCart.ts        ← main interfaces
+├── 📄 CartItem.ts
+├── 📄 CartStatus.ts          ← enums
+└── 📄 index.ts               ← re-exports everything
 ```
 
 ## Cross Reference

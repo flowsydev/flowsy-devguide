@@ -135,48 +135,48 @@ When a module can no longer be subdivided, create the folders:
 ## Folder Structure
 
 ```text
-Features/
-├── Inventory/
-│   ├── Products/
-│   └── Categories/
-├── Kernel/
-│   ├── Infrastructure/
-│   │   ├── Mail/
-│   │   └── Time/
-│   └── Model/
-├── Sales/
-│   └── OrderPlacement/
-│       ├── Commands/
-│       │   ├── CreateCart/
-│       │   │   ├── CreateCartEndpoint.cs
-│       │   │   ├── CreateCartCommand.cs
-│       │   │   ├── CreateCartCommandValidator.cs
-│       │   │   └── CreateCartState.cs
-│       │   └── ModifyCart/
-│       │       ├── AddItemToCart/
-│       │       │   ├── AddItemToCartEndpoint.cs
-│       │       │   ├── AddItemToCartCommand.cs
-│       │       │   └── AddItemToCartCommandValidator.cs
-│       │       ├── RemoveItemFromCart/
-│       │       │   ├── RemoveItemFromCartEndpoint.cs
-│       │       │   ├── RemoveItemFromCartCommand.cs
-│       │       │   └── RemoveItemFromCartCommandValidator.cs
-│       │       └── OpenShoppingCartState.cs
-│       ├── Infrastructure/
-│       │   ├── IShoppingCartFinder.cs
-│       │   └── ShoppingCartFinder.cs
-│       ├── Model/
-│       │   ├── CartDetail.cs
-│       │   ├── CartOverview.cs
-│       │   └── CartStatus.cs
-│       └── Queries/
-│           └── AbandonedCarts/
-│               ├── AbandonedCartsEndpoint.cs
-│               ├── AbandonedCartsQuery.cs
-│               └── AbandonedCartsQueryValidator.cs
-└── Security/
-    ├── Users/
-    └── Roles/
+📁 Features/
+├── 📁 Inventory/
+│   ├── 📁 Products/
+│   └── 📁 Categories/
+├── 📁 Kernel/
+│   ├── 📁 Infrastructure/
+│   │   ├── 📁 Mail/
+│   │   └── 📁 Time/
+│   └── 📁 Model/
+├── 📁 Sales/
+│   └── 📁 OrderPlacement/
+│       ├── 📁 Commands/
+│       │   ├── 📁 CreateCart/
+│       │   │   ├── 📄 CreateCartEndpoint.cs
+│       │   │   ├── 📄 CreateCartCommand.cs
+│       │   │   ├── 📄 CreateCartCommandValidator.cs
+│       │   │   └── 📄 CreateCartState.cs
+│       │   └── 📁 ModifyCart/
+│       │       ├── 📁 AddItemToCart/
+│       │       │   ├── 📄 AddItemToCartEndpoint.cs
+│       │       │   ├── 📄 AddItemToCartCommand.cs
+│       │       │   └── 📄 AddItemToCartCommandValidator.cs
+│       │       ├── 📁 RemoveItemFromCart/
+│       │       │   ├── 📄 RemoveItemFromCartEndpoint.cs
+│       │       │   ├── 📄 RemoveItemFromCartCommand.cs
+│       │       │   └── 📄 RemoveItemFromCartCommandValidator.cs
+│       │       └── 📄 OpenShoppingCartState.cs
+│       ├── 📁 Infrastructure/
+│       │   ├── 📄 IShoppingCartFinder.cs
+│       │   └── 📄 ShoppingCartFinder.cs
+│       ├── 📁 Model/
+│       │   ├── 📄 CartDetail.cs
+│       │   ├── 📄 CartOverview.cs
+│       │   └── 📄 CartStatus.cs
+│       └── 📁 Queries/
+│           └── 📁 AbandonedCarts/
+│               ├── 📄 AbandonedCartsEndpoint.cs
+│               ├── 📄 AbandonedCartsQuery.cs
+│               └── 📄 AbandonedCartsQueryValidator.cs
+└── 📁 Security/
+    ├── 📁 Users/
+    └── 📁 Roles/
 ```
 
 ## Kernel Module

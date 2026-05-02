@@ -2,6 +2,15 @@
 
 Base guide for backend APIs and services, independent of specific language or framework.
 
+## HTTP API Design
+
+Start API work with [HTTP API Design](./api-design.md) when the change affects routes, methods, status codes, error responses or OpenAPI contracts. That guide defines the practical API maturity baseline, RFC 9457 Problem Details conventions and C# exception-handler mapping recommended for HTTP APIs.
+
+- Version APIs when there is a risk of breaking changes.
+- Validate input at the boundary with consistent errors.
+- Standardize error structure to facilitate observability and support.
+- Follow the HTTP API design baseline for resource-oriented contracts, HTTP semantics, status codes and Problem Details.
+
 ## Design Conventions
 
 - Name contracts by functional role (`CreateOrderRequest`, `OrderSummary`).
@@ -28,12 +37,6 @@ See the language-specific convention guides: [C#](../../conventions/csharp.md), 
 
 See [DDD principles](../../discovery/domain-driven-design.md) for more context on Value Objects.
 
-## API Contracts
-
-- Version APIs when there is a risk of breaking changes.
-- Validate input at the boundary (controller/handler) with consistent errors.
-- Standardize error structure to facilitate observability and support.
-
 ## Traceability
 
 - Include `correlationId`/`requestId` in logs and error responses.
@@ -42,6 +45,7 @@ See [DDD principles](../../discovery/domain-driven-design.md) for more context o
 ## Related Guides
 
 - [Vertical Slice Architecture](./vertical-slice-architecture/concepts.md) — code organization by feature.
+- [HTTP API Design](./api-design.md) — API maturity baseline, HTTP semantics and Problem Details.
 - [Clean Architecture](./clean-architecture/concepts.md) — code organization by layer.
 - [Event-Driven Architecture](./event-driven-architecture/concepts.md) — asynchronous communication between services.
 - [Event Sourcing](./event-sourcing/concepts.md) — event-based persistence.

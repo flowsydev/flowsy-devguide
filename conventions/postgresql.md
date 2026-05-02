@@ -1,6 +1,6 @@
 # PostgreSQL Conventions
 
-Naming, modeling and migration guidelines for PostgreSQL databases in the Flowsy ecosystem.
+Naming and modeling guidelines for PostgreSQL databases in the Flowsy ecosystem.
 
 ## General Naming
 
@@ -9,11 +9,11 @@ Use `snake_case` consistently and explicitly for all database objects:
 | Object | Convention | Example |
 | --- | --- | --- |
 | Tables | `snake_case` | `shopping_cart`, `user_account` |
-| Columns | `snake_case` | `shopping_cart_id`, `creation_instant` |
+| Columns | `snake_case` | `shopping_cart_id`, `created_at` |
 | Indexes | `ix_[table]_[columns]` | `ix_shopping_cart_user_account_id` |
 | FK constraints | `fk_[table]_[reference]` | `fk_cart_item_shopping_cart` |
 | CHECK constraints | `ck_[table]_[description]` | `ck_cart_item_quantity_positive` |
-| Enumerated types | `snake_case` | `lifecycle_status` |
+| Enumerated types | `snake_case` | `record_status` |
 
 ## Temporal Types
 
@@ -22,9 +22,24 @@ Use `snake_case` consistently and explicitly for all database objects:
 - Minimum audit columns per table:
 
 ```sql
-created_at timestamptz NOT NULL DEFAULT now(),
-updated_at timestamptz NOT NULL DEFAULT now()
+created_at         timestamptz NOT NULL DEFAULT now(),
+created_by_user_id uuid        NOT NULL,
+updated_at         timestamptz NOT NULL DEFAULT now(),
+updated_by_user_id uuid        NOT NULL
 ```
+
+These names are the database equivalent of the entity properties `CreatedAt`, `CreatedByUserId`, `UpdatedAt` and `UpdatedByUserId`.
+
+- When maintaining an event log per entity, use at least:
+
+```sql
+event_timestamp   timestamptz NOT NULL DEFAULT now(),
+event_type        text        NOT NULL,
+payload           jsonb       NOT NULL,
+operation_context jsonb       NULL
+```
+
+These names are the database equivalent of `EventTimestamp`, `EventType`, `Payload` and `OperationContext`.
 
 ## SQL Routines (Functions and Procedures)
 
@@ -40,73 +55,33 @@ Common operation types:
 | --- | --- |
 | `create` | Insert new record |
 | `get` | Query that returns one or more records |
-| `update` | Update existing record |
-| `delete` | Delete record |
+| `mut` | Mutate an existing aggregate |
 
 Examples:
 
 ```
 sales.shpcrt_create
 sales.shpcrt_get_open_by_user_account_id
-sales.shpcrt_list_abandoned
+sales.shpcrt_mut_add_item
+sales.shpcrt_mut_remove_item
 ```
 
 ## Views
 
 ```text
-[schema].[abbreviation]_vw_[descriptive_name]
+[schema].[descriptive_view_name]
 ```
 
-Example: `sales.shpcrt_vw_abandoned_carts`
+Views should follow the same naming convention as tables. Use descriptive names and avoid routine-style aggregate prefixes for the database object name.
 
-## Migrations
+Example: `sales.abandoned_shopping_cart`
 
-Every schema modification must be reproducible via versioned migrations.
+## Change Control
 
-### Versioned Scripts
-
-```text
-V[YYYY]_[MM]_[NNN]__[description_in_snake_case].sql
-```
-
-Examples:
-
-```text
-V2024_01_001__create_schema_sales.sql
-V2024_01_002__create_table_shopping_cart.sql
-V2024_02_001__add_column_lifecycle_status.sql
-```
-
-### Repeatable Scripts
-
-For objects that are recreated (views, functions, procedures):
-
-```text
-R__[description_in_snake_case].sql
-```
-
-Examples:
-
-```text
-R__sales_shpcrt_vw_abandoned_carts.sql
-R__sales_shpcrt_get_open_by_user_account_id.sql
-```
-
-### Migration Rules
-
-- Avoid untraceable manual changes in shared environments.
-- Test migrations forward and rollback when the engine allows it.
-- Versioned scripts are immutable once applied in production.
-- Repeatable scripts are re-executed when their content changes (different hash).
-
-## SQL Folder Structure
-
-```text
-Resources/Databases/
-├── Migrations/          ← Versioned scripts (V...)
-├── Operations/          ← Repeatable DML routines (R__ functions/procedures)
-└── Reports/             ← Views and read queries (R__ views)
-```
+- Manage PostgreSQL schema changes with an explicit migration strategy.
+- Keep schema changes, routines, views, constraints and indexes under source control.
+- Use the selected migration tool's naming and folder rules instead of defining tool-specific file formats in PostgreSQL conventions.
+- See [Database Migrations: Concepts](/technologies/backend/database-migrations/concepts) and [Migration Tools and Strategies](/technologies/backend/database-migrations/tools-and-strategies) for migration patterns.
 
 ## Value Object Modeling
 

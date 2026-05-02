@@ -37,6 +37,10 @@ features:
     title: Validation
     details: Criteria, scenarios and tests to confirm that what was delivered meets expectations.
     link: /discovery/documentation/validation/
+  - icon: 📝
+    title: Writing Guidelines
+    details: Editorial rules for titles, terminology, repository files, navigation and durable documentation.
+    link: /discovery/documentation/writing-guidelines
 ---
 
 # Software Project Documentation
@@ -46,6 +50,17 @@ Guide for organizing software project documentation artifacts by disciplinary la
 ## Core Idea
 
 It is not advisable to force a single universal hierarchical chain for all artifacts. In a modern project, several worlds coexist with different artifacts and purposes. The recommendation is to organize artifacts **by discipline or layer** and relate them through **traceability**, not mandatory parenthood.
+
+## Writing Guidelines
+
+Durable documentation should be useful months after it was written. Before adding or changing artifacts, review [Writing Guidelines](/discovery/documentation/writing-guidelines) to align titles, tone, terminology, links, Markdown structure and examples.
+
+Apply those rules especially when:
+
+- adding navigation labels or section headings;
+- creating templates that other repositories will copy;
+- documenting business concepts, requirements or architecture decisions;
+- writing examples that may be reused by people or AI agents.
 
 ## Disciplinary Layers
 
@@ -191,6 +206,14 @@ Each artifact uses a stable identifier independent of the path, with a prefix in
 | Validation | Acceptance Criterion | `VAL-AC` | `VAL-AC-104-01` |
 | Validation | GWT Scenario | `VAL-GWT` | `VAL-GWT-104-01` |
 | Validation | Test Case | `TST` | `TST-441` |
+
+### Conventions by Discipline
+
+- Strategy IDs should remain stable even when priorities or roadmaps change.
+- Analysis IDs should reference the business concept, not the implementation option chosen later.
+- Architecture IDs should identify decisions and contracts that can be linked from implementation specs, PRs and source code.
+- Delivery IDs can map to backlog tools, but the static documentation should keep only artifacts with lasting value.
+- Validation IDs should make it clear which acceptance criterion, scenario or test case confirms a requirement or PBI.
 
 ### Traceability Rules
 

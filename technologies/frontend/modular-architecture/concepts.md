@@ -28,44 +28,44 @@ Organizing by feature-set results in:
 ## Folder Structure
 
 ```text
-src/
-└── features/
-    ├── kernel/                          ← Shared by all feature-sets
-    │   ├── components/
-    │   ├── composables/
-    │   ├── logic/
-    │   ├── model/
-    │   ├── router/
-    │   ├── stores/
-    │   └── translations/
-    └── <feature-set-name>/
-        └── <feature-set-name>/
-            ├── components/
-            │   └── <ComponentName>/
-            │       ├── <ComponentName>.vue
-            │       ├── <ComponentName>.model.ts
-            │       ├── <ComponentName>.lang.en.ts
-            │       ├── <ComponentName>.stories.ts
-            │       ├── <ComponentName>.specs.ts
-            │       └── index.ts
-            ├── composables/
-            │   └── <composable-name>/
-            │       ├── use<ComposableName>.ts
-            │       ├── use<ComposableName>.specs.ts
-            │       └── index.ts
-            ├── logic/
-            ├── model/
-            ├── router/
-            │   ├── <route-group>.ts
-            │   └── index.ts
-            ├── stores/
-            │   └── <store-name>/
-            │       ├── <store-name>.ts
-            │       ├── <store-name>.specs.ts
-            │       └── index.ts
-            └── translations/
-                ├── lang.en.ts
-                └── index.ts
+📁 src/
+└── 📁 features/
+    ├── 📁 kernel/                          ← Shared by all feature-sets
+    │   ├── 📁 components/
+    │   ├── 📁 composables/
+    │   ├── 📁 logic/
+    │   ├── 📁 model/
+    │   ├── 📁 router/
+    │   ├── 📁 stores/
+    │   └── 📁 translations/
+    └── 📁 <feature-set-name>/
+        └── 📁 <feature-set-name>/
+            ├── 📁 components/
+            │   └── 📁 <ComponentName>/
+            │       ├── 📄 <ComponentName>.vue
+            │       ├── 📄 <ComponentName>.model.ts
+            │       ├── 📄 <ComponentName>.lang.en.ts
+            │       ├── 📄 <ComponentName>.stories.ts
+            │       ├── 📄 <ComponentName>.specs.ts
+            │       └── 📄 index.ts
+            ├── 📁 composables/
+            │   └── 📁 <composable-name>/
+            │       ├── 📄 use<ComposableName>.ts
+            │       ├── 📄 use<ComposableName>.specs.ts
+            │       └── 📄 index.ts
+            ├── 📁 logic/
+            ├── 📁 model/
+            ├── 📁 router/
+            │   ├── 📄 <route-group>.ts
+            │   └── 📄 index.ts
+            ├── 📁 stores/
+            │   └── 📁 <store-name>/
+            │       ├── 📄 <store-name>.ts
+            │       ├── 📄 <store-name>.specs.ts
+            │       └── 📄 index.ts
+            └── 📁 translations/
+                ├── 📄 lang.en.ts
+                └── 📄 index.ts
 ```
 
 ## Rules per Folder

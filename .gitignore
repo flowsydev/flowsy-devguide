@@ -9,6 +9,7 @@
 # VitePress generated artifacts
 .vitepress/cache/
 .vitepress/dist/
+.vitepress/.temp/
 
 # User-specific files
 *.rsuser

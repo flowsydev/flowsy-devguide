@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 640" role="img" aria-labelledby="title desc">
+  <title id="title">Test Pyramid</title>
+  <desc id="desc">Pyramid with unit tests at the base, integration tests in the middle and end-to-end tests at the top.</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#111827" flood-opacity="0.12" />
+    </filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L6,3 z" fill="#94a3b8" />
+    </marker>
+    <marker id="arrowDown" markerWidth="10" markerHeight="10" refX="5" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L6,3 z" fill="#94a3b8" />
+    </marker>
+  </defs>
+
+  <rect width="960" height="640" rx="28" fill="#f8fafc" />
+
+  <text x="480" y="70" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="34" font-weight="700" fill="#111827">
+    Test Pyramid
+  </text>
+  <text x="480" y="108" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" fill="#475569">
+    Expected quantity, relative cost and validation scope
+  </text>
+
+  <g filter="url(#shadow)">
+    <polygon points="160,560 800,560 680,420 280,420" fill="#d1fae5" stroke="#34D399" stroke-width="3" />
+    <polygon points="280,420 680,420 570,280 390,280" fill="#ede9fe" stroke="#7E4EDF" stroke-width="3" />
+    <polygon points="390,280 570,280 480,150" fill="#ffe4dc" stroke="#FF7A59" stroke-width="3" />
+  </g>
+
+  <text x="480" y="510" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" fill="#047857">
+    Unit
+  </text>
+
+  <text x="480" y="360" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="26" font-weight="700" fill="#5b21b6">
+    Integration
+  </text>
+
+  <text x="480" y="232" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="700" fill="#c2410c">
+    End-to-End
+  </text>
+
+  <g font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16" fill="#334155">
+    <line x1="835" y1="545" x2="835" y2="150" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrow)" />
+    <text x="858" y="184" writing-mode="tb" glyph-orientation-vertical="0">Cost and scope increase</text>
+    <line x1="125" y1="150" x2="125" y2="560" stroke="#94a3b8" stroke-width="3" marker-end="url(#arrowDown)" />
+    <text x="88" y="214" writing-mode="tb" glyph-orientation-vertical="0">Quantity increases toward the base</text>
+  </g>
+
+  <g font-family="Inter, Segoe UI, Arial, sans-serif">
+    <rect x="178" y="590" width="16" height="16" rx="4" fill="#d1fae5" stroke="#34D399" stroke-width="2" />
+    <text x="204" y="603" font-size="13" fill="#047857">Unit: many, fast, isolated</text>
+
+    <rect x="432" y="590" width="16" height="16" rx="4" fill="#ede9fe" stroke="#7E4EDF" stroke-width="2" />
+    <text x="458" y="603" font-size="13" fill="#5b21b6">Integration: moderate quantity, controlled dependencies</text>
+
+    <rect x="178" y="615" width="16" height="16" rx="4" fill="#ffe4dc" stroke="#FF7A59" stroke-width="2" />
+    <text x="204" y="628" font-size="13" fill="#c2410c">End-to-End: few, critical, representative</text>
+  </g>
+</svg>

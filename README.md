@@ -2,14 +2,16 @@
 
 Design and development guide for **Flowsy** solutions, with guidelines, patterns and best practices for development teams.
 
-The site is built with [VitePress](https://vitepress.dev/) and organized into four main sections:
+The site is built with [VitePress](https://vitepress.dev/) and organized into these main sections:
 
 | Section | Content |
 | --- | --- |
 | **Conventions** | Coding standards for C#, TypeScript, Vue, PostgreSQL and Git |
-| **Discovery** | Event Storming, Domain-Driven Design and templates for requirements documentation |
+| **Discovery & Design** | Event Storming, Domain-Driven Design and templates for requirements documentation |
+| **AI-Assisted Development** | Agent guidance, context routing, specs-driven development and platform references |
 | **Technologies / Backend** | Vertical Slice Architecture, event-driven architecture, database migrations |
 | **Technologies / Frontend** | Modular architecture in Vue 3, Pinia, composables and testing |
+| **Technologies / Testing** | Automated testing strategy for unit, integration, end-to-end, database and event-driven scenarios |
 
 > [!NOTE]
 > This guide is a reference point, not a mandate. The patterns, guidelines and examples documented here represent practices valued by the Flowsy ecosystem, but **each solution has its own needs**. It is each team's responsibility to analyze their context, evaluate alternatives and incorporate only what adds real value to their project. The team's technical judgment always prevails.
@@ -44,15 +46,18 @@ npm run docs:preview
 ## Repository Structure
 
 ```text
-.
-├── conventions/        # Style guides and coding conventions
-├── discovery/          # Modeling techniques and requirements templates
-├── technologies/
-│   ├── backend/        # Architectures, patterns and C# examples
-│   └── frontend/       # Modular architecture in Vue 3
-├── public/             # Static assets
-├── index.md            # Site home page
-└── package.json
+📁 .
+├── 📁 conventions/        # Style guides and coding conventions
+├── 📁 discovery/          # Modeling techniques and requirements templates
+├── 📁 ai-assisted-development/
+│                         # Agent guidance, context routing and specs-driven development
+├── 📁 technologies/
+│   ├── 📁 backend/        # Architectures, patterns and C# examples
+│   ├── 📁 frontend/       # Modular architecture in Vue 3
+│   └── 📁 testing/        # Automated testing strategy and stack-specific guides
+├── 📁 public/             # Static assets
+├── 📄 index.md            # Site home page
+└── 📄 package.json
 ```
 
 ## How to Contribute
@@ -101,4 +106,5 @@ git commit -m "docs(backend): add RabbitMQ guide with C# examples"
 - Write in **English** (it is the language of the entire site).
 - Prefer concrete code examples over abstract descriptions.
 - Keep pages focused: one guide per topic, without mixing concepts from different layers.
+- When installing dependencies or development tools, prefer stable `latest` versions over channels such as `alpha`, `beta`, `next` or other pre-release tags, unless there is a documented and justified exception.
 - Update [CHANGELOG.md](CHANGELOG.md) if the change is visible to site readers.

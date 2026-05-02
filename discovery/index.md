@@ -2,7 +2,7 @@
 layout: section-home
 
 hero:
-  name: "Discovery"
+  name: "Discovery & Design"
   text: "Collaborative modeling to understand the business"
   tagline: Techniques, practices and artifacts to explore the domain, align language and design solutions with business purpose.
   actions:
@@ -35,7 +35,7 @@ features:
     link: /discovery/documentation/
 ---
 
-# Discovery
+# Discovery & Design
 
 Collaborative modeling techniques to explore the business domain and design solutions aligned to its real needs.
 

@@ -68,19 +68,19 @@ const hasSectionFeatures = computed(() => !!frontmatter.value.features)
 
 <style scoped>
 .SectionHomeLayout {
-  padding: 32px 24px 96px;
+  padding: 32px 16px 96px;
   width: 100%;
 }
 
 @media (min-width: 768px) {
   .SectionHomeLayout {
-    padding: 48px 32px 128px;
+    padding: 48px 24px 128px;
   }
 }
 
 @media (min-width: 960px) {
   .SectionHomeLayout {
-    padding: 48px 32px 0;
+    padding: 48px 24px 0;
   }
 
   .SectionHomeLayout:not(.has-sidebar) .container {
@@ -125,7 +125,7 @@ const hasSectionFeatures = computed(() => !!frontmatter.value.features)
   display: none;
   order: 2;
   flex-grow: 1;
-  padding-left: 32px;
+  padding-left: 16px;
   width: 100%;
   max-width: 256px;
 }
@@ -133,7 +133,7 @@ const hasSectionFeatures = computed(() => !!frontmatter.value.features)
 .left-aside {
   order: 1;
   padding-left: unset;
-  padding-right: 32px;
+  padding-right: 16px;
 }
 
 .aside-container {
@@ -175,7 +175,7 @@ const hasSectionFeatures = computed(() => !!frontmatter.value.features)
 
 @media (min-width: 960px) {
   .content {
-    padding: 0 32px 128px;
+    padding: 0 8px 128px;
   }
 }
 
@@ -196,6 +196,7 @@ const hasSectionFeatures = computed(() => !!frontmatter.value.features)
 }
 
 .section-home-shell {
+  margin-top: 24px;
   margin-bottom: 56px;
 }
 
@@ -205,6 +206,34 @@ const hasSectionFeatures = computed(() => !!frontmatter.value.features)
 
 .section-home-shell :deep(.VPHero) {
   padding-top: 12px;
+}
+
+.section-home-shell :deep(.VPHero.VPHomeHero) {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.section-home-shell :deep(.VPHomeHero .container) {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+.section-home-shell :deep(.VPHero .name) {
+  max-width: 680px;
+  font-size: 34px;
+  line-height: 1.16;
+}
+
+.section-home-shell :deep(.VPHero .text) {
+  max-width: 680px;
+  font-size: 28px;
+  line-height: 1.24;
+}
+
+.section-home-shell :deep(.VPHero .tagline) {
+  max-width: 680px;
+  font-size: 18px;
+  line-height: 1.5;
 }
 
 .section-home-shell :deep(.VPHomeFeatures) {
@@ -225,8 +254,34 @@ const hasSectionFeatures = computed(() => !!frontmatter.value.features)
 }
 
 @media (min-width: 640px) {
+  .section-home-shell {
+    margin-top: 32px;
+  }
+
+  .section-home-shell :deep(.VPHero .name) {
+    font-size: 40px;
+  }
+
+  .section-home-shell :deep(.VPHero .text) {
+    font-size: 32px;
+  }
+
   .section-home-shell :deep(.VPHomeFeatures .item) {
     width: 50% !important;
+  }
+}
+
+@media (min-width: 960px) {
+  .section-home-shell {
+    margin-top: 40px;
+  }
+
+  .section-home-shell :deep(.VPHero .name) {
+    font-size: 44px;
+  }
+
+  .section-home-shell :deep(.VPHero .text) {
+    font-size: 34px;
   }
 }
 </style>

@@ -71,7 +71,7 @@ Smaller grouping of features within a module.
 
 Pattern that organizes code by specific feature. Each slice contains everything needed: models, logic, validations, endpoints and its own infrastructure.
 
-## Entity Lifecycle
+## Entity Record Status
 
 For auditable entities, define an explicit existence state:
 
@@ -89,17 +89,20 @@ Every auditable entity must record at minimum:
 
 | Field | Description |
 | --- | --- |
-| `CreationInstant` | UTC creation timestamp. |
-| `CreationContext` | Operational context of creation (user, system). |
-| `LastMutationInstant` | UTC timestamp of last modification. |
-| `LastMutationContext` | Operational context of last modification. |
-| `LifecycleStatus` | Lifecycle state (if applicable). |
+| `RecordStatus` | Record state (if applicable for a given entity). |
+| `LifetimeStart` | When using `RecordStatus`, the UTC time stamp when the normal operational state started. |
+| `LifetimeEnd` | When using `RecordStatus`, the UTC time stamp when the normal operational state ended. |
+| `CreatedAt` | UTC creation timestamp. |
+| `CreatedByUserId` | ID of the user that created the entity. |
+| `UpdatedAt` | UTC timestamp of last modification. |
+| `UpdatedByUserId` | ID of the user that updated the entity for the last time. |
 
 If there is an event log per entity, also include:
 
 - `EventTimestamp`.
+- `EventType`.
+- `Payload`.
 - `OperationContext`.
-- Event type and minimum payload for traceability.
 
 ## Anti-Patterns (and Their Consequences)
 

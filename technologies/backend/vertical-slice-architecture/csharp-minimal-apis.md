@@ -4,6 +4,8 @@ Complete implementation examples of Vertical Slices in C# using Minimal APIs, fo
 
 Each example includes: `Endpoint`, `Command`, `CommandValidator` and `State`.
 
+For HTTP API maturity, status codes and RFC 9457 Problem Details, see [HTTP API Design](../api-design.md).
+
 > **Mediator vs. direct handler**: Endpoints send commands and queries through `IMediator`. If the project does not use the Mediator pattern, the endpoint should directly inject the `CommandHandler` or `QueryHandler` and call its `HandleAsync` method.
 
 ## General Convention
@@ -11,12 +13,131 @@ Each example includes: `Endpoint`, `Command`, `CommandValidator` and `State`.
 Each slice contains the following files:
 
 ```text
-Features/[Module]/[Submodule]/Commands/[ActionName]/
-├── [ActionName]Endpoint.cs           ← Minimal API endpoint
-├── [ActionName]Command.cs            ← Command + Result + Handler
-├── [ActionName]CommandValidator.cs   ← Validation with FluentValidation
-└── [ActionName]State.cs              ← State + IStateHandler + StateHandler
+📁 Features/[Module]/[Submodule]/Commands/[ActionName]/
+├── 📄 [ActionName]Endpoint.cs           ← Minimal API endpoint
+├── 📄 [ActionName]Command.cs            ← Command + Result + Handler
+├── 📄 [ActionName]CommandValidator.cs   ← Validation with FluentValidation
+└── 📄 [ActionName]State.cs              ← State + IStateHandler + StateHandler
 ```
+
+## HTTP Results and Problem Details
+
+Keep Minimal API endpoints thin. Let handlers own business behavior, and centralize repeated domain-error mapping in a global exception handler that returns RFC 9457 Problem Details.
+
+Use typed results for the success path in the endpoint:
+
+```csharp
+public static async Task<Created<ProjectSummary>> CreateProjectAsync(
+        CreateProjectCommand command,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+{
+    var result = await mediator.SendAsync(command, cancellationToken);
+    var response = new ProjectSummary(result.ProjectId, result.Name);
+    return TypedResults.Created($"/projects/{result.ProjectId}", response);
+}
+```
+
+Map domain exceptions once in the API boundary:
+
+```csharp
+builder.Services.AddProblemDetails();
+builder.Services.AddExceptionHandler<ApiExceptionHandler>();
+
+var app = builder.Build();
+
+app.UseExceptionHandler();
+```
+
+```csharp
+public sealed class ApiExceptionHandler : IExceptionHandler
+{
+    private readonly IProblemDetailsService _problemDetailsService;
+
+    public ApiExceptionHandler(IProblemDetailsService problemDetailsService)
+    {
+        _problemDetailsService = problemDetailsService;
+    }
+
+    public async ValueTask<bool> TryHandleAsync(
+        HttpContext httpContext,
+        Exception exception,
+        CancellationToken cancellationToken)
+    {
+        var problem = exception switch
+        {
+            EntityNotFoundException ex => CreateProblem(
+                StatusCodes.Status404NotFound,
+                "https://docs.example.org/problems/entity-not-found",
+                "Entity Not Found",
+                ex.Message,
+                "entity.notFound"),
+
+            DomainConflictException ex => CreateProblem(
+                StatusCodes.Status409Conflict,
+                "https://docs.example.org/problems/domain-conflict",
+                "Domain Conflict",
+                ex.Message,
+                "domain.conflict"),
+
+            DomainValidationException ex => CreateProblem(
+                StatusCodes.Status422UnprocessableEntity,
+                "https://docs.example.org/problems/validation-failed",
+                "Validation Failed",
+                ex.Message,
+                "validation.failed"),
+
+            _ => CreateProblem(
+                StatusCodes.Status500InternalServerError,
+                "https://docs.example.org/problems/unexpected-error",
+                "Unexpected Error",
+                "An unexpected error occurred.",
+                "unexpected.error")
+        };
+
+        httpContext.Response.StatusCode = problem.Status ?? StatusCodes.Status500InternalServerError;
+
+        return await _problemDetailsService.TryWriteAsync(new ProblemDetailsContext
+        {
+            HttpContext = httpContext,
+            ProblemDetails = problem,
+            Exception = exception
+        });
+    }
+
+    private static ProblemDetails CreateProblem(
+        int status,
+        string type,
+        string title,
+        string detail,
+        string code)
+    {
+        var problem = new ProblemDetails
+        {
+            Status = status,
+            Type = type,
+            Title = title,
+            Detail = detail
+        };
+
+        problem.Extensions["code"] = code;
+        return problem;
+    }
+}
+```
+
+Document known responses in endpoint metadata:
+
+```csharp
+routeGroup.MapPost("/projects", CreateProjectAsync)
+    .WithSummary("Create a project.")
+    .Produces<ProjectSummary>(StatusCodes.Status201Created)
+    .ProducesValidationProblem(StatusCodes.Status422UnprocessableEntity)
+    .Produces<ProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")
+    .Produces<ProblemDetails>(StatusCodes.Status409Conflict, "application/problem+json");
+```
+
+This keeps every endpoint focused on input binding, mediation and successful response construction. The global handler owns the repeated mapping from domain errors to HTTP status codes, `application/problem+json`, stable `code` values and sanitized details.
 
 ---
 

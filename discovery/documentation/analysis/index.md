@@ -61,6 +61,30 @@ Answer the questions:
 They do not form a mandatory hierarchy. The user story serves for backlog and incremental planning. The use case serves for functional analysis. A use case can inform multiple stories; a complex story can reference one or more use cases; a simple story may not need a use case.
 :::
 
+## Need vs. Requirement
+
+Needs and requirements are related, but they should not be treated as the same artifact.
+
+### Need
+
+A need describes the problem, opportunity or expected improvement from the stakeholder or business perspective. It explains why the work matters before prescribing what the system must do.
+
+Good needs are useful when the team is still exploring the problem space, comparing alternatives or deciding whether a solution is worth building.
+
+### Requirement
+
+A requirement describes a condition the solution must satisfy. It can be functional, non-functional, regulatory, security-related, integration-related or operational.
+
+Good requirements are specific enough to guide design, implementation and validation. They should be necessary, clear, feasible and verifiable.
+
+### Practical Rule
+
+Use a need when the question is "what problem or opportunity are we addressing?" Use a requirement when the question is "what must the solution do or comply with?"
+
+### Relationship Between Them
+
+One need can produce several requirements. One requirement can support several needs. Keep the relationship explicit through stable IDs and links instead of duplicating the same explanation in multiple artifacts.
+
 ## Templates
 
 - [Need](./templates/need) — Template for documenting a business need.

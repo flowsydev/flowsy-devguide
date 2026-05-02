@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-05-02
+
+### Changed
+
+- Writing guidelines clarified for project-selected Spanish documentation and Title Case navigation rules.
+
 ## [1.1.0] - 2026-05-02
 
 ### Added
@@ -19,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Minimum audit and entity event-log guidance aligned across C#, Domain-Driven Design and PostgreSQL conventions.
 - Database migration structure updated to use `Resources/Databases/{DatabaseOrConnectionKey}` with separated versioned, repeatable, operations and queries folders.
 - Database migration concepts made tool-agnostic, with Evolve/Flyway naming moved to tool guidance, `flwdb` CLI guidance separated into its own page, and migration strategy coverage expanded for Liquibase, DbUp, EF Core, Sqitch and Atlas.
+- Writing guidelines clarified for project-selected Spanish documentation and Title Case navigation rules.
 - SQL Server and MySQL/MariaDB database convention pages added with change-control guidance.
 
 ## [1.0.0] - 2026-04-18

@@ -83,11 +83,14 @@ Recommended example:
 ```markdown
 ## Release Preparation and Publishing
 
-- Do not create commits, tags or pushes by inference.
-- If the user explicitly asks to prepare the repository for publication, confirm approval before updating `CHANGELOG.md`, creating a commit or creating a tag.
-- Phrases that may indicate local release preparation include: "prepare the repo to publish", "make the release ready", "update changelog, commit and tag", "prepare the version to upload".
-- If the user explicitly asks to publish changes remotely, confirm approval before running `git push` or `git push --tags`.
-- Phrases that may indicate remote publication include: "publish the changes", "push the release", "push to remote", "publish the version and its tags".
+- When receiving an explicit instruction to prepare the local repository for publishing, confirm developer approval before continuing. After approval:
+  1. Move the `[Unreleased]` entries in `CHANGELOG.md` to a new versioned section with the appropriate version and today's date.
+  2. Create a detailed commit in the predominant language of the repository's documentation following the Conventional Commits format.
+  3. Create the corresponding git tag.
+- Phrases that may trigger local release preparation include: "prepara el repo para publicar", "deja lista la versión", "actualiza el changelog, haz commit y tag", "prepara la versión para subir", "prepare the repo to publish", "make the release ready", "update changelog, commit and tag".
+- When receiving an explicit instruction to publish changes to the remote repository, confirm developer approval before continuing. After approval, run `git push` and then `git push --tags`.
+- Phrases that may trigger remote publishing include: "publica los cambios", "sube la versión y sus tags", "publish the changes", "push the release", "push to remote".
+- Do not create commits, tags or pushes by inference. If the intent is unclear, ask before acting.
 ```
 
 Adapt the text to the repository's real flow. If the project uses another versioning scheme, protected branches, mandatory Pull Requests or publication pipelines, document those conditions instead of assuming a direct release from a local branch.

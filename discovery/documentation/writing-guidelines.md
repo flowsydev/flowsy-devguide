@@ -9,9 +9,10 @@ These guidelines apply to documentation artifacts produced inside projects, docu
 
 ## Base Rules
 
-- Write in clear English by default for Flowsy repositories.
+- Write in clear English by default for Flowsy repositories but use Spanish for concepts that are intrinsically Mexican and legal/business-specific, such as CURP or RFC.
+- Translate `feature` to Spanish as `característica`, not as `capacidad`
+- When a project decides to use Spanish, write in careful Spanish, with accents, opening punctuation marks (`¿`, `¡`) and correct punctuation.
 - Keep proper names, acronyms and technical terms in their original form when translating them would reduce precision.
-- Use Spanish only for concepts that are intrinsically Mexican or legal/business-specific, such as CURP or RFC.
 - Use a clear, direct and useful voice for technical and business audiences.
 - Avoid unnecessary jargon when a simpler term is precise enough.
 
@@ -19,9 +20,10 @@ These guidelines apply to documentation artifacts produced inside projects, docu
 
 Write titles, headings and navigation text in Title Case:
 
-- capitalize major words;
-- keep short articles, prepositions and conjunctions lowercase unless they start the title;
-- respect proper names, acronyms and technical terms.
+- Capitalize major words;
+- Keep short articles, prepositions and conjunctions lowercase;
+- Capitalize a word when it is the first word of the title;
+- Respect proper names, acronyms and technical terms.
 
 Examples:
 

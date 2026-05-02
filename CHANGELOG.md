@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2026-05-02
+
+### Changed
+
+- Analysis artifact ID prefix corrected from `ANL-*` to `ANA-*` across all analysis templates (need, requirement, use case, business rule) and all cross-template references in architecture and delivery templates.
+- Folder Structure section in the project documentation guide redesigned with tree-style characters (`├──`, `└──`, `│`) and folder/file emojis (📂/📁/📄) to clearly represent nesting levels; descriptive paragraph added above the example.
+- Release preparation instructions in `AGENTS.md` updated to include `package.json` version bump as the first step.
+
 ## [1.3.0] - 2026-05-02
 
 ### Changed

@@ -1,4 +1,4 @@
-# `ANL-BR-[NNN]` [Business Rule Title]
+# `ANA-BR-[NNN]` [Business Rule Title]
 
 ## Statement
 
@@ -23,5 +23,5 @@ Describe the context or process in which this rule applies.
 
 ## Related Artifacts
 
-- [`ANL-REQ-[NNN]`: Requirement]
-- [`ANL-UC-[NNN]`: Use Case]
+- [`ANA-REQ-[NNN]`: Requirement]
+- [`ANA-UC-[NNN]`: Use Case]

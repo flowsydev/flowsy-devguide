@@ -27,4 +27,4 @@ Describe what this epic includes.
 ## Related Artifacts
 
 - [`STR-INI-[NNN]`: Initiative]
-- [`ANL-UC-[NNN]`: Use Case]
+- [`ANA-UC-[NNN]`: Use Case]

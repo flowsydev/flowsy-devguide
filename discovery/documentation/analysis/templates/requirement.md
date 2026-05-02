@@ -1,4 +1,4 @@
-# `ANL-REQ-[NNN]` [Requirement Title]
+# `ANA-REQ-[NNN]` [Requirement Title]
 
 ## Statement
 
@@ -30,5 +30,5 @@ Describe how compliance with the requirement will be verified.
 
 ## Related Artifacts
 
-- [`ANL-UC-[NNN]`: Use Case]
+- [`ANA-UC-[NNN]`: Use Case]
 - [`DLV-PBI-[NNN]`: PBI]

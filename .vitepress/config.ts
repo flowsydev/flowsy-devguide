@@ -14,10 +14,80 @@ export default withMermaid({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'AI-Assisted Development', link: '/ai-assisted-development/' },
-      { text: 'Discovery & Design', link: '/discovery/' },
-      { text: 'Technologies', link: '/technologies/' },
-      { text: 'Conventions', link: '/conventions/' },
+      {
+        text: 'AI-Assisted Development',
+        items: [
+          { text: 'Overview', link: '/ai-assisted-development/' },
+          { text: 'Best Practices', link: '/ai-assisted-development/best-practices' },
+          { text: 'Agent Context Routing', link: '/ai-assisted-development/agent-routing' },
+          { text: 'Agent Context Guides', link: '/ai-assisted-development/context-guides/' },
+          { text: 'Specs-Driven Development', link: '/ai-assisted-development/specs-driven-development' },
+          { text: 'Platform Guidance', link: '/ai-assisted-development/platform-guidance' },
+          { text: 'Official References', link: '/ai-assisted-development/official-references' },
+        ]
+      },
+      {
+        text: 'Discovery & Design',
+        items: [
+          { text: 'Overview', link: '/discovery/' },
+          { text: 'Design Techniques', link: '/discovery/design-techniques' },
+          { text: 'Event Storming', link: '/discovery/event-storming' },
+          { text: 'Domain-Driven Design', link: '/discovery/domain-driven-design' },
+          { text: 'Project Documentation', link: '/discovery/documentation/' },
+          { text: 'Writing Guidelines', link: '/discovery/documentation/writing-guidelines' },
+        ]
+      },
+      {
+        text: 'Technologies',
+        items: [
+          { text: 'Overview', link: '/technologies/' },
+          {
+            text: 'Testing',
+            items: [
+              { text: 'Start', link: '/technologies/testing/' },
+              { text: 'Automated Testing Strategy', link: '/technologies/testing/automated-testing' },
+              { text: 'Unit Tests', link: '/technologies/testing/unit-tests' },
+              { text: 'Integration Tests', link: '/technologies/testing/integration-tests' },
+              { text: 'End-to-End Tests', link: '/technologies/testing/end-to-end-tests' },
+              { text: 'Evidence and Reporting', link: '/technologies/testing/evidence-and-reporting' },
+            ]
+          },
+          {
+            text: 'Backend',
+            items: [
+              { text: 'General Concepts', link: '/technologies/backend/concepts' },
+              { text: 'HTTP API Design', link: '/technologies/backend/api-design' },
+              { text: 'Vertical Slice Architecture', link: '/technologies/backend/vertical-slice-architecture/concepts' },
+              { text: 'Clean Architecture', link: '/technologies/backend/clean-architecture/concepts' },
+              { text: 'Event-Driven Architecture', link: '/technologies/backend/event-driven-architecture/concepts' },
+              { text: 'Event Sourcing', link: '/technologies/backend/event-sourcing/concepts' },
+              { text: 'Relational Databases', link: '/technologies/backend/relational-databases/concepts' },
+              { text: 'Database Migrations', link: '/technologies/backend/database-migrations/concepts' },
+            ]
+          },
+          {
+            text: 'Frontend',
+            items: [
+              { text: 'Modular Architecture', link: '/technologies/frontend/modular-architecture/concepts' },
+              { text: 'Vue Ecosystem', link: '/technologies/frontend/modular-architecture/vue-ecosystem' },
+            ]
+          },
+        ]
+      },
+      {
+        text: 'Conventions',
+        items: [
+          { text: 'Overview', link: '/conventions/' },
+          { text: 'Repository Documentation', link: '/conventions/repository-documentation' },
+          { text: 'C#', link: '/conventions/csharp' },
+          { text: 'PostgreSQL', link: '/conventions/postgresql' },
+          { text: 'SQL Server', link: '/conventions/sql-server' },
+          { text: 'MySQL and MariaDB', link: '/conventions/mysql-mariadb' },
+          { text: 'TypeScript', link: '/conventions/typescript' },
+          { text: 'Vue', link: '/conventions/vue' },
+          { text: 'Git', link: '/conventions/source-control/git' },
+        ]
+      },
     ],
 
     sidebar: [

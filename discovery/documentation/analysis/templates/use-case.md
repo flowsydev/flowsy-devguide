@@ -1,4 +1,4 @@
-# `ANL-UC-[NNN]` [Use Case Title]
+# `ANA-UC-[NNN]` [Use Case Title]
 
 ## Objective
 
@@ -36,7 +36,7 @@ Describe the event or action that initiates the use case.
 
 ## Domain Rules
 
-- [`ANL-BR-[NNN]`: Business Rule]
+- [`ANA-BR-[NNN]`: Business Rule]
 
 ## Diagrams
 
@@ -44,5 +44,5 @@ If available, include diagrams that help understand the interaction.
 
 ## Related Artifacts
 
-- [`ANL-REQ-[NNN]`: Requirement]
+- [`ANA-REQ-[NNN]`: Requirement]
 - [`DLV-PBI-[NNN]`: PBI]

@@ -38,4 +38,4 @@ Include the contract specification: JSON schema, OpenAPI, AsyncAPI, protobuf, et
 ## Related Artifacts
 
 - [`ARC-ADR-[NNN]`: ADR]
-- [`ANL-REQ-[NNN]`: Requirement]
+- [`ANA-REQ-[NNN]`: Requirement]

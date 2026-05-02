@@ -30,5 +30,5 @@ If available, include diagrams that help understand the requirement.
 ## Related Artifacts
 
 - [`DLV-EPC-[NNN]`: Epic]
-- [`ANL-REQ-[NNN]`: Requirement]
-- [`ANL-UC-[NNN]`: Use Case]
+- [`ANA-REQ-[NNN]`: Requirement]
+- [`ANA-UC-[NNN]`: Use Case]

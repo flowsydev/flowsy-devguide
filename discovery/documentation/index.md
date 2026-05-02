@@ -151,39 +151,56 @@ flowchart TD
 
 ## Folder Structure
 
+A project documentation site should expose the durable project layers directly, instead of mirroring the structure of this guide. Emojis in this example are visual cues, not part of the folder names.
+
 ```text
-discovery/
-  documentation/
-    index.md                          ← this page
-    strategy/
-      index.md                        ← strategy artifacts guide
-      templates/
-        theme.md
-        initiative.md
-    analysis/
-      index.md                        ← analysis artifacts guide
-      templates/
-        need.md
-        requirement.md
-        use-case.md
-        business-rule.md
-    architecture/
-      index.md                        ← architecture artifacts guide
-      templates/
-        adr.md
-        contract.md
-    delivery/
-      index.md                        ← delivery artifacts guide
-      templates/
-        epic.md
-        pbi.md
-        task.md
-    validation/
-      index.md                        ← validation artifacts guide
-      templates/
-        acceptance-criteria.md
-        gwt-scenario.md
-        test-case.md
+📂 project-docs/
+├── 📁 .vitepress/
+│   └── 📄 config.mts                  ← site navigation and sidebar registration
+├── 📄 index.md                        ← project documentation home
+├── 📁 strategy/
+│   ├── 📄 index.md                    ← strategic context and artifact index
+│   ├── 📁 themes/
+│   │   └── 📄 str-thm-001-growth.md
+│   └── 📁 initiatives/
+│       └── 📄 str-ini-001-self-service-rentals.md
+├── 📁 analysis/
+│   ├── 📄 index.md                    ← needs, requirements, use cases and rules
+│   ├── 📁 needs/
+│   │   └── 📄 ana-ned-001-online-quote-access.md
+│   ├── 📁 requirements/
+│   │   └── 📄 ana-req-001-access-channels.md
+│   ├── 📁 use-cases/
+│   │   └── 📄 ana-uc-001-request-quote.md
+│   └── 📁 business-rules/
+│       └── 📄 ana-br-001-deposit-policy.md
+├── 📁 architecture/
+│   ├── 📄 index.md                    ← decisions, contracts and technical models
+│   ├── 📁 decisions/
+│   │   └── 📄 arc-adr-001-multi-tenant-boundaries.md
+│   └── 📁 contracts/
+│       └── 📄 arc-ctr-001-quote-inquiry-api.md
+├── 📁 delivery/
+│   ├── 📄 index.md                    ← epics, PBIs and durable work breakdown
+│   ├── 📁 epics/
+│   │   └── 📄 dlv-epc-001-rental-intake.md
+│   └── 📁 pbi/
+│       └── 📄 dlv-pbi-001-submit-quote-inquiry.md
+├── 📁 validation/
+│   ├── 📄 index.md                    ← acceptance criteria, scenarios and tests
+│   ├── 📁 acceptance-criteria/
+│   │   └── 📄 val-ac-001-quote-inquiry-submitted.md
+│   ├── 📁 scenarios/
+│   │   └── 📄 val-gwt-001-customer-requests-quote.md
+│   └── 📁 test-cases/
+│       └── 📄 tst-001-quote-inquiry-form.md
+└── 📁 specs/
+    └── 📁 001-site-layout/
+        ├── 📄 01.requirements.md
+        ├── 📄 02.analysis.md
+        ├── 📄 03.plan.md
+        ├── 📄 04.exec.phase-01.md
+        └── 📄 05.summary.md
 ```
 
 ## IDs and Traceability
@@ -194,10 +211,10 @@ Each artifact uses a stable identifier independent of the path, with a prefix in
 | --- | --- | --- | --- |
 | Strategy | Theme | `STR-THM` | `STR-THM-001` |
 | Strategy | Initiative | `STR-INI` | `STR-INI-007` |
-| Analysis | Need | `ANL-NED` | `ANL-NED-003` |
-| Analysis | Requirement | `ANL-REQ` | `ANL-REQ-085` |
-| Analysis | Use Case | `ANL-UC` | `ANL-UC-019` |
-| Analysis | Business Rule | `ANL-BR` | `ANL-BR-012` |
+| Analysis | Need | `ANA-NED` | `ANA-NED-003` |
+| Analysis | Requirement | `ANA-REQ` | `ANA-REQ-085` |
+| Analysis | Use Case | `ANA-UC` | `ANA-UC-019` |
+| Analysis | Business Rule | `ANA-BR` | `ANA-BR-012` |
 | Architecture | ADR | `ARC-ADR` | `ARC-ADR-011` |
 | Architecture | Contract | `ARC-CTR` | `ARC-CTR-014` |
 | Delivery | Epic | `DLV-EPC` | `DLV-EPC-014` |

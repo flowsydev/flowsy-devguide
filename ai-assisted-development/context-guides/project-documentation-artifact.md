@@ -13,7 +13,7 @@ applies_when:
   - the task asks for traceability between discovery, delivery and validation
 read_first:
   - /discovery/documentation/
-  - /discovery/documentation/writing-guidelines.md
+  - /conventions/writing-guidelines
 read_if_implementing:
   - /conventions/repository-documentation.md
 related_guides:
@@ -66,7 +66,7 @@ Use this guide when creating or updating needs, requirements, use cases, busines
 ## References
 
 - Documentation model: [Project Documentation](/discovery/documentation/).
-- Writing rules: [Writing Guidelines](/discovery/documentation/writing-guidelines.md).
+- Writing rules: [Writing Guidelines](/conventions/writing-guidelines).
 - Repository docs: [Repository Documentation](/conventions/repository-documentation.md).
-- Validation documentation: [Validation](/discovery/documentation/validation/).
+- Validation documentation: [Validation](/discovery/documentation/layers/validation/).
 - Specs execution records: [Specs-Driven Development](/ai-assisted-development/specs-driven-development.md).

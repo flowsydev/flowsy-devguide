@@ -8,31 +8,31 @@ hero:
   actions:
     - theme: brand
       text: View Need
-      link: /discovery/documentation/analysis/templates/need
+      link: /discovery/documentation/layers/analysis/templates/need
     - theme: alt
       text: View Requirement
-      link: /discovery/documentation/analysis/templates/requirement
+      link: /discovery/documentation/layers/analysis/templates/requirement
     - theme: alt
       text: View Use Case
-      link: /discovery/documentation/analysis/templates/use-case
+      link: /discovery/documentation/layers/analysis/templates/use-case
 
 features:
   - icon: 💡
     title: Need
     details: Problem or opportunity from the business or stakeholder perspective.
-    link: /discovery/documentation/analysis/templates/need
+    link: /discovery/documentation/layers/analysis/templates/need
   - icon: 📋
     title: Requirement
     details: What the system must do or comply with, including constraints and NFRs.
-    link: /discovery/documentation/analysis/templates/requirement
+    link: /discovery/documentation/layers/analysis/templates/requirement
   - icon: 👥
     title: Use Case
     details: Structured interactions between actors and the system to achieve an objective.
-    link: /discovery/documentation/analysis/templates/use-case
+    link: /discovery/documentation/layers/analysis/templates/use-case
   - icon: 📏
     title: Business Rule
     details: Domain conditions that apply regardless of the interface or implementation.
-    link: /discovery/documentation/analysis/templates/business-rule
+    link: /discovery/documentation/layers/analysis/templates/business-rule
 ---
 
 # Analysis / Requirements

@@ -8,27 +8,27 @@ hero:
   actions:
     - theme: brand
       text: View Criteria
-      link: /discovery/documentation/validation/templates/acceptance-criteria
+      link: /discovery/documentation/layers/validation/templates/acceptance-criteria
     - theme: alt
       text: View GWT
-      link: /discovery/documentation/validation/templates/gwt-scenario
+      link: /discovery/documentation/layers/validation/templates/gwt-scenario
     - theme: alt
       text: View Test Cases
-      link: /discovery/documentation/validation/templates/test-case
+      link: /discovery/documentation/layers/validation/templates/test-case
 
 features:
   - icon: ✅
     title: Acceptance Criteria
     details: Specific conditions that must be met to accept a requirement or PBI.
-    link: /discovery/documentation/validation/templates/acceptance-criteria
+    link: /discovery/documentation/layers/validation/templates/acceptance-criteria
   - icon: 🔁
     title: GWT Scenario
     details: Given / When / Then scenarios to reduce ambiguity and favor automation.
-    link: /discovery/documentation/validation/templates/gwt-scenario
+    link: /discovery/documentation/layers/validation/templates/gwt-scenario
   - icon: 🧪
     title: Test Case
     details: Verifiable or executable validations to demonstrate coverage and expected result.
-    link: /discovery/documentation/validation/templates/test-case
+    link: /discovery/documentation/layers/validation/templates/test-case
 ---
 
 # Validation / Quality

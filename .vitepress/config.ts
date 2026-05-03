@@ -34,7 +34,6 @@ export default withMermaid({
           { text: 'Event Storming', link: '/discovery/event-storming' },
           { text: 'Domain-Driven Design', link: '/discovery/domain-driven-design' },
           { text: 'Project Documentation', link: '/discovery/documentation/' },
-          { text: 'Writing Guidelines', link: '/discovery/documentation/writing-guidelines' },
         ]
       },
       {
@@ -78,6 +77,7 @@ export default withMermaid({
         text: 'Conventions',
         items: [
           { text: 'Overview', link: '/conventions/' },
+          { text: 'Writing Guidelines', link: '/conventions/writing-guidelines' },
           { text: 'Repository Documentation', link: '/conventions/repository-documentation' },
           { text: 'C#', link: '/conventions/csharp' },
           { text: 'PostgreSQL', link: '/conventions/postgresql' },
@@ -128,54 +128,66 @@ export default withMermaid({
             text: 'Project Documentation',
             link: '/discovery/documentation/',
             items: [
-              { text: 'Writing Guidelines', link: '/discovery/documentation/writing-guidelines' },
               {
-                text: 'Strategy',
-                link: '/discovery/documentation/strategy/',
-                collapsed: true,
+                text: 'Disciplinary Layers',
+                link: '/discovery/documentation/layers/',
                 items: [
-                  { text: 'Theme', link: '/discovery/documentation/strategy/templates/theme' },
-                  { text: 'Initiative', link: '/discovery/documentation/strategy/templates/initiative' },
+                  {
+                    text: 'Strategy',
+                    link: '/discovery/documentation/layers/strategy/',
+                    collapsed: true,
+                    items: [
+                      { text: 'Theme', link: '/discovery/documentation/layers/strategy/templates/theme' },
+                      { text: 'Initiative', link: '/discovery/documentation/layers/strategy/templates/initiative' },
+                    ]
+                  },
+                  {
+                    text: 'Analysis',
+                    link: '/discovery/documentation/layers/analysis/',
+                    collapsed: true,
+                    items: [
+                      { text: 'Need', link: '/discovery/documentation/layers/analysis/templates/need' },
+                      { text: 'Requirement', link: '/discovery/documentation/layers/analysis/templates/requirement' },
+                      { text: 'Use Case', link: '/discovery/documentation/layers/analysis/templates/use-case' },
+                      { text: 'Business Rule', link: '/discovery/documentation/layers/analysis/templates/business-rule' },
+                    ]
+                  },
+                  {
+                    text: 'Architecture',
+                    link: '/discovery/documentation/layers/architecture/',
+                    collapsed: true,
+                    items: [
+                      { text: 'ADR', link: '/discovery/documentation/layers/architecture/templates/adr' },
+                      { text: 'Contract', link: '/discovery/documentation/layers/architecture/templates/contract' },
+                    ]
+                  },
+                  {
+                    text: 'Delivery',
+                    link: '/discovery/documentation/layers/delivery/',
+                    collapsed: true,
+                    items: [
+                      { text: 'Epic', link: '/discovery/documentation/layers/delivery/templates/epic' },
+                      { text: 'PBI / User Story', link: '/discovery/documentation/layers/delivery/templates/pbi' },
+                      { text: 'Task', link: '/discovery/documentation/layers/delivery/templates/task' },
+                    ]
+                  },
+                  {
+                    text: 'Validation',
+                    link: '/discovery/documentation/layers/validation/',
+                    collapsed: true,
+                    items: [
+                      { text: 'Acceptance Criteria', link: '/discovery/documentation/layers/validation/templates/acceptance-criteria' },
+                      { text: 'GWT Scenario', link: '/discovery/documentation/layers/validation/templates/gwt-scenario' },
+                      { text: 'Test Case', link: '/discovery/documentation/layers/validation/templates/test-case' },
+                    ]
+                  },
                 ]
               },
               {
-                text: 'Analysis',
-                link: '/discovery/documentation/analysis/',
-                collapsed: true,
+                text: 'Static Site Generators',
+                link: '/discovery/documentation/static-site-generators/',
                 items: [
-                  { text: 'Need', link: '/discovery/documentation/analysis/templates/need' },
-                  { text: 'Requirement', link: '/discovery/documentation/analysis/templates/requirement' },
-                  { text: 'Use Case', link: '/discovery/documentation/analysis/templates/use-case' },
-                  { text: 'Business Rule', link: '/discovery/documentation/analysis/templates/business-rule' },
-                ]
-              },
-              {
-                text: 'Architecture',
-                link: '/discovery/documentation/architecture/',
-                collapsed: true,
-                items: [
-                  { text: 'ADR', link: '/discovery/documentation/architecture/templates/adr' },
-                  { text: 'Contract', link: '/discovery/documentation/architecture/templates/contract' },
-                ]
-              },
-              {
-                text: 'Delivery',
-                link: '/discovery/documentation/delivery/',
-                collapsed: true,
-                items: [
-                  { text: 'Epic', link: '/discovery/documentation/delivery/templates/epic' },
-                  { text: 'PBI / User Story', link: '/discovery/documentation/delivery/templates/pbi' },
-                  { text: 'Task', link: '/discovery/documentation/delivery/templates/task' },
-                ]
-              },
-              {
-                text: 'Validation',
-                link: '/discovery/documentation/validation/',
-                collapsed: true,
-                items: [
-                  { text: 'Acceptance Criteria', link: '/discovery/documentation/validation/templates/acceptance-criteria' },
-                  { text: 'GWT Scenario', link: '/discovery/documentation/validation/templates/gwt-scenario' },
-                  { text: 'Test Case', link: '/discovery/documentation/validation/templates/test-case' },
+                  { text: 'VitePress', link: '/discovery/documentation/static-site-generators/vitepress' },
                 ]
               },
             ]
@@ -280,6 +292,7 @@ export default withMermaid({
         collapsed: true,
         items: [
           { text: 'Overview', link: '/conventions/' },
+          { text: 'Writing Guidelines', link: '/conventions/writing-guidelines' },
           { text: 'Repository Documentation', link: '/conventions/repository-documentation' },
           { text: 'C#', link: '/conventions/csharp' },
           { text: 'PostgreSQL', link: '/conventions/postgresql' },

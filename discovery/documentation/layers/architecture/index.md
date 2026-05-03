@@ -8,10 +8,10 @@ hero:
   actions:
     - theme: brand
       text: View ADR
-      link: /discovery/documentation/architecture/templates/adr
+      link: /discovery/documentation/layers/architecture/templates/adr
     - theme: alt
       text: View Contract
-      link: /discovery/documentation/architecture/templates/contract
+      link: /discovery/documentation/layers/architecture/templates/contract
     - theme: alt
       text: View Technologies
       link: /technologies/
@@ -20,11 +20,11 @@ features:
   - icon: 🧾
     title: ADR
     details: Architectural decision record with context, alternatives and consequences.
-    link: /discovery/documentation/architecture/templates/adr
+    link: /discovery/documentation/layers/architecture/templates/adr
   - icon: 🔌
     title: Contract
     details: Specification of APIs, events or exchange formats between components or systems.
-    link: /discovery/documentation/architecture/templates/contract
+    link: /discovery/documentation/layers/architecture/templates/contract
 ---
 
 # Architecture / Design

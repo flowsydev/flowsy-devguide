@@ -20,7 +20,7 @@ Apply these conventions to:
 
 ## Base Editorial Rule
 
-Repository Markdown files should follow the [Writing Guidelines](/discovery/documentation/writing-guidelines):
+Repository Markdown files should follow the [Writing Guidelines](/conventions/writing-guidelines):
 
 - clear English by default for Flowsy repositories;
 - titles, headings and navigation in Title Case;

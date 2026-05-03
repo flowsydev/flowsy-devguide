@@ -84,9 +84,10 @@ Recommended example:
 ## Release Preparation and Publishing
 
 - When receiving an explicit instruction to prepare the local repository for publishing, confirm developer approval before continuing. After approval:
-  1. Move the `[Unreleased]` entries in `CHANGELOG.md` to a new versioned section with the appropriate version and today's date.
-  2. Create a detailed commit in the predominant language of the repository's documentation following the Conventional Commits format.
-  3. Create the corresponding git tag.
+  1. Update the `package.json`, `*.csproj`, `pom.xml` or equivalent file with the appropriate version.
+  2. Move the `[Unreleased]` entries in `CHANGELOG.md` to a new versioned section with the appropriate version and today's date.
+  3. Create a detailed commit in the predominant language of the repository's documentation following the Conventional Commits format.
+  4. Create the corresponding git tag.
 - Phrases that may trigger local release preparation include: "prepara el repo para publicar", "deja lista la versión", "actualiza el changelog, haz commit y tag", "prepara la versión para subir", "prepare the repo to publish", "make the release ready", "update changelog, commit and tag".
 - When receiving an explicit instruction to publish changes to the remote repository, confirm developer approval before continuing. After approval, run `git push` and then `git push --tags`.
 - Phrases that may trigger remote publishing include: "publica los cambios", "sube la versión y sus tags", "publish the changes", "push the release", "push to remote".
@@ -110,5 +111,5 @@ Adapt the text to the repository's real flow. If the project uses another versio
 - General guidance: [AI-Assisted Development](/ai-assisted-development/).
 - Context guide router: [Agent Context Routing](/ai-assisted-development/agent-routing.md).
 - Local documentation: [Repository Documentation](/conventions/repository-documentation.md).
-- Writing rules: [Writing Guidelines](/discovery/documentation/writing-guidelines.md).
+- Writing rules: [Writing Guidelines](/conventions/writing-guidelines).
 - Specs: [Specs-Driven Development](/ai-assisted-development/specs-driven-development.md).

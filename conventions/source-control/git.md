@@ -64,10 +64,12 @@ GitFlow-based strategy for open source and personal projects.
 
 - Use `Conventional Commits`.
 - Base format: `type(scope): description`.
+- Use scopes that help locate the affected area, such as `docs`, `backend`, `frontend`, `testing`, `db` or a feature name.
 - For documentation changes, use `docs`.
 - Keep the description imperative, concise and reader-facing.
-- Use scopes that help locate the affected area, such as `docs`, `backend`, `frontend`, `testing`, `db` or a feature name.
+- Use bullets in description to include details.
 - Prefer several focused commits over one large mixed commit when the change has separable intent.
+- Write commits in the predominant language of the repository's documentation.
 
 Reference: <https://www.conventionalcommits.org/>
 

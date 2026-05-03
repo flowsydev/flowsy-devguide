@@ -8,27 +8,27 @@ hero:
   actions:
     - theme: brand
       text: View Epic
-      link: /discovery/documentation/delivery/templates/epic
+      link: /discovery/documentation/layers/delivery/templates/epic
     - theme: alt
       text: View PBI
-      link: /discovery/documentation/delivery/templates/pbi
+      link: /discovery/documentation/layers/delivery/templates/pbi
     - theme: alt
       text: View Task
-      link: /discovery/documentation/delivery/templates/task
+      link: /discovery/documentation/layers/delivery/templates/task
 
 features:
   - icon: 🗺️
     title: Epic
     details: Large block of work that groups multiple PBIs under a common objective.
-    link: /discovery/documentation/delivery/templates/epic
+    link: /discovery/documentation/layers/delivery/templates/epic
   - icon: 📌
     title: PBI / User Story
     details: Minimum prioritizable unit of the backlog, functional or technical, oriented to delivering value.
-    link: /discovery/documentation/delivery/templates/pbi
+    link: /discovery/documentation/layers/delivery/templates/pbi
   - icon: 🛠️
     title: Task
     details: Concrete and executable work to implement a PBI within the team's flow.
-    link: /discovery/documentation/delivery/templates/task
+    link: /discovery/documentation/layers/delivery/templates/task
 ---
 
 # Delivery / Planning

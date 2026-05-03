@@ -50,7 +50,7 @@ Do not use `npm test` as validation: there is currently no implemented test suit
 ## Release Preparation and Publishing
 
 - When receiving an explicit instruction to prepare the local repository for publishing, confirm developer approval before continuing. After approval:
-  1. Update the `package.json` or equivalent file with the appropriate version
+  1. Update the `package.json`, `*.csproj`, `pom.xml` or equivalent file with the appropriate version.
   2. Move the `[Unreleased]` entries in `CHANGELOG.md` to a new versioned section with the appropriate version and today's date.
   3. Create a detailed commit in the predominant language of the repository's documentation following the Conventional Commits format.
   4. Create the corresponding git tag.
@@ -67,7 +67,7 @@ Read only when the task requires it:
 - `ai-assisted-development/agent-routing.md`: minimum context selection by task type.
 - `ai-assisted-development/context-guides/`: focused guidance for backend, frontend, migrations, documentation, specs and repository instructions.
 - `conventions/repository-documentation.md`: repository documentation, README and agent instruction conventions.
-- `discovery/documentation/writing-guidelines.md`: editorial rules for durable documentation.
+- `conventions/writing-guidelines.md`: editorial rules for durable documentation.
 - `technologies/testing/`: testing strategy and validation evidence guidance.
 
 ## Care

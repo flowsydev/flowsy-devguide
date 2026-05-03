@@ -4,6 +4,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2026-05-03
+
+### Added
+
+- VitePress guidance section under `discovery/documentation/static-site-generators/` covering quick-start, base configuration, disciplinary folder structure, sidebar navigation interceptor, layouts and global Vue components, Mermaid plugin setup, and deployment options.
+- `discovery/documentation/index.md` as a gateway page introducing the two subsections: Disciplinary Layers and Static Site Generators.
+- Writing Guidelines page at `conventions/writing-guidelines.md` with editorial rules for language, titles, terminology, emojis and repository files.
+
+### Changed
+
+- Disciplinary layers content reorganized under `discovery/documentation/layers/`, separating durable documentation artifacts from the new static-site-generators section.
+- Writing Guidelines relocated from `discovery/documentation/layers/` to `conventions/` to reflect its cross-cutting scope across Flowsy repositories and projects that adopt the DevGuide.
+- Navigation and sidebar updated: Writing Guidelines now appears under Conventions (before Repository Documentation); Disciplinary Layers entry remains under Discovery & Design.
+- All internal links updated to reflect the new paths for layers content and writing guidelines.
+- `AGENTS.md` updated with release preparation and publishing instructions and context-on-demand references aligned to current paths.
+- Context guides for project documentation and repository instructions updated with current links and expanded implementation guidance.
+- `conventions/index.md` updated with Writing Guidelines entry in features and available guides list.
+
 ## [1.4.0] - 2026-05-02
 
 ### Changed

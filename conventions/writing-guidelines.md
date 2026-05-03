@@ -10,8 +10,9 @@ These guidelines apply to documentation artifacts produced inside projects, docu
 ## Base Rules
 
 - Write in clear English by default for Flowsy repositories but use Spanish for concepts that are intrinsically Mexican and legal/business-specific, such as CURP or RFC.
-- Translate `feature` to Spanish as `característica`, not as `capacidad`
+- Choose documentation language according to the needs of every project
 - When a project decides to use Spanish, write in careful Spanish, with accents, opening punctuation marks (`¿`, `¡`) and correct punctuation.
+- Translate `feature` to Spanish as `característica`, not as `capacidad`
 - Keep proper names, acronyms and technical terms in their original form when translating them would reduce precision.
 - Use a clear, direct and useful voice for technical and business audiences.
 - Avoid unnecessary jargon when a simpler term is precise enough.
@@ -51,7 +52,7 @@ When a technical term is more recognizable in English, keep it in English, espec
 
 ## Emojis
 
-Use emojis only when they add visual, semantic or didactic value. In folder trees, they can improve readability when they help distinguish element types.
+Use emojis only when they add visual, semantic or didactic value. In folder trees, they can improve readability when they help distinguish element types. 
 
 Avoid using them as repetitive decoration or when they distract from the content.
 

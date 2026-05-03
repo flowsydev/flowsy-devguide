@@ -8,10 +8,10 @@ hero:
   actions:
     - theme: brand
       text: View Theme
-      link: /discovery/documentation/strategy/templates/theme
+      link: /discovery/documentation/layers/strategy/templates/theme
     - theme: alt
       text: View Initiative
-      link: /discovery/documentation/strategy/templates/initiative
+      link: /discovery/documentation/layers/strategy/templates/initiative
     - theme: alt
       text: View Documentation
       link: /discovery/documentation/
@@ -20,11 +20,11 @@ features:
   - icon: 🎯
     title: Theme
     details: Cross-cutting strategic objective that groups initiatives under a common direction.
-    link: /discovery/documentation/strategy/templates/theme
+    link: /discovery/documentation/layers/strategy/templates/theme
   - icon: 🚀
     title: Initiative
     details: Relevant business change that coordinates investment and multiple delivery efforts.
-    link: /discovery/documentation/strategy/templates/initiative
+    link: /discovery/documentation/layers/strategy/templates/initiative
 ---
 
 # Strategy / Product

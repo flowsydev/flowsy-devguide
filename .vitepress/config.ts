@@ -15,77 +15,34 @@ export default withMermaid({
     nav: [
       { text: 'Home', link: '/' },
       {
-        text: 'AI-Assisted Development',
+        text: 'AI',
         items: [
           { text: 'Overview', link: '/ai-assisted-development/' },
-          { text: 'Best Practices', link: '/ai-assisted-development/best-practices' },
-          { text: 'Agent Context Routing', link: '/ai-assisted-development/agent-routing' },
           { text: 'Agent Context Guides', link: '/ai-assisted-development/context-guides/' },
-          { text: 'Specs-Driven Development', link: '/ai-assisted-development/specs-driven-development' },
-          { text: 'Platform Guidance', link: '/ai-assisted-development/platform-guidance' },
-          { text: 'Official References', link: '/ai-assisted-development/official-references' },
         ]
       },
       {
-        text: 'Discovery & Design',
+        text: 'Discovery',
         items: [
           { text: 'Overview', link: '/discovery/' },
-          { text: 'Design Techniques', link: '/discovery/design-techniques' },
-          { text: 'Event Storming', link: '/discovery/event-storming' },
-          { text: 'Domain-Driven Design', link: '/discovery/domain-driven-design' },
           { text: 'Project Documentation', link: '/discovery/documentation/' },
+          { text: 'Disciplinary Layers', link: '/discovery/documentation/layers/' },
+          { text: 'Static Site Generators', link: '/discovery/documentation/static-site-generators/' },
         ]
       },
       {
-        text: 'Technologies',
+        text: 'Tech',
         items: [
           { text: 'Overview', link: '/technologies/' },
-          {
-            text: 'Testing',
-            items: [
-              { text: 'Start', link: '/technologies/testing/' },
-              { text: 'Automated Testing Strategy', link: '/technologies/testing/automated-testing' },
-              { text: 'Unit Tests', link: '/technologies/testing/unit-tests' },
-              { text: 'Integration Tests', link: '/technologies/testing/integration-tests' },
-              { text: 'End-to-End Tests', link: '/technologies/testing/end-to-end-tests' },
-              { text: 'Evidence and Reporting', link: '/technologies/testing/evidence-and-reporting' },
-            ]
-          },
-          {
-            text: 'Backend',
-            items: [
-              { text: 'General Concepts', link: '/technologies/backend/concepts' },
-              { text: 'HTTP API Design', link: '/technologies/backend/api-design' },
-              { text: 'Vertical Slice Architecture', link: '/technologies/backend/vertical-slice-architecture/concepts' },
-              { text: 'Clean Architecture', link: '/technologies/backend/clean-architecture/concepts' },
-              { text: 'Event-Driven Architecture', link: '/technologies/backend/event-driven-architecture/concepts' },
-              { text: 'Event Sourcing', link: '/technologies/backend/event-sourcing/concepts' },
-              { text: 'Relational Databases', link: '/technologies/backend/relational-databases/concepts' },
-              { text: 'Database Migrations', link: '/technologies/backend/database-migrations/concepts' },
-            ]
-          },
-          {
-            text: 'Frontend',
-            items: [
-              { text: 'Modular Architecture', link: '/technologies/frontend/modular-architecture/concepts' },
-              { text: 'Vue Ecosystem', link: '/technologies/frontend/modular-architecture/vue-ecosystem' },
-            ]
-          },
+          { text: 'Testing', link: '/technologies/testing/' },
+          { text: 'Backend', link: '/technologies/backend/concepts' },
+          { text: 'Frontend', link: '/technologies/frontend/modular-architecture/concepts' },
         ]
       },
       {
         text: 'Conventions',
         items: [
           { text: 'Overview', link: '/conventions/' },
-          { text: 'Writing Guidelines', link: '/conventions/writing-guidelines' },
-          { text: 'Repository Documentation', link: '/conventions/repository-documentation' },
-          { text: 'C#', link: '/conventions/csharp' },
-          { text: 'PostgreSQL', link: '/conventions/postgresql' },
-          { text: 'SQL Server', link: '/conventions/sql-server' },
-          { text: 'MySQL and MariaDB', link: '/conventions/mysql-mariadb' },
-          { text: 'TypeScript', link: '/conventions/typescript' },
-          { text: 'Vue', link: '/conventions/vue' },
-          { text: 'Git', link: '/conventions/source-control/git' },
         ]
       },
     ],
@@ -211,8 +168,8 @@ export default withMermaid({
               { text: 'Evidence and Reporting', link: '/technologies/testing/evidence-and-reporting' },
               { text: 'C#/.NET', link: '/technologies/testing/csharp-dotnet' },
               { text: 'TypeScript and Vue', link: '/technologies/testing/typescript-vue' },
-              { text: 'PostgreSQL', link: '/technologies/testing/postgresql' },
-              { text: 'Database Migrations', link: '/technologies/testing/database-migrations' },
+              { text: 'Relational Databases', link: '/technologies/testing/database/relational-databases' },
+              { text: 'Database Migration Testing', link: '/technologies/testing/database/migrations' },
               { text: 'Event-Driven Systems', link: '/technologies/testing/event-driven-systems' },
             ]
           },
@@ -254,19 +211,13 @@ export default withMermaid({
                 ]
               },
               {
-                text: 'Relational Databases',
+                text: 'Data and Migrations',
                 collapsed: true,
                 items: [
-                  { text: 'Concepts', link: '/technologies/backend/relational-databases/concepts' },
-                ]
-              },
-              {
-                text: 'Database Migrations',
-                collapsed: true,
-                items: [
-                  { text: 'Concepts', link: '/technologies/backend/database-migrations/concepts' },
-                  { text: 'Tools and Strategies', link: '/technologies/backend/database-migrations/tools-and-strategies' },
-                  { text: 'flwdb CLI', link: '/technologies/backend/database-migrations/cli' },
+                  { text: 'Relational Modeling', link: '/technologies/backend/data-and-migrations/relational-modeling' },
+                  { text: 'Migration Concepts', link: '/technologies/backend/data-and-migrations/migration-concepts' },
+                  { text: 'Tools and Strategies', link: '/technologies/backend/data-and-migrations/tools-and-strategies' },
+                  { text: 'flwdb CLI', link: '/technologies/backend/data-and-migrations/cli' },
                 ]
               },
             ]

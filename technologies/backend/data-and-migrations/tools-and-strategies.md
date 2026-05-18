@@ -1,4 +1,4 @@
-# Migration Tools and Strategies
+# Data and Migrations: Tools and Strategies
 
 Different migration tools use different models. Choose the tool that fits the project's stack, deployment model and review needs, then keep its conventions isolated from general database conventions.
 
@@ -14,24 +14,89 @@ Different migration tools use different models. Choose the tool that fits the pr
 | CI/CD Fit | Can the tool validate, plan, apply and report status in pipelines? |
 | Database Support | Does it support the target engines used by the project? |
 
+## Aggregate Operation Vocabulary
+
+Use a stable operation vocabulary for routines, views and recreated database objects. The vocabulary should describe operations over **domain aggregates**, not isolated table-level actions.
+
+### Language Strategy
+
+Choose one language strategy per project, or per bounded context when the system is intentionally multilingual, and keep it consistent across migration tools. Align routine, view, table and column names with the domain model and data model language chosen by the team.
+
+| Strategy | When to Choose It | Example | Trade-Off |
+| --- | --- | --- | --- |
+| Technical English operators | The project uses English tooling, mixed-language teams or wants compact cross-stack conventions. | `shopping_cart_modify_add_item`, `orden_despacho_modify_assign_terminal` | Operators stay short and familiar, but Spanish domain names can read as mixed-language identifiers. |
+| Domain-language operators | The project keeps domain model, data model and documentation in a language other than English. | `orden_despacho_modificar_asignar_terminal` | Names read naturally in the project language, but the team must maintain a disciplined glossary. |
+
+Document the chosen strategy in project conventions or an ADR. If the domain model uses Spanish while infrastructure code uses English, make the boundary explicit so scripts do not drift into accidental mixed-language naming.
+
+### Recommended Operators
+
+| Technical English | Spanish Equivalent | Use | Rationale |
+| --- | --- | --- | --- |
+| `create` | `crear` | Create the aggregate root. | Clear and common; no abbreviation needed. |
+| `get` | `obtener` | Return data or read models without changing state. | `get` is already short; `obtener` keeps Spanish naming explicit. |
+| `modify` | `modificar` | Change the state of an existing aggregate. | Covers adding/removing internal items, assigning, confirming, canceling or changing status. |
+| `remove` | `eliminar` | Remove or retire the aggregate root. | Reserve it for aggregate-level removal; internal removals are aggregate modifications. |
+| `view` | `vista` | Define a recreated database view. | More explicit than `vw`, especially when teams mix engines or languages. |
+
+Use `remove` / `eliminar` for removal of the aggregate root. Removing an item, relationship or value inside the aggregate is a `modify` / `modificar` operation because it changes the state of an existing aggregate.
+
+### Query Naming
+
+| Pattern | Use | Example |
+| --- | --- | --- |
+| `get_by_<key>` | Direct lookup by identifier or natural key. | `shopping_cart_get_by_id` |
+| `get_<result>_by_<criteria>` | The returned state or read model matters. | `shopping_cart_get_open_by_user_account_id` |
+| `get_<result>` | The result is self-explanatory and criteria are not part of the public routine name. | `invoice_get_pending_payment` |
+
 ## Evolve and Flyway
 
 Use when the team wants SQL-first migrations with versioned scripts and repeatable scripts.
 
-Official model:
+### Migration Model
 
 - Versioned migrations are applied once, in version order, and are tracked with checksums.
 - Repeatable migrations are re-applied when their checksum changes.
 - Evolve and Flyway both use `V...` and `R...` file naming conventions.
 
-Naming guidance:
+### Choosing Script Type
+
+| Use | When to Choose It | Typical Content |
+| --- | --- | --- |
+| Versioned script `V...` | The change must run once and then remain immutable. | Schemas, tables, columns, constraints, indexes, data corrections and other structural changes. |
+| Repeatable script `R...` | The object can be safely recreated whenever its definition changes. | Routines, views and other replaceable objects implemented with `DROP` + `CREATE`, `CREATE OR REPLACE` or an equivalent idempotent pattern. |
+
+Repeatable scripts should hold definitions whose desired final state is more important than the history of each edit. Keep destructive data changes, one-time backfills and table evolution in versioned scripts.
+
+### Naming Rules
+
+For versioned scripts:
 
 - Use `VYYYY_MM_NNN__description.sql` when release review benefits from visible year, month and sequence.
 - Use `VNNN__description.sql` when a simple global sequence is enough for the database boundary.
 - Use `VYYYYMMDDHHMM__description.sql` or `VYYYY_MM_DD_NNN__description.sql` when parallel teams need timestamp-like ordering.
-- Use `R__{aggregate_prefix}_{operation}.sql` for repeatable routines and views, grouped by schema and aggregate. Prefer `create`, then `get_*`, then `mut_*`, then `vw_*` files so review follows the aggregate lifecycle.
+
+For repeatable routines, views and other recreated objects, apply the aggregate operation vocabulary and start from the target engine convention:
+
+- Use `R__{aggregate_prefix}_{operation}.sql` for script file names when the target engine uses `snake_case`.
+- Adapt separator and casing when the target engine uses another naming style.
+- Prefer the full aggregate name as the routine prefix whenever possible.
+- Use an abbreviation or code based on the aggregate name only when the full name creates a practical problem, such as excessive length or identifier limits.
+- Keep one prefix strategy across the project, and document any exception for a specific long aggregate name.
+
+| Case Style | Engine Examples | Routine Name Example | Repeatable File Example |
+| --- | --- | --- | --- |
+| lower `snake_case` | PostgreSQL, MySQL, MariaDB, BigQuery | `sales.shopping_cart_get_open_by_user_account_id` | `R__shopping_cart_get_open_by_user_account_id.sql` |
+| `PascalCase` | SQL Server, Azure SQL | `Sales.ShoppingCartGetOpenByUserAccountId` | `R__ShoppingCartGetOpenByUserAccountId.sql` |
+| `UPPER_SNAKE_CASE` | Oracle Database, Snowflake | `SALES.SHOPPING_CART_GET_OPEN_BY_USER_ACCOUNT_ID` | `R__SHOPPING_CART_GET_OPEN_BY_USER_ACCOUNT_ID.sql` |
+| Abbreviation or code for a long aggregate | Engine-specific exception | `loyalty.crple_get_pending_expiration_by_account_id` | `R__crple_get_pending_expiration_by_account_id.sql` |
+
+PostgreSQL identifiers are limited to 63 bytes by default, even though the internal `NAMEDATALEN` setting is commonly described as 64 bytes. That is a good example of when an abbreviation or code can be justified.
 
 Recommended structure:
+
+The paths below use a .NET-friendly `Resources/Databases/...` base folder. Keep the same logical layout with the base path and folder casing chosen by the project, such as `resources/databases/...` in lowercase repositories.
+Do not rely on file explorer ordering to communicate routine lifecycle. Keep script names descriptive and group them by schema and aggregate; lexical order will vary by language, operation vocabulary and optional tooling conventions.
 
 ```text
 📁 Resources/Databases/
@@ -42,16 +107,41 @@ Recommended structure:
         │   ├── 📄 V2024_01_002__create_table_shopping_cart.sql
         │   └── 📄 V2024_01_003__create_table_shopping_cart_item.sql
         └── 📁 Repeatable/
-            └── 📁 sales/
-                └── 📁 shopping-cart/
-                    ├── 📄 R__shpcrt_create.sql
-                    ├── 📄 R__shpcrt_get_open_by_user_account_id.sql
-                    ├── 📄 R__shpcrt_mut_add_item.sql
-                    ├── 📄 R__shpcrt_mut_remove_item.sql
-                    └── 📄 R__shpcrt_vw_abandoned_carts.sql
+            ├── 📁 sales/
+            │   ├── 📁 shopping-cart/
+            │   │   ├── 📄 R__shopping_cart_create.sql
+            │   │   ├── 📄 R__shopping_cart_get_open_by_user_account_id.sql
+            │   │   ├── 📄 R__shopping_cart_modify_add_item.sql
+            │   │   ├── 📄 R__shopping_cart_modify_remove_item.sql
+            │   │   ├── 📄 R__shopping_cart_get_checkout_summary.sql
+            │   │   └── 📄 R__shopping_cart_view_abandoned_carts.sql
+            │   └── 📁 sales-order/
+            │       ├── 📄 R__sales_order_create.sql
+            │       ├── 📄 R__sales_order_get_by_customer_id.sql
+            │       └── 📄 R__sales_order_modify_confirm.sql
+            ├── 📁 billing/
+            │   ├── 📁 invoice/
+            │   │   ├── 📄 R__invoice_create.sql
+            │   │   ├── 📄 R__invoice_get_pending_payment.sql
+            │   │   └── 📄 R__invoice_modify_mark_as_paid.sql
+            │   └── 📁 subscription/
+            │       ├── 📄 R__subscription_create.sql
+            │       ├── 📄 R__subscription_get_active_by_account_id.sql
+            │       ├── 📄 R__subscription_modify_cancel.sql
+            │       └── 📄 R__subscription_remove.sql
+            ├── 📁 inventory/
+            │   └── 📁 inventory-item/
+            │       ├── 📄 R__inventory_item_create.sql
+            │       ├── 📄 R__inventory_item_get_available_by_sku.sql
+            │       └── 📄 R__inventory_item_modify_reserve.sql
+            └── 📁 loyalty/
+                └── 📁 customer-reward-points-ledger-entry/
+                    ├── 📄 R__crple_get_pending_expiration_by_account_id.sql
+                    └── 📄 R__crple_modify_expire_points.sql
 ```
 
-Use [flwdb CLI](./cli.md) for the Flowsy command that runs Evolve-style migrations.
+> [!info] ℹ️ flwdb
+> When convenient for the team and the project, use the [flwdb CLI](./cli.md) for running Evolve/Flyway-style migrations.
 
 ## Liquibase
 
@@ -65,6 +155,7 @@ Naming guidance:
 - Name changeset files with an ordered prefix and clear action, such as `2024-01-001-create-schema-sales.yaml`.
 - Keep changeset ids stable, descriptive and unique per author/file combination.
 - Keep large SQL bodies in `.sql` files when that improves reviewability, and reference them from the changelog.
+- Apply the aggregate operation vocabulary when naming SQL files that define recreated routines, views or other replaceable objects.
 
 Recommended structure:
 
@@ -97,6 +188,7 @@ Naming guidance:
 - Keep journaled scripts immutable once they may have run in a shared environment.
 - Use clear folders such as `Once/` and `Everytime/` when the project mixes journaled and idempotent scripts.
 - Name idempotent scripts by object or aggregate behavior, such as `view_abandoned_carts.sql` or `get_open_by_user_account_id.sql`.
+- Apply the aggregate operation vocabulary to idempotent scripts that recreate routines, views or other replaceable objects.
 
 Recommended structure:
 
@@ -155,6 +247,7 @@ Naming guidance:
 - Keep matching script names under `deploy/`, `revert/` and `verify/` so the plan is easy to audit.
 - Use the plan file for ordering and dependencies instead of encoding sequence numbers in file names.
 - Prefer small changes that can be deployed, reverted and verified independently.
+- Use the aggregate operation vocabulary for changes that define recreated aggregate routines or views.
 
 Recommended structure:
 

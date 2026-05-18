@@ -1,10 +1,10 @@
-# Database Migrations
+# Database Migration Testing
 
 Guide for validating versioned and repeatable migrations before schema changes reach shared environments.
 
 ## Relationship With Integration Tests
 
-Migrations are the entry point for reliable integration tests. Before validating a handler, endpoint or routine against PostgreSQL, the suite should build the schema by applying the real project migrations.
+Migrations are the entry point for reliable integration tests. Before validating a handler, endpoint or routine against a relational database, the suite should build the schema by applying the real project migrations.
 
 In a typical backend, validation happens in two layers:
 
@@ -58,7 +58,7 @@ If the project exposes `flwdb`, validate the command path used by developers and
 
 For backend integration tests:
 
-- Start PostgreSQL in a container, ephemeral database or controlled local environment.
+- Start the target database engine in a container, ephemeral database or controlled local environment.
 - Apply the real migrations, not a parallel schema maintained by hand.
 - Load only the seed data required by the case.
 - Execute the endpoint, handler, repository or routine under test.
@@ -107,6 +107,6 @@ Record:
 
 - [Evolve: Concepts](https://evolve-db.netlify.app/concepts/)
 - [Flyway: Validate](https://documentation.red-gate.com/flyway/reference/commands/validate)
-- [Database Migrations Concepts](/technologies/backend/database-migrations/concepts)
-- [flwdb CLI](/technologies/backend/database-migrations/cli)
-- [PostgreSQL](./postgresql.md)
+- [Database Migrations Concepts](/technologies/backend/data-and-migrations/migration-concepts)
+- [flwdb CLI](/technologies/backend/data-and-migrations/cli)
+- [Relational Database Testing](./relational-databases.md)

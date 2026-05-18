@@ -47,7 +47,7 @@ public sealed class CreateOrderHandlerTests
 ## Integration Tests
 
 - Use real ASP.NET Core routing and dependency injection when validating HTTP behavior.
-- Use real PostgreSQL when testing queries, migrations or transaction behavior.
+- Use the real target database engine when testing queries, migrations or transaction behavior.
 - Keep database setup deterministic.
 
 ## End-to-End Tests
@@ -70,4 +70,4 @@ dotnet test --collect:"XPlat Code Coverage"
 
 - [Unit Tests](./unit-tests.md)
 - [Integration Tests](./integration-tests.md)
-- [PostgreSQL](./postgresql.md)
+- [Relational Databases](./database/relational-databases.md)

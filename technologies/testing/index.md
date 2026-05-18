@@ -19,8 +19,8 @@ The pyramid does not mean one level is more important than another. It describes
 4. Apply the stack-specific guide:
    - [C#/.NET](./csharp-dotnet.md)
    - [TypeScript and Vue](./typescript-vue.md)
-   - [PostgreSQL](./postgresql.md)
-   - [Database Migrations](./database-migrations.md)
+   - [Relational Databases](./database/relational-databases.md)
+   - [Database Migration Testing](./database/migrations.md)
    - [Event-Driven Systems](./event-driven-systems.md)
 
 ## Quick Map
@@ -30,6 +30,8 @@ The pyramid does not mean one level is more important than another. It describes
 | Define the overall automated validation strategy | [Automated Testing Strategy](./automated-testing.md) |
 | Validate isolated rules, functions, handlers, composables or stores | [Unit Tests](./unit-tests.md) |
 | Validate collaboration with databases, HTTP, filesystem, messaging or controlled real dependencies | [Integration Tests](./integration-tests.md) |
+| Validate persistence, constraints, queries or database concurrency | [Relational Database Testing](./database/relational-databases.md) |
+| Validate versioned and repeatable migration execution | [Database Migration Testing](./database/migrations.md) |
 | Validate complete flows from the user or external consumer perspective | [End-to-End Tests](./end-to-end-tests.md) |
 | Record results in specs, CI or PRs without copying full logs | [Evidence and Reporting](./evidence-and-reporting.md) |
 

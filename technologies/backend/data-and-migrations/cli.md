@@ -16,6 +16,8 @@ flwdb migrate \
   --location "./Resources/Databases/Ecommerce/Migrations"
 ```
 
+The `--location` value should point to the migration folder chosen by the project. `Resources/Databases/Ecommerce/Migrations` is a .NET-friendly example; projects that use lowercase resource paths can use an equivalent path such as `resources/databases/ecommerce/migrations`.
+
 For CI/CD environments, use the pipeline's environment variables or secret management mechanism as the source for command arguments. `flwdb` does not read options from environment variables by itself, but the CI/CD shell can expand those variables when invoking the tool.
 
 ```bash
@@ -26,13 +28,19 @@ flwdb migrate \
 
 ## Script Convention
 
-Because `flwdb` delegates migration execution to Evolve, use Evolve-style `V*` and `R*` naming. Keep this convention in migration-tool documentation rather than in database-engine conventions:
+Because `flwdb` delegates migration execution to Evolve, use Evolve-style `V*` and `R*` naming. Keep this convention in migration-tool documentation rather than in database-engine conventions. Adapt folder names and casing to the repository convention:
 
 ```text
 Resources/Databases/{DatabaseOrConnectionKey}/Migrations/Versioned/
   → V...__description.sql
 
 Resources/Databases/{DatabaseOrConnectionKey}/Migrations/Repeatable/{schema}/{aggregate}/
+  → R__description.sql
+
+resources/databases/{database-or-connection-key}/migrations/versioned/
+  → V...__description.sql
+
+resources/databases/{database-or-connection-key}/migrations/repeatable/{schema}/{aggregate}/
   → R__description.sql
 ```
 
@@ -58,19 +66,22 @@ Choose the versioned script format that provides the most value for the project,
   Use it when daily sequencing helps coordinate many parallel migrations.
   Example: `V2026_05_02_001__add_cart_status.sql`
 
-For repeatable scripts in aggregate folders, prefer this order:
+For repeatable scripts, group files by schema and aggregate. Use descriptive operation names, but do not depend on file explorer ordering to communicate lifecycle because lexical order changes with the project language and operation vocabulary.
 
 ```text
 📁 Migrations/
 └── 📁 Repeatable/
     └── 📁 sales/
         └── 📁 shopping-cart/
-            ├── 📄 R__shpcrt_create.sql
-            ├── 📄 R__shpcrt_get_open_by_user_account_id.sql
-            ├── 📄 R__shpcrt_mut_add_item.sql
-            ├── 📄 R__shpcrt_mut_remove_item.sql
-            └── 📄 R__shpcrt_vw_abandoned_carts.sql
+            ├── 📄 R__shopping_cart_create.sql
+            ├── 📄 R__shopping_cart_get_open_by_user_account_id.sql
+            ├── 📄 R__shopping_cart_modify_add_item.sql
+            ├── 📄 R__shopping_cart_modify_remove_item.sql
+            ├── 📄 R__shopping_cart_get_checkout_summary.sql
+            └── 📄 R__shopping_cart_view_abandoned_carts.sql
 ```
+
+Prefer the full aggregate name, such as `shopping_cart`, whenever possible. Use an abbreviation or code based on the aggregate name, such as `crple` for `CustomerRewardPointsLedgerEntry`, when the full name creates a practical problem, such as excessive length or an engine identifier limit. PostgreSQL identifiers are limited to 63 bytes by default, even though the internal `NAMEDATALEN` setting is commonly described as 64 bytes. Keep the prefix strategy consistent across the project, documenting any exception for a specific long aggregate name. The SQL routine created by the script must follow the target engine convention: lower `snake_case` for PostgreSQL and MySQL, `PascalCase` for SQL Server, `UPPER_SNAKE_CASE` for engines or projects that use uppercase unquoted identifiers, and so on. Do not add `_` between prefix and operation when the selected convention does not use underscores.
 
 Keep `Operations/` and `Queries/` outside automatic migration execution.
 
@@ -86,6 +97,7 @@ Keep `Operations/` and `Queries/` outside automatic migration execution.
 
 ## Cross Reference
 
-- [Database Migrations: Concepts](./concepts.md)
+- [Migration Concepts](./migration-concepts.md)
+- [Data and Migrations: Relational Modeling](./relational-modeling.md)
 - [Migration Tools and Strategies](./tools-and-strategies.md)
 - [PostgreSQL Conventions](../../../conventions/postgresql.md)

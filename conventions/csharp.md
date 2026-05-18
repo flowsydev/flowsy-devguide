@@ -159,15 +159,30 @@ Example: `feat(sales): add CreateShoppingCart command`
 - Include timezone in external contracts (ISO-8601 offset).
 - Avoid `DateTime` without timezone in shared data.
 
-## Minimum Audit Properties
+## Audit Properties
 
-Auditable entities should include at least:
+Auditable entities should expose the audit properties required by the project and domain. These examples are recommendations to evaluate, not mandatory attributes for every aggregate. Choose the actor fields according to requirements analysis and what can actually create or change the aggregate: a user, application, service account, integration, device, tenant or background process.
+
+Common English examples:
 
 ```csharp
 public DateTimeOffset CreatedAt { get; private set; }
 public Guid CreatedByUserId { get; private set; }
+public Guid? CreatedByApplicationId { get; private set; }
 public DateTimeOffset UpdatedAt { get; private set; }
 public Guid UpdatedByUserId { get; private set; }
+public Guid? UpdatedByApplicationId { get; private set; }
+```
+
+Spanish naming can be appropriate when the project deliberately keeps the domain model and code in Spanish. Properties that reference another entity keep `Id` as a prefix in Spanish, matching the relational key guidance:
+
+```csharp
+public DateTimeOffset CreadoEn { get; private set; }
+public Guid IdUsuarioCreador { get; private set; }
+public Guid? IdAplicacionCreadora { get; private set; }
+public DateTimeOffset ActualizadoEn { get; private set; }
+public Guid IdUsuarioActualizador { get; private set; }
+public Guid? IdAplicacionActualizadora { get; private set; }
 ```
 
 When an entity keeps its own event log, event entries should include at least `EventTimestamp`, `EventType`, `Payload` and `OperationContext`.

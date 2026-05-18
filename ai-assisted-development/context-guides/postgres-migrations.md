@@ -13,12 +13,12 @@ applies_when:
   - the task mentions a migration tool such as Evolve, Flyway, Liquibase, DbUp, EF Core, Sqitch, Atlas or flwdb
 read_first:
   - /conventions/postgresql.md
-  - /technologies/backend/database-migrations/concepts.md
+  - /technologies/backend/data-and-migrations/migration-concepts.md
 read_if_implementing:
-  - /technologies/backend/database-migrations/tools-and-strategies.md
-  - /technologies/backend/database-migrations/cli.md
-  - /technologies/testing/database-migrations.md
-  - /technologies/testing/postgresql.md
+  - /technologies/backend/data-and-migrations/tools-and-strategies.md
+  - /technologies/backend/data-and-migrations/cli.md
+  - /technologies/testing/database/migrations.md
+  - /technologies/testing/database/relational-databases.md
 related_guides:
   - backend-vsa-minimal-api
   - specs-driven-development
@@ -43,7 +43,7 @@ Use this guide when changing tables, indexes, constraints, routines, seed data o
 - Identify affected schemas, tables, indexes, constraints, routines and seed data.
 - Check rollout constraints: data volume, downtime tolerance, backward compatibility and rollback expectations.
 - Check whether application code, API contracts or reports depend on the changed database shape.
-- Consult [Testing Database Migrations](/technologies/testing/database-migrations.md) and [PostgreSQL Testing](/technologies/testing/postgresql.md) when the change affects schema behavior or stored routines.
+- Consult [Testing Database Migrations](/technologies/testing/database/migrations.md) and [Relational Database Testing](/technologies/testing/database/relational-databases.md) when the change affects schema behavior or stored routines.
 
 ## Expected Structure
 
@@ -83,7 +83,7 @@ Follow the repository's migration layout. Common patterns include:
 ## References
 
 - Conventions: [PostgreSQL](/conventions/postgresql.md).
-- Migration concepts: [Database Migrations](/technologies/backend/database-migrations/concepts.md).
-- Tooling: [Migration Tools and Strategies](/technologies/backend/database-migrations/tools-and-strategies.md) and [flwdb CLI](/technologies/backend/database-migrations/cli.md).
-- Testing: [Database Migrations](/technologies/testing/database-migrations.md), [PostgreSQL](/technologies/testing/postgresql.md) and [Integration Tests](/technologies/testing/integration-tests.md).
+- Migration concepts: [Database Migrations](/technologies/backend/data-and-migrations/migration-concepts.md).
+- Tooling: [Migration Tools and Strategies](/technologies/backend/data-and-migrations/tools-and-strategies.md) and [flwdb CLI](/technologies/backend/data-and-migrations/cli.md).
+- Testing: [Database Migrations](/technologies/testing/database/migrations.md), [Relational Databases](/technologies/testing/database/relational-databases.md) and [Integration Tests](/technologies/testing/integration-tests.md).
 - Evidence: [Evidence and Reporting](/technologies/testing/evidence-and-reporting.md).

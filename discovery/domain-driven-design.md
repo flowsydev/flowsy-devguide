@@ -11,9 +11,38 @@ In Flowsy, DDD is applied pragmatically: not all its patterns need to be adopted
 ## Key Principles
 
 - **Ubiquitous Language**: a shared and agreed vocabulary with the business, used in conversations, code, documentation and tests.
-- **Bounded Contexts**: explicit boundaries within the domain where language and models are consistent. Each module in `Features/` represents a Bounded Context.
+- **Bounded Contexts**: explicit boundaries where a specific domain language, model and set of rules are consistent.
 - **Model-Driven Design**: the code directly expresses domain concepts.
 - **Iteration with the Business**: the model evolves with domain knowledge, it is not designed all at once.
+
+## Bounded Contexts
+
+A Bounded Context is a conceptual boundary inside the domain. Within that boundary, terms have precise meaning and the model can evolve without being forced to match every other part of the system.
+
+For example, `Customer` may mean a buyer in a `Sales` context, an account holder in an `Identity` context and a billing party in an `Invoicing` context. DDD does not require those meanings to collapse into one global class. Instead, each context owns its language, rules, entities, value objects, events and persistence decisions.
+
+Bounded Contexts are not a folder convention or a specific architecture. A project may implement them using modules, packages, projects, namespaces, services, schemas, feature sets or another structure that fits its language, framework and architecture. When a project uses Vertical Slice Architecture, a folder such as `Features/` can be a practical way to organize features by module or context, but it is not required by DDD.
+
+Use Bounded Contexts when:
+
+- the same term has different meanings in different areas of the business;
+- teams need autonomy over different parts of the model;
+- integrations require explicit contracts between domain areas;
+- one shared model would create confusing names, excessive coupling or constant negotiation.
+
+Document the chosen implementation mapping in the project architecture guide. For example, one project may map a Bounded Context to a service, another to a .NET project, another to a Java package and another to a VSA `Features/<Module>/` folder.
+
+## Model Language Strategy
+
+Choose the language of the domain model with domain experts and the delivery team. Flowsy documentation is written in English by default, but a project may deliberately model aggregates, entities, value objects, commands, events and data objects in another language when that better reflects the business language.
+
+| Strategy | When It Fits | Examples |
+| --- | --- | --- |
+| English domain model | The product, team, documentation and integrations use English consistently. | `ShoppingCart`, `AddItem`, `CartCheckedOut` |
+| Business-language domain model | Domain experts and operational processes use another language as the main business language. | `OrdenDespacho`, `AsignarTerminal`, `OrdenDespachoAsignada` |
+| Mixed strategy with boundaries | Technical platform terms stay in English, while domain concepts stay in the business language. | `DispatchIntegrationClient`, `OrdenDespacho`, `obtener_pendientes_asignacion` |
+
+Keep the decision consistent inside each Bounded Context and document exceptions. The data model should follow the same language strategy unless integration, reporting or platform constraints justify a different one.
 
 ## Fundamental Concepts
 
@@ -52,14 +81,14 @@ Representation of the domain at a given moment, built from databases, files or e
 Specific functionality that adds value to the end user and is related to the domain.
 
 - Examples: `AddItemToCart`, `CheckOrderStatus`, `SuspendUserAccount`.
-- Each feature is an independent Vertical Slice in `Features/`.
+- In Vertical Slice Architecture, a feature can be implemented as an independent slice under a convention such as `Features/`. Other architectures may place the same behavior in use-case classes, application services, handlers, modules or packages.
 
 ### Module
 
 Set of related features, optionally subdivided into submodules.
 
 - Examples: `Inventory`, `Sales`, `Security`.
-- Corresponds to a Bounded Context in DDD terms.
+- May represent a Bounded Context, part of a Bounded Context or an implementation grouping, depending on the project's architecture and domain boundaries.
 
 ### Submodule
 
@@ -83,9 +112,11 @@ For auditable entities, define an explicit existence state:
 
 If the business requires functional names, document the functional→technical mapping in the specification.
 
-## Minimum Audit
+## Audit Attributes
 
-Every auditable entity must record at minimum:
+Design audit attributes according to the requirements of each project, domain and actor model. The guide proposes common attributes, but each team must validate them through requirements analysis instead of treating one fixed list as universal: some domains need to know the user that performed an action, while others need to record the application, service account, integration, device, tenant or process that caused the change.
+
+Auditable entities commonly need:
 
 | Field | Description |
 | --- | --- |
@@ -93,9 +124,18 @@ Every auditable entity must record at minimum:
 | `LifetimeStart` | When using `RecordStatus`, the UTC time stamp when the normal operational state started. |
 | `LifetimeEnd` | When using `RecordStatus`, the UTC time stamp when the normal operational state ended. |
 | `CreatedAt` | UTC creation timestamp. |
-| `CreatedByUserId` | ID of the user that created the entity. |
+| `CreatedByUserId` | ID of the user that created the entity, when the actor is a user. |
+| `CreatedByApplicationId` | ID of the application or integration that created the entity, when the actor is a system. |
 | `UpdatedAt` | UTC timestamp of last modification. |
-| `UpdatedByUserId` | ID of the user that updated the entity for the last time. |
+| `UpdatedByUserId` | ID of the user that updated the entity for the last time, when the actor is a user. |
+| `UpdatedByApplicationId` | ID of the application or integration that updated the entity, when the actor is a system. |
+
+Choose names in the language and naming style of the project. Attributes that reference another entity, such as a user or application, should respect the same `Id` position rule used for primary and foreign keys: English names normally use `Id` as a suffix, while Spanish names normally use `Id` as a prefix.
+
+| Language Strategy | Example Attributes |
+| --- | --- |
+| English domain and code | `CreatedAt`, `CreatedByUserId`, `CreatedByApplicationId`, `UpdatedAt` |
+| Spanish domain and code | `CreadoEn`, `IdUsuarioCreador`, `IdAplicacionCreadora`, `ActualizadoEn` |
 
 If there is an event log per entity, also include:
 

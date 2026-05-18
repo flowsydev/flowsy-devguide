@@ -169,6 +169,12 @@
   height: 28px;
 }
 
+.VPNavBarMenu .VPNavBarMenuLink,
+.VPNavBarMenu .VPNavBarMenuGroup .button {
+  padding: 0 8px;
+  font-size: 13px;
+}
+
 h1.heading .text {
   font-size: 46px;  
 }

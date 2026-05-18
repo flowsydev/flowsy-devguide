@@ -1,10 +1,10 @@
-# PostgreSQL
+# Relational Database Testing
 
-Guide for validating persistence, constraints, queries and transactional behavior in PostgreSQL.
+Guide for validating persistence, constraints, queries and transactional behavior in relational databases.
 
 ## Relationship With Integration Tests
 
-In most projects, PostgreSQL tests do not live as an isolated suite of "database unit tests". They mainly live as **backend integration tests** because the database is validated through the behavior that consumes it:
+In most projects, relational database tests do not live as an isolated suite of "database unit tests". They mainly live as **backend integration tests** because the database is validated through the behavior that consumes it:
 
 - a handler queries or persists data correctly;
 - an API applies a rule and leaves the expected state;
@@ -12,7 +12,7 @@ In most projects, PostgreSQL tests do not live as an isolated suite of "database
 - a transaction protects a critical operation;
 - a constraint prevents an invalid state that the domain must not accept.
 
-This approach avoids testing internal details without business context. The test should demonstrate that the backend and PostgreSQL collaborate correctly for a verifiable case.
+This approach avoids testing internal details without business context. The test should demonstrate that the backend and database collaborate correctly for a verifiable case.
 
 Database-specific tests are justified when the behavior primarily lives in SQL: routines with relevant rules, complex views, critical constraints, high-risk queries, concurrency or performance validation.
 
@@ -53,7 +53,7 @@ The test can call the endpoint, handler, repository or routine, depending on the
 - Ephemeral database per execution.
 - Isolated schema per suite.
 - Transaction per test with rollback when no external processes are involved.
-- PostgreSQL container with reproducible seed data.
+- Database container with reproducible seed data.
 - Unique identifiers per case when tests run in parallel.
 
 Do not use production data. Do not depend on a shared environment that other teams or processes can modify during execution.
@@ -69,9 +69,19 @@ Do not use production data. Do not depend on a shared environment that other tea
 
 ## Concurrency
 
-PostgreSQL uses `Read Committed` as the default isolation level. If the case requires stronger consistency, test `Repeatable Read` or `Serializable` explicitly and account for retries after serialization failures.
+Different engines use different default isolation levels. PostgreSQL uses `Read Committed` by default. If the case requires stronger consistency, test `Repeatable Read` or `Serializable` explicitly and account for retries after serialization failures.
 
 Concurrency tests should state which anomaly they aim to prevent: duplicate assignment, negative balance, duplicate confirmation, closed batch with pending movements or another domain risk.
+
+## Engine-Specific Notes
+
+Keep the main testing strategy engine-neutral, then add notes for the actual engines used by the project.
+
+| Engine | Notes |
+| --- | --- |
+| PostgreSQL | Validate transaction isolation intentionally, use `EXPLAIN ANALYZE` for performance-sensitive changes and prefer disposable containers or schemas for repeatable tests. |
+| SQL Server | Validate isolation level and locking assumptions explicitly, especially when using `READ COMMITTED SNAPSHOT`, `rowversion` or stored procedures with transactional behavior. |
+| MySQL / MariaDB | Validate behavior under the configured storage engine and isolation level, especially when relying on foreign keys, `CHECK` constraints or transactional DDL support. |
 
 ## Evidence
 
@@ -95,6 +105,6 @@ For database changes, preserve:
 ## References
 
 - [PostgreSQL: Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
-- [Integration Tests](./integration-tests.md)
-- [Database Migrations](./database-migrations.md)
+- [Integration Tests](../integration-tests.md)
+- [Database Migration Testing](./migrations.md)
 - [PostgreSQL Conventions](/conventions/postgresql)

@@ -39,7 +39,7 @@ features:
   - icon: 🗃️
     title: Data and Migrations
     details: Relational design, database-specific conventions and migration strategies with tools such as Evolve, Flyway, Liquibase, DbUp, EF Core, Sqitch and Atlas.
-    link: /technologies/backend/database-migrations/concepts
+    link: /technologies/backend/data-and-migrations/relational-modeling
   - icon: 📨
     title: Events and Messaging
     details: Event-driven architecture, background services, outbox pattern, Kafka, Redpanda and asynchronous flows.
@@ -64,9 +64,9 @@ features:
 - [Clean Architecture](./backend/clean-architecture/concepts.md) - Layer separation focused on protecting the domain.
 - [Event-Driven Architecture](./backend/event-driven-architecture/concepts.md) - Asynchronous integration, domain events and reactive infrastructure.
 - [Event Sourcing](./backend/event-sourcing/concepts.md) - Persisting changes as a sequence of events.
-- [Relational Databases](./backend/relational-databases/concepts.md) - Fundamentals for business-aligned relational modeling.
-- [Database Migrations](./backend/database-migrations/concepts.md) - Tool-agnostic strategy for evolving schemas and SQL artifacts.
-- [Migration Tools and Strategies](./backend/database-migrations/tools-and-strategies.md) - Evolve, Flyway, Liquibase, DbUp, EF Core, Sqitch and Atlas.
+- [Data and Migrations](./backend/data-and-migrations/relational-modeling.md) - Business-aligned relational modeling, keys, integrity and schema evolution.
+- [Migration Concepts](./backend/data-and-migrations/migration-concepts.md) - Tool-agnostic strategy for evolving schemas and SQL artifacts.
+- [Migration Tools and Strategies](./backend/data-and-migrations/tools-and-strategies.md) - Evolve, Flyway, Liquibase, DbUp, EF Core, Sqitch and Atlas.
 
 ### Frontend
 

@@ -6,7 +6,7 @@ Integration tests validate collaboration between code and real or controlled dep
 
 Use integration tests for behavior that depends on:
 
-- PostgreSQL schemas, queries, routines or transactions;
+- relational database schemas, queries, routines or transactions;
 - HTTP clients and server routing;
 - serialization and contract binding;
 - filesystem behavior;
@@ -40,6 +40,6 @@ Record:
 
 ## References
 
-- [PostgreSQL](./postgresql.md)
-- [Database Migrations](./database-migrations.md)
+- [Relational Databases](./database/relational-databases.md)
+- [Database Migration Testing](./database/migrations.md)
 - [Event-Driven Systems](./event-driven-systems.md)

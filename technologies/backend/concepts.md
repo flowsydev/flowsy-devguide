@@ -15,11 +15,13 @@ Start API work with [HTTP API Design](./api-design.md) when the change affects r
 
 - Name contracts by functional role (`CreateOrderRequest`, `OrderSummary`).
 - Avoid generic suffixes that add no semantics.
+- Choose the language of domain contracts, commands, events and persistence models according to the project's ubiquitous language and team agreements. English examples in this guide are illustrative, not a requirement for every consuming project.
 - Establish consistent naming rules per language:
   - **C#**: `PascalCase` for types and `camelCase` for variables/parameters.
   - **TypeScript/JavaScript**: `PascalCase` types/classes, `camelCase` functions.
   - **Java**: `PascalCase` classes, `camelCase` members.
   - **Go**: exported names in `PascalCase`, internal in `camelCase`.
+- Keep the selected domain language consistent inside each bounded context. For example, avoid mixing `ShoppingCart`, `orden_despacho` and `PedidoComercial` in the same context unless the boundary and reason are documented.
 
 See the language-specific convention guides: [C#](../../conventions/csharp.md), [TypeScript](../../conventions/typescript.md).
 
@@ -49,4 +51,4 @@ See [DDD principles](../../discovery/domain-driven-design.md) for more context o
 - [Clean Architecture](./clean-architecture/concepts.md) — code organization by layer.
 - [Event-Driven Architecture](./event-driven-architecture/concepts.md) — asynchronous communication between services.
 - [Event Sourcing](./event-sourcing/concepts.md) — event-based persistence.
-- [Database Migrations](./database-migrations/concepts.md) — schema change management.
+- [Data and Migrations](./data-and-migrations/relational-modeling.md) — relational modeling, keys, integrity and schema change management.

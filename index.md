@@ -51,8 +51,8 @@ features:
     link: /technologies/frontend/modular-architecture/concepts
   - icon: 🗄️
     title: Data and Migrations
-    details: PostgreSQL schema management with versioned and repeatable scripts, domain-aligned SQL routines, Evolve, Flyway and flwdb tools.
-    link: /technologies/backend/database-migrations/concepts
+    details: Relational schema management with versioned and repeatable scripts, domain-aligned SQL routines, Evolve, Flyway and flwdb tools.
+    link: /technologies/backend/data-and-migrations/relational-modeling
   - icon: 📨
     title: Events and Messaging
     details: Principles and patterns for asynchronous systems with Kafka, Redpanda and RabbitMQ, including Outbox, Saga, DLQ and observability.

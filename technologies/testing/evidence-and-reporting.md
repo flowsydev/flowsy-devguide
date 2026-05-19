@@ -31,6 +31,8 @@ Include only the lines needed to understand the result. Full logs belong in CI a
 
 When the tooling generates reports, prefer linking to the artifact or naming its path:
 
+Adapt report paths and artifact names to the CI system, repository structure and test framework used by the project.
+
 ```text
 Test report: artifacts/test-results/index.html
 Coverage report: artifacts/coverage/lcov-report/index.html

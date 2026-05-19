@@ -90,6 +90,6 @@ Configure reports only when they provide pipeline value or evidence: console sum
 - [Testing Library: Guiding Principles](https://testing-library.com/docs/guiding-principles)
 - [Storybook: Interaction Tests](https://storybook.js.org/docs/writing-tests/component-testing)
 - [Playwright: Best Practices](https://playwright.dev/docs/best-practices)
-- [Vue Conventions](/conventions/vue)
-- [Frontend Modular Architecture](/technologies/frontend/modular-architecture/concepts)
+- [Vue 3 and TypeScript Conventions](/technologies/frontend/vue/conventions)
+- [Frontend Modular Architecture](/technologies/frontend/modular-architecture)
 - [End-to-End Tests](./end-to-end-tests.md)

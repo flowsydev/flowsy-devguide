@@ -21,6 +21,22 @@ hero:
       link: /technologies/
 
 features:
+  - icon: 🗣️
+    title: Ubiquitous Language
+    details: Start each project by choosing the language of the domain and data model so business concepts stay consistent in documentation, code, tests and database objects.
+    link: /discovery/ubiquitous-language
+  - icon: 🧭
+    title: Discovery & Design
+    details: Collaborative modeling techniques with Event Storming and Domain-Driven Design to explore the domain and design solutions aligned with the business.
+    link: /discovery/
+  - icon: 🧠
+    title: Domain-Driven Design
+    details: Pragmatic DDD principles and patterns for modeling complex domains, bounded contexts, entities, aggregates and value objects.
+    link: /discovery/domain-driven-design
+  - icon: 📄
+    title: Project Documentation
+    details: Durable documentation practices for requirements, analysis, design records, repository instructions and traceable delivery artifacts.
+    link: /discovery/documentation/
   - icon: 🤖
     title: AI-Assisted Development
     details: Repository guidance for working with agents and skills using clear instructions, scoped permissions and verifiable outputs.
@@ -29,30 +45,26 @@ features:
     title: Automated Testing
     details: Testing as an early design and delivery practice, not a final implementation step, with unit, integration, end-to-end, database and event-driven system tests.
     link: /technologies/testing/
-  - icon: 🧭
-    title: Discovery & Design
-    details: Collaborative modeling techniques with Event Storming and Domain-Driven Design to explore the domain and design solutions aligned with the business.
-    link: /discovery/
-  - icon: 📄
-    title: Project Documentation
-    details: Durable documentation practices for requirements, analysis, design records, repository instructions and traceable delivery artifacts.
-    link: /discovery/documentation/
-  - icon: 🧠
-    title: Domain-Driven Design
-    details: Pragmatic DDD principles and patterns for modeling complex domains, bounded contexts, entities, aggregates and value objects.
-    link: /discovery/domain-driven-design
+  - icon: 🧱
+    title: Backend Architecture
+    details: Criteria for organizing business behavior with Vertical Slice Architecture, Clean Architecture and domain-focused backend modules.
+    link: /technologies/backend/vertical-slice-architecture/concepts
   - icon: 🌐
     title: Backend and APIs
     details: HTTP API design guidance, backend architecture patterns and C# implementation practices for clear contracts and maintainable services.
     link: /technologies/backend/api-design
+  - icon: 🗄️
+    title: Data and Persistence
+    details: Relational modeling, database-engine conventions, schema integrity and persistence decisions aligned to the domain.
+    link: /technologies/backend/data-and-migrations/relational-modeling
+  - icon: 🧬
+    title: Database Migrations
+    details: Versioned and repeatable migration strategies with domain-aligned SQL artifacts, Evolve, Flyway, Liquibase, DbUp, EF Core, Sqitch and flwdb.
+    link: /technologies/backend/data-and-migrations/migration-concepts
   - icon: 🧩
     title: Frontend Vue
     details: Feature-set organization in Vue 3 with Composition API, Pinia, composables, Storybook and testing strategy for scalable SPA applications.
-    link: /technologies/frontend/modular-architecture/concepts
-  - icon: 🗄️
-    title: Data and Migrations
-    details: Relational schema management with versioned and repeatable scripts, domain-aligned SQL routines, Evolve, Flyway and flwdb tools.
-    link: /technologies/backend/data-and-migrations/relational-modeling
+    link: /technologies/frontend/
   - icon: 📨
     title: Events and Messaging
     details: Principles and patterns for asynchronous systems with Kafka, Redpanda and RabbitMQ, including Outbox, Saga, DLQ and observability.
@@ -66,6 +78,14 @@ Published Flowsy libraries, tools and templates follow the same principle: they 
 
 This guide and its related libraries evolve through continuous study, experimentation and practical use. Treat them as a living reference, complement them with the team's technical judgment and validate every recommendation in the real context of the project.
 :::
+
+## Ubiquitous Language
+
+Before creating the first entities, Value Objects, tables, columns, events, APIs or examples, choose the project's ubiquitous language. Use that decision to understand the business, design the model and make the domain explicit before jumping directly into code. Code should express a model the team has already discussed, not become the first place where the domain is discovered by accident.
+
+The business language may be English, Spanish or another language by Bounded Context; the important part is that business concepts remain consistent across conversations, documentation, code, tests and data models.
+
+Keep established software design and development terms in English when they are technical vocabulary rather than business language. For example, `CrearPedidoCommand` translates the business action but keeps the technical `Command` suffix; `OrdenDespachoRepository` translates the aggregate but keeps the `Repository` pattern name. Start with [Ubiquitous Language](/discovery/ubiquitous-language), then apply the related [Writing Guidelines](/conventions/writing-guidelines).
 
 ## Flowsy Ecosystem
 

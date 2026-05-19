@@ -410,7 +410,6 @@ Before closing a Vue feature-set change:
 
 ## Cross Reference
 
-- [Modular Architecture: Concepts](./concepts.md) — folder structure and feature-sets.
-- [Vue Conventions](../../../conventions/vue.md) — naming and code patterns.
-- [TypeScript Conventions](../../../conventions/typescript.md) — types and contracts.
-- [Testing TypeScript and Vue](/technologies/testing/typescript-vue.md) — frontend testing strategy.
+- [Frontend Modular Architecture](../modular-architecture.md) — folder structure and feature-sets.
+- [Vue 3 and TypeScript Conventions](./conventions.md) — naming, types and contracts.
+- [Testing TypeScript and Vue](../../testing/typescript-vue.md) — frontend testing strategy.

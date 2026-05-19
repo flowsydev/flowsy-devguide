@@ -102,17 +102,19 @@ SQL routines should be designed around **domain aggregates**, following the same
 Choose one prefix strategy per database boundary:
 
 - Prefer the full aggregate name whenever possible, such as `shopping_cart` or `ShoppingCart`.
-- Use an abbreviation or code based on the aggregate name when the full name creates a practical problem, such as excessive length, hard-to-scan routine names or an identifier limit in the target engine. PostgreSQL identifiers are limited to 63 bytes by default, even though the internal `NAMEDATALEN` setting is commonly described as 64 bytes.
+- Use an abbreviation or code based on the aggregate name when the full name creates a practical problem, such as excessive length, hard-to-scan routine names or an identifier limit in the target database engine. PostgreSQL identifiers are limited to 63 bytes by default, even though the internal `NAMEDATALEN` setting is commonly described as 64 bytes.
 - Keep the prefix strategy consistent across the project. Do not mix full aggregate names and abbreviations for routine prefixes unless a documented exception is needed for a specific long aggregate name.
 
-The complete routine name, including prefix, operation and detail, must follow the target engine's object naming convention. If the engine convention does not use underscores, do not add an underscore only to separate the prefix from the operation.
+The complete routine name, including prefix, operation and detail, must follow the target database engine's object naming convention. If the database engine convention does not use underscores, do not add an underscore only to separate the prefix from the operation.
+
+The patterns below are pseudocode for naming decisions. Adapt separators, casing, schema qualification and reserved words to the target database engine and to the project's documented conventions.
 
 ```text
 [schema].[aggregate_abbreviation]_[operation_type]_[detail]
 [Schema].[AggregateName][OperationType][Detail]
 ```
 
-Common engine conventions:
+Common database engine conventions:
 
 | Engine | Common Convention | Example Routine |
 | --- | --- | --- |
@@ -144,7 +146,7 @@ Views over the aggregate can still live next to the aggregate's repeatable scrip
 - [Data and Migrations: Relational Modeling](./relational-modeling.md) — relational schema design, primary keys, foreign keys and audit columns.
 - [Migration Tools and Strategies](./tools-and-strategies.md) — tool-specific models and naming.
 - [flwdb CLI](./cli.md) — Flowsy CLI usage with Evolve-style `V*` and `R__*` scripts.
-- [PostgreSQL Conventions](../../../conventions/postgresql.md) — PostgreSQL-specific naming and modeling.
-- [SQL Server Conventions](../../../conventions/sql-server.md) — SQL Server-specific naming and modeling.
-- [MySQL and MariaDB Conventions](../../../conventions/mysql-mariadb.md) — MySQL/MariaDB-specific naming and modeling.
+- [PostgreSQL Conventions](./database-engines/postgresql.md) — PostgreSQL-specific naming and modeling.
+- [SQL Server Conventions](./database-engines/sql-server.md) — SQL Server-specific naming and modeling.
+- [MySQL and MariaDB Conventions](./database-engines/mysql-mariadb.md) — MySQL/MariaDB-specific naming and modeling.
 - [Domain-Driven Design](../../../discovery/domain-driven-design.md) — aggregate design that gives rise to routines.

@@ -2,7 +2,11 @@
 
 Coding guidelines for backend projects in C# within the Flowsy ecosystem.
 
+Business names in C# should follow the ubiquitous language chosen for the project or Bounded Context. Keep technical terms such as `record`, `class`, `interface`, `DTO`, `Minimal API`, `State`, `Handler` and framework names in English. For example, use `CrearPedidoCommandHandler` instead of `CrearPedidoManejadorComando`.
+
 ## Naming
+
+For Spanish identifiers, omit articles and prepositions when the meaning remains clear. Prefer `OrdenDespacho`, `AsignarTerminalDespachoCommand` and `IdOrdenDespacho` over `OrdenDeDespacho`, `AsignarTerminalDeDespachoCommand` and `IdOrdenDeDespacho`. Keep articles and prepositions only when they are part of the official business term or avoid ambiguity, such as `PuestaEnOperacion` or `PagoAProveedor`.
 
 | Element | Convention | Example |
 | --- | --- | --- |
@@ -25,13 +29,11 @@ Use `record` instead of `class` for:
 `record` types are immutable by default, favor domain expressiveness and facilitate value comparison.
 
 ```csharp
-// Command
 public record CreateShoppingCartCommand(Guid UserAccountId)
     : ApplicationRequest<CreateShoppingCartCommandResult>;
 
 public record CreateShoppingCartCommandResult(Guid ShoppingCartId);
 
-// Value Object
 public record ShoppingCartSummary(Guid ShoppingCartId, int TotalItems, double TotalProducts, decimal TotalPrice);
 ```
 
@@ -39,7 +41,7 @@ public record ShoppingCartSummary(Guid ShoppingCartId, int TotalItems, double To
 
 ### Commands
 
-- Name in **imperative** form: `CreateShoppingCart`, `SuspendUserAccount`, `AddItemToCart`.
+- Name in **imperative** form using the selected business language: `CreateShoppingCart`, `SuspendUserAccount`, `AddItemToCart`.
 - Files:
   - `[ActionName]Command.cs` — `record Command`, `record CommandResult`, `class CommandHandler`.
   - `[ActionName]CommandValidator.cs` — validation with FluentValidation.
@@ -60,45 +62,17 @@ public record ShoppingCartSummary(Guid ShoppingCartId, int TotalItems, double To
 - When multiple actions operate on the same aggregate, they share a common `State`:
 
 ```csharp
-// Example: AddItemToCart and RemoveItemFromCart share OpenShoppingCartState
+// AddItemToCart and RemoveItemFromCart share OpenShoppingCartState
 public interface IOpenShoppingCartStateHandler : IStateHandler<OpenShoppingCartState, Guid>;
 ```
 
-## Features Folder Structure
+## Architecture and API Implementation References
 
-See [VSA: Concepts](../technologies/backend/vertical-slice-architecture/concepts.md) for the complete folder structure.
+Keep this page focused on C# naming and language-level conventions. Use the specialized backend guides for implementation structure:
 
-Summary of folders within a submodule:
-
-- `Commands/` — write actions per slice.
-- `Queries/` — read actions per slice.
-- `Model/` — data structures shared by the module.
-- `Infrastructure/` — shared infrastructure services (finders, etc.).
-
-## Minimal APIs
-
-HTTP processing is handled with Minimal API endpoints:
-
-```csharp
-public static class CreateShoppingCartEndpoint
-{
-    public static void Map(RouteGroupBuilder routeGroup)
-    {
-        routeGroup.MapPost("/sales/shopping-carts", async (
-            CreateShoppingCartCommand command,
-            IMediator mediator,
-            CancellationToken cancellationToken) =>
-        {
-            var result = await mediator.SendAsync(command, cancellationToken);
-            return Results.Ok(result);
-        })
-        .MapToApiVersion(1)
-        .WithSummary("Create a new shopping cart.")
-        .Produces<CreateShoppingCartCommandResult>()
-        .Produces(StatusCodes.Status400BadRequest);
-    }
-}
-```
+- [VSA: Concepts](../vertical-slice-architecture/concepts.md) covers feature folders, slice boundaries and module structure.
+- [C# with Minimal APIs](../vertical-slice-architecture/csharp-minimal-apis.md) covers endpoint mapping, mediator usage, validation and complete examples.
+- [HTTP API Design](../api-design.md) covers routes, status codes, Problem Details and OpenAPI conventions.
 
 ## IOptions\<T\>
 
@@ -131,26 +105,14 @@ public class CreateShoppingCartCommandHandler
 
 ## API Contracts
 
-- Name contracts by functional role: `CreateOrderRequest`, `OrderSummary`.
+- Name contracts by functional role: `CreateOrderRequest`, `OrderSummary`, `AddItemToCartRequest`, `CartSummary`.
 - Avoid generic suffixes without semantics.
 - Validate input in the handler with FluentValidation.
 - Include `correlationId`/`requestId` in logs and error responses.
 
-## Conventional Commits
+## Source Control Reference
 
-Source control with Git using Conventional Commits format:
-
-| Type | Usage |
-| --- | --- |
-| `feat` | New functionality |
-| `fix` | Bug fix |
-| `docs` | Documentation |
-| `refactor` | Refactoring without functional change |
-| `test` | Tests |
-| `chore` | Maintenance tasks |
-| `style` | Code formatting |
-
-Example: `feat(sales): add CreateShoppingCart command`
+Use [Source Control with Git](/conventions/source-control/git.md) for branch, pull request, changelog and Conventional Commits guidance. Keep commit examples aligned with the selected project language and bounded context.
 
 ## Dates and Times
 
@@ -167,22 +129,18 @@ Common English examples:
 
 ```csharp
 public DateTimeOffset CreatedAt { get; private set; }
-public Guid CreatedByUserId { get; private set; }
-public Guid? CreatedByApplicationId { get; private set; }
+public Guid? CreatedBy { get; private set; }
 public DateTimeOffset UpdatedAt { get; private set; }
-public Guid UpdatedByUserId { get; private set; }
-public Guid? UpdatedByApplicationId { get; private set; }
+public Guid? UpdatedBy { get; private set; }
+public string RecordStatus { get; private set; } = "Active";
+public DateTimeOffset? ActiveFrom { get; private set; }
+public DateTimeOffset? ActiveUntil { get; private set; }
 ```
 
-Spanish naming can be appropriate when the project deliberately keeps the domain model and code in Spanish. Properties that reference another entity keep `Id` as a prefix in Spanish, matching the relational key guidance:
+Choose the data type for `CreatedBy` and `UpdatedBy` according to each project's requirements. A `Guid` may be appropriate for user identifiers in some systems, while others may need an integer key, a service account identifier, an external identity-provider subject or a composite actor model.
 
-```csharp
-public DateTimeOffset CreadoEn { get; private set; }
-public Guid IdUsuarioCreador { get; private set; }
-public Guid? IdAplicacionCreadora { get; private set; }
-public DateTimeOffset ActualizadoEn { get; private set; }
-public Guid IdUsuarioActualizador { get; private set; }
-public Guid? IdAplicacionActualizadora { get; private set; }
-```
+Use active-state properties such as `ActiveFrom` and `ActiveUntil` only when the entity needs to record when the record itself is active. Use domain-specific names for business validity periods, such as `AppointmentValidFrom` or `AssignmentValidUntil`.
+
+Do not add every audit field mechanically to every aggregate. Apply the attributes that are convenient for each entity and add other project-specific attributes when analysis and design justify them.
 
 When an entity keeps its own event log, event entries should include at least `EventTimestamp`, `EventType`, `Payload` and `OperationContext`.

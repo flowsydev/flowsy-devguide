@@ -2,6 +2,8 @@
 
 Different migration tools use different models. Choose the tool that fits the project's stack, deployment model and review needs, then keep its conventions isolated from general database conventions.
 
+All folder trees and command examples in this page are reference implementations. Adapt paths, casing, file extensions, package layout and generated artifacts to the selected tool, repository conventions, language, framework and deployment process.
+
 ## Selection Criteria
 
 | Criterion | What to Consider |
@@ -12,7 +14,7 @@ Different migration tools use different models. Choose the tool that fits the pr
 | Reviewability | Can reviewers see the exact SQL that will run in production? |
 | Repeatable Objects | How does the tool manage views, functions, procedures, reference data or permissions? |
 | CI/CD Fit | Can the tool validate, plan, apply and report status in pipelines? |
-| Database Support | Does it support the target engines used by the project? |
+| Database Support | Does it support the target database engines used by the project? |
 
 ## Aggregate Operation Vocabulary
 
@@ -24,8 +26,8 @@ Choose one language strategy per project, or per bounded context when the system
 
 | Strategy | When to Choose It | Example | Trade-Off |
 | --- | --- | --- | --- |
-| Technical English operators | The project uses English tooling, mixed-language teams or wants compact cross-stack conventions. | `shopping_cart_modify_add_item`, `orden_despacho_modify_assign_terminal` | Operators stay short and familiar, but Spanish domain names can read as mixed-language identifiers. |
-| Domain-language operators | The project keeps domain model, data model and documentation in a language other than English. | `orden_despacho_modificar_asignar_terminal` | Names read naturally in the project language, but the team must maintain a disciplined glossary. |
+| Technical English operators | The project uses English tooling, mixed-language teams or wants compact cross-stack conventions. | `shopping_cart_modify_add_item`, `carrito_compra_modify_add_item` | Operators stay short and familiar, but Spanish domain names can read as mixed-language identifiers. |
+| Domain-language operators | The project keeps domain model, data model and documentation in a language other than English. | `carrito_compra_modificar_agregar_articulo` | Names read naturally in the project language, but the team must maintain a disciplined glossary. |
 
 Document the chosen strategy in project conventions or an ADR. If the domain model uses Spanish while infrastructure code uses English, make the boundary explicit so scripts do not drift into accidental mixed-language naming.
 
@@ -37,7 +39,7 @@ Document the chosen strategy in project conventions or an ADR. If the domain mod
 | `get` | `obtener` | Return data or read models without changing state. | `get` is already short; `obtener` keeps Spanish naming explicit. |
 | `modify` | `modificar` | Change the state of an existing aggregate. | Covers adding/removing internal items, assigning, confirming, canceling or changing status. |
 | `remove` | `eliminar` | Remove or retire the aggregate root. | Reserve it for aggregate-level removal; internal removals are aggregate modifications. |
-| `view` | `vista` | Define a recreated database view. | More explicit than `vw`, especially when teams mix engines or languages. |
+| `view` | `vista` | Define a recreated database view. | More explicit than `vw`, especially when teams mix database engines or languages. |
 
 Use `remove` / `eliminar` for removal of the aggregate root. Removing an item, relationship or value inside the aggregate is a `modify` / `modificar` operation because it changes the state of an existing aggregate.
 
@@ -76,10 +78,10 @@ For versioned scripts:
 - Use `VNNN__description.sql` when a simple global sequence is enough for the database boundary.
 - Use `VYYYYMMDDHHMM__description.sql` or `VYYYY_MM_DD_NNN__description.sql` when parallel teams need timestamp-like ordering.
 
-For repeatable routines, views and other recreated objects, apply the aggregate operation vocabulary and start from the target engine convention:
+For repeatable routines, views and other recreated objects, apply the aggregate operation vocabulary and start from the target database engine convention:
 
-- Use `R__{aggregate_prefix}_{operation}.sql` for script file names when the target engine uses `snake_case`.
-- Adapt separator and casing when the target engine uses another naming style.
+- Use `R__{aggregate_prefix}_{operation}.sql` for script file names when the target database engine uses `snake_case`.
+- Adapt separator and casing when the target database engine uses another naming style.
 - Prefer the full aggregate name as the routine prefix whenever possible.
 - Use an abbreviation or code based on the aggregate name only when the full name creates a practical problem, such as excessive length or identifier limits.
 - Keep one prefix strategy across the project, and document any exception for a specific long aggregate name.

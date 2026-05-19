@@ -69,13 +69,13 @@ Do not use production data. Do not depend on a shared environment that other tea
 
 ## Concurrency
 
-Different engines use different default isolation levels. PostgreSQL uses `Read Committed` by default. If the case requires stronger consistency, test `Repeatable Read` or `Serializable` explicitly and account for retries after serialization failures.
+Different database engines use different default isolation levels. PostgreSQL uses `Read Committed` by default. If the case requires stronger consistency, test `Repeatable Read` or `Serializable` explicitly and account for retries after serialization failures.
 
 Concurrency tests should state which anomaly they aim to prevent: duplicate assignment, negative balance, duplicate confirmation, closed batch with pending movements or another domain risk.
 
 ## Engine-Specific Notes
 
-Keep the main testing strategy engine-neutral, then add notes for the actual engines used by the project.
+Keep the main testing strategy database-engine-neutral, then add notes for the actual database engines used by the project.
 
 | Engine | Notes |
 | --- | --- |
@@ -107,4 +107,4 @@ For database changes, preserve:
 - [PostgreSQL: Transaction Isolation](https://www.postgresql.org/docs/current/transaction-iso.html)
 - [Integration Tests](../integration-tests.md)
 - [Database Migration Testing](./migrations.md)
-- [PostgreSQL Conventions](/conventions/postgresql)
+- [PostgreSQL Conventions](/technologies/backend/data-and-migrations/database-engines/postgresql)

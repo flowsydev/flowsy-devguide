@@ -46,7 +46,7 @@ CREATE TABLE domain_event_outbox (
     event_id          uuid PRIMARY KEY,
     event_type        text NOT NULL,
     payload           jsonb NOT NULL,
-    created_at        timestamptz NOT NULL DEFAULT now(),
+    created_at        timestamptz NOT NULL DEFAULT clock_timestamp(),
     published_at      timestamptz
 );
 ```

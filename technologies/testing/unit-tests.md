@@ -25,9 +25,12 @@ Do not use unit tests to verify database schema, real HTTP behavior, queue seman
 
 Use behavior-oriented names:
 
+Treat these names as examples, not a required format. Adapt language, casing and separators to the test framework and repository convention.
+
 ```text
 CalculateTotal_ShouldApplyDiscountWhenCustomerIsEligible
 useOrderFilters_returnsOnlyOpenOrders
+orderFilters_returnOnlyOpenOrders
 ```
 
 ## Test Doubles

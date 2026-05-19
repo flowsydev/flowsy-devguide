@@ -141,6 +141,10 @@
     --vp-home-hero-image-filter: blur(52px);
   }
 
+  .VPHome .VPFeatures .items {
+    justify-content: center;
+  }
+
   .VPHome .VPFeatures .item {
     width: calc(100% / 3);
   }

@@ -29,9 +29,12 @@ Automated tests should make change safer by catching the right failure at the ch
 
 Use names that state the expected behavior:
 
+These examples illustrate intent and readability. Adapt casing, separators, test-runner constraints and language to the repository convention.
+
 ```text
 CreateOrder_ShouldRejectExpiredQuote
 orderStore_loadsEmptyStateWhenApiReturnsNoItems
+checkoutStore_rejectsExpiredQuote
 ```
 
 Prefer the repository's established naming convention when one already exists.

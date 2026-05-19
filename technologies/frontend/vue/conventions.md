@@ -1,9 +1,12 @@
-# TypeScript Conventions
+# Vue 3 and TypeScript Conventions
 
-Coding guidelines for frontend projects in TypeScript within the Flowsy ecosystem.
-The target standard is Vue 3 + Composition API + strict TypeScript.
+Coding guidelines for Vue 3 frontend projects with Composition API and strict TypeScript within the Flowsy ecosystem.
+
+Business names in TypeScript and Vue components should follow the ubiquitous language chosen for the project or Bounded Context. Keep technical terms such as `interface`, `type`, `DTO`, `ViewModel`, `component`, `props`, `emits`, `Composable`, `Store`, `Adapter`, `Storybook`, `Pinia` and framework names in English. For example, use `OrdenDespachoViewModel` instead of `OrdenDespachoModeloVista`, and `useOrdenDespachoStore` instead of `usarAlmacenOrdenDespacho`.
 
 ## Naming
+
+For Spanish identifiers, use compact domain names when articles or prepositions do not add meaning. Prefer `OrdenDespachoViewModel`, `useAsignacionTerminalDespacho` and `idOrdenDespacho` over `OrdenDeDespachoViewModel`, `useAsignacionDeTerminalDeDespacho` and `idOrdenDeDespacho`. Keep the natural phrase in UI labels, report titles and translations.
 
 | Element | Convention | Example |
 | --- | --- | --- |
@@ -11,16 +14,20 @@ The target standard is Vue 3 + Composition API + strict TypeScript.
 | Classes | `PascalCase` | `ShoppingCartAdapter` |
 | Functions and methods | `camelCase` | `fetchCartItems`, `formatCurrency` |
 | Variables and parameters | `camelCase` | `shoppingCartId`, `totalPrice` |
-| Module constants | `UPPER_SNAKE_CASE` | `MAX_CART_ITEMS`, `API_BASE_URL` |
+| Module constants | `UPPER_SNAKE_CASE` | `MAX_ACTIVE_CONTRACTS`, `API_BASE_URL` |
 | Enums | `PascalCase` (members in `PascalCase`) | `LifecycleStatus.Active` |
 | Composables | `camelCase` with `use` prefix | `useShoppingCart`, `useUserSession` |
+| SFC Components | `PascalCase` | `ShoppingCartSummary.vue` |
+| Props and emits | `camelCase` | `cartId`, `onCartUpdated` |
+| Stores (Pinia) | `camelCase` with `Store` suffix | `useCartStore` |
+| Store files | `kebab-case` | `shopping-cart.ts` |
+| Route files | `kebab-case` | `shopping-cart-checkout.ts` |
 
 ## Types and Contracts
 
 Explicitly type all contracts; avoid `any` except in justified cases:
 
 ```typescript
-// API response contract
 export interface ShoppingCartResponse {
   shoppingCartId: string;
   totalItems: number;
@@ -108,6 +115,18 @@ Within each feature-set, types are located in the `model/` folder:
 └── 📄 index.ts               ← re-exports everything
 ```
 
+## Separation of Responsibilities
+
+| Layer | Responsibility |
+| --- | --- |
+| `components/` | Presentation and UI; no direct business logic |
+| `composables/` | Reactive domain logic and use cases |
+| `stores/` | State shared by multiple components |
+| `logic/` | Pure functions without framework dependencies |
+| `model/` | Types, interfaces and enums for the feature |
+| `router/` | Feature-set route definitions |
+| `translations/` | Localized texts and messages |
+
 ## Cross Reference
 
-For feature-set organization and folder structure, see [Vue Modular Architecture](../technologies/frontend/modular-architecture/concepts.md).
+For feature-set organization and folder structure, see [Frontend Modular Architecture](../modular-architecture.md). For Vue 3, Pinia, composables, Storybook and testing patterns, see [Vue Ecosystem](./ecosystem.md).

@@ -12,7 +12,7 @@ applies_when:
   - the task changes tables, indexes, constraints, routines or seed data
   - the task mentions a migration tool such as Evolve, Flyway, Liquibase, DbUp, EF Core, Sqitch, Atlas or flwdb
 read_first:
-  - /conventions/postgresql.md
+  - /technologies/backend/data-and-migrations/database-engines/postgresql
   - /technologies/backend/data-and-migrations/migration-concepts.md
 read_if_implementing:
   - /technologies/backend/data-and-migrations/tools-and-strategies.md
@@ -82,7 +82,7 @@ Follow the repository's migration layout. Common patterns include:
 
 ## References
 
-- Conventions: [PostgreSQL](/conventions/postgresql.md).
+- Conventions: [PostgreSQL](/technologies/backend/data-and-migrations/database-engines/postgresql).
 - Migration concepts: [Database Migrations](/technologies/backend/data-and-migrations/migration-concepts.md).
 - Tooling: [Migration Tools and Strategies](/technologies/backend/data-and-migrations/tools-and-strategies.md) and [flwdb CLI](/technologies/backend/data-and-migrations/cli.md).
 - Testing: [Database Migrations](/technologies/testing/database/migrations.md), [Relational Databases](/technologies/testing/database/relational-databases.md) and [Integration Tests](/technologies/testing/integration-tests.md).

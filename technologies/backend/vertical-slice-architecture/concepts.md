@@ -2,6 +2,8 @@
 
 Guide for systems organized by vertical functionality rather than horizontal technical layers. Each feature traverses all layers autonomously, favoring cohesion, change independence and frictionless team collaboration.
 
+This page is technology-agnostic. Use it to decide boundaries, responsibilities and collaboration rules before choosing a framework, language or library. The C# and Minimal API examples are implementation mappings of these concepts, not requirements of Vertical Slice Architecture.
+
 ## Principles
 
 - Each feature is implemented as an independent slice that traverses all layers (UI, logic, persistence).
@@ -44,8 +46,8 @@ These approaches are not mutually exclusive:
 
 - **Objective**: Do not design "the system", but a useful and complete feature end-to-end.
 - Select a relevant user story or use case.
-- Model as a complete vertical slice: UI → API → Command → Domain → Infra → Eventing.
-- Design independently: Command + CommandHandler, Domain events, State and StateHandler, Read models and Queries, Validators, Integration events.
+- Model as a complete vertical slice: UI or client contract -> delivery boundary -> use case -> domain behavior -> persistence or integration -> events when needed.
+- Design independently: command or use-case input, application handler, domain behavior, state loading strategy, validation, read model, query and integration events when the scenario requires them.
 - **Direct benefits**: Isolates code by feature, fosters ownership per slice, avoids Git conflicts and unnecessary shared dependencies.
 
 ### 3. Modularization by Context and Feature
@@ -89,50 +91,56 @@ See also: [DDD: Anti-Patterns](../../../discovery/domain-driven-design.md)
 7. **Anemic classes without behavior** — Alternative: encapsulate rules in entities and State.
 8. **Applying all DDD concepts from day 1** — Alternative: incremental and pragmatic DDD.
 
-## Integration with MediatR / CQRS
+## Commands, Queries and Dispatching
 
-- Use MediatR (or `Flowsy.Mediation`) to dispatch commands and queries per slice.
-- Each slice defines its own request and handler.
-- Separate commands (write) from queries (read) when complexity justifies it.
-- HTTP endpoints can send commands and queries through `IMediator` or directly invoke their corresponding handler, according to project needs and conventions.
+Vertical Slice Architecture does not require a specific mediator, framework or transport. A slice can be invoked from an HTTP endpoint, message consumer, scheduled job, CLI command or UI action. The important decision is that the use case owns its input, behavior, validation and persistence boundary.
 
-## Features Folder Guidelines
+- Define one clear entry point per behavior: command, query, use case, action or request handler, depending on the stack.
+- Separate commands (write) from queries (read) when complexity, consistency or performance justifies it.
+- Use a mediator, dispatcher or direct handler invocation according to project needs. The mediator is an implementation detail, not the architecture itself.
+- Keep delivery concerns at the boundary: HTTP status codes, message acknowledgements, CLI output and UI mapping should not contain domain rules.
 
-The `Features` folder organizes features into modules and submodules:
+## Feature Organization Guidelines
 
-- Folder naming: `[ModuleName]/[SubmoduleName]/...`
-- Module examples: `Inventory/Products`, `Sales/OrderPlacement`, `Security/Users`
+Organize code by module, submodule and behavior. The folder names, package names or file names depend on the stack, but the hierarchy should help the team find a complete use case without jumping across unrelated technical layers.
 
-When a module can no longer be subdivided, create the folders:
+- Module examples: `Inventory/Products`, `Sales/OrderPlacement`, `Security/Users`.
+- Command examples: `CreateShoppingCart`, `AddItemToCart`, `SuspendUserAccount`.
+- Query examples: `AbandonedCarts`, `SuspendedUsers`, `OrderPlacementSummary`.
 
-- **`Commands/`**: actions that modify domain state; named in imperative (e.g. `CreateShoppingCart`, `SuspendUserAccount`). Each action has its own folder with:
-  - `COPILOT.md` — Optional. Prompts for Copilot assistance during implementation.
-  - `[ActionName].specs.md` — Highly recommended. Describes the action, its business rules, use cases and scenarios. Written in natural language, directed at the entire team (devs, testers, stakeholders). Serves as: documentation, base for automated tests, validation reference and AI tool guidance.
-  - `[ActionName]Command.cs` — `record Command`, `record CommandResult`, `class CommandHandler`.
-  - `[ActionName]CommandValidator.cs` — command data validation.
-  - `[ActionName]Endpoint.cs` — Minimal API endpoint; may include optional `record Request` and `record Response` when a structure different from Command/CommandResult is needed.
-  - `[ActionName]State.cs` — `class State`, `interface IStateHandler`, `class StateHandler`.
-  - When multiple actions share the same state, they are grouped in a container folder (e.g. `ModifyCart/AddItemToCart`, `ModifyCart/RemoveItemFromCart`) with a shared `[GroupName]State.cs`.
-- **`Queries/`**: actions that extract information; named as report or screen titles (e.g. `AbandonedCarts`, `SuspendedUsers`). Each action has its own folder with:
-  - `COPILOT.md` — Optional.
-  - `[ActionName].specs.md` — Highly recommended (same purposes as in Commands).
-  - `[ActionName]Query.cs` — `record Query`, `record QueryResult`, `class QueryHandler`.
-  - `[ActionName]QueryValidator.cs` — Optional. Query data validation.
-  - `[ActionName]Endpoint.cs` — Minimal API endpoint; may include optional `record Request` and `record Response`.
-  - When multiple queries share the same state, they are grouped in a container folder with a shared `[GroupName]State.cs`.
-- **`Model/`**: data structures and enums shared by the module (e.g. `CartDetail`, `CartStatus`).
-- **`Infrastructure/`**: infrastructure services shared by multiple commands/queries.
+Each behavior should define the artifacts it needs, usually:
 
-## Implementation Guidelines
+| Artifact | Purpose | Stack-Agnostic Guidance |
+| --- | --- | --- |
+| Specification | Business scenarios, rules and acceptance criteria. | Prefer natural language that can guide tests and AI-assisted implementation. |
+| Delivery adapter | HTTP route, message consumer, CLI command or UI action. | Translate transport input/output without owning domain behavior. |
+| Command or query | Intent and input contract for the use case. | Name commands in imperative form and queries as the information they return. |
+| Handler or use case | Application flow and transaction boundary. | Coordinate state loading, domain behavior, persistence and events. |
+| State loader | Data and history required to decide correctly. | Keep it scoped to the behavior; do not load an entire model by habit. |
+| Validator | Input and precondition validation. | Separate data-shape validation from domain invariants. |
+| Read model | Response or reporting model. | Optimize for the consumer when it does not distort the domain model. |
 
-- Log all relevant operations using `ILogger<T>`.
-- For service configuration, avoid primitive type parameters or `IConfiguration` instances directly in constructors. Use strongly-typed configuration objects registered via `IOptions<T>`.
-- HTTP endpoints send commands and queries to the `IMediator` service; they never directly invoke domain logic.
-- Data access within state handlers, command handlers, query handlers and notification handlers is done with `Flowsy.Db.Unity`.
-- Use `record` instead of `class` for read models and Value Objects.
-- Commit messages must follow [Conventional Commits](https://www.conventionalcommits.org/) format: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`.
+## Implementation Mapping
 
-## Folder Structure
+The same slice can be implemented in different stacks:
+
+| Concept | C# / Minimal APIs | Java / Spring | TypeScript / Node |
+| --- | --- | --- | --- |
+| Delivery adapter | `Endpoint` | `Controller` | Route handler or controller |
+| Use-case input | `Command` / `Query` record | Request DTO or command object | Type/interface or command object |
+| Handler | `CommandHandler` / `QueryHandler` | Application service or handler | Use-case function or handler class |
+| State loader | `StateHandler` | Repository/query service | Repository/query service |
+| Validation | FluentValidation validator | Bean Validation or custom validator | Schema validator or custom validator |
+| Persistence | Database library, ORM or SQL gateway | Repository, ORM or SQL gateway | Repository, ORM or SQL gateway |
+
+Use the stack-specific guides when you need concrete naming, files, libraries or code:
+
+- [C# Minimal APIs — Complete examples](./csharp-minimal-apis.md)
+- [C# Conventions](../dotnet/csharp.md)
+
+## Example Logical Structure
+
+This tree shows intent, not a mandatory physical layout. Adapt folder names, file extensions, casing and package/module boundaries to the project's language, framework and repository conventions.
 
 ```text
 📁 Features/
@@ -148,32 +156,34 @@ When a module can no longer be subdivided, create the folders:
 │   └── 📁 OrderPlacement/
 │       ├── 📁 Commands/
 │       │   ├── 📁 CreateCart/
-│       │   │   ├── 📄 CreateCartEndpoint.cs
-│       │   │   ├── 📄 CreateCartCommand.cs
-│       │   │   ├── 📄 CreateCartCommandValidator.cs
-│       │   │   └── 📄 CreateCartState.cs
+│       │   │   ├── 📄 CreateCart.specs
+│       │   │   ├── 📄 CreateCartAdapter
+│       │   │   ├── 📄 CreateCartCommand
+│       │   │   ├── 📄 CreateCartHandler
+│       │   │   ├── 📄 CreateCartValidator
+│       │   │   └── 📄 CreateCartState
 │       │   └── 📁 ModifyCart/
 │       │       ├── 📁 AddItemToCart/
-│       │       │   ├── 📄 AddItemToCartEndpoint.cs
-│       │       │   ├── 📄 AddItemToCartCommand.cs
-│       │       │   └── 📄 AddItemToCartCommandValidator.cs
+│       │       │   ├── 📄 AddItemToCartAdapter
+│       │       │   ├── 📄 AddItemToCartCommand
+│       │       │   └── 📄 AddItemToCartHandler
 │       │       ├── 📁 RemoveItemFromCart/
-│       │       │   ├── 📄 RemoveItemFromCartEndpoint.cs
-│       │       │   ├── 📄 RemoveItemFromCartCommand.cs
-│       │       │   └── 📄 RemoveItemFromCartCommandValidator.cs
-│       │       └── 📄 OpenShoppingCartState.cs
+│       │       │   ├── 📄 RemoveItemFromCartAdapter
+│       │       │   ├── 📄 RemoveItemFromCartCommand
+│       │       │   └── 📄 RemoveItemFromCartHandler
+│       │       └── 📄 OpenShoppingCartState
 │       ├── 📁 Infrastructure/
-│       │   ├── 📄 IShoppingCartFinder.cs
-│       │   └── 📄 ShoppingCartFinder.cs
+│       │   ├── 📄 ShoppingCartFinderPort
+│       │   └── 📄 ShoppingCartFinderAdapter
 │       ├── 📁 Model/
-│       │   ├── 📄 CartDetail.cs
-│       │   ├── 📄 CartOverview.cs
-│       │   └── 📄 CartStatus.cs
+│       │   ├── 📄 CartDetail
+│       │   ├── 📄 CartOverview
+│       │   └── 📄 CartStatus
 │       └── 📁 Queries/
 │           └── 📁 AbandonedCarts/
-│               ├── 📄 AbandonedCartsEndpoint.cs
-│               ├── 📄 AbandonedCartsQuery.cs
-│               └── 📄 AbandonedCartsQueryValidator.cs
+│               ├── 📄 AbandonedCartsAdapter
+│               ├── 📄 AbandonedCartsQuery
+│               └── 📄 AbandonedCartsHandler
 └── 📁 Security/
     ├── 📁 Users/
     └── 📁 Roles/
@@ -189,6 +199,5 @@ The `Kernel` module is shared by the entire application:
 
 ## Cross Reference
 
-- [C# Minimal APIs — Complete examples](./csharp-minimal-apis.md)
 - [Event Storming](../../../discovery/event-storming.md)
 - [Domain-Driven Design](../../../discovery/domain-driven-design.md)

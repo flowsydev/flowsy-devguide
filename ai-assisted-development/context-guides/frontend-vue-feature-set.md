@@ -12,11 +12,11 @@ applies_when:
   - the task mentions feature-set, composable, Pinia, route or Storybook
   - the task creates or changes UI behavior
 read_first:
-  - /conventions/typescript.md
-  - /conventions/vue.md
-  - /technologies/frontend/modular-architecture/concepts.md
+  - /technologies/frontend/vue/conventions
+  - /technologies/frontend/vue/conventions
+  - /technologies/frontend/modular-architecture
 read_if_implementing:
-  - /technologies/frontend/modular-architecture/vue-ecosystem.md
+  - /technologies/frontend/vue/ecosystem
   - /technologies/testing/typescript-vue.md
 related_guides:
   - specs-driven-development
@@ -75,7 +75,7 @@ Use the local convention if the repository already has a different but consisten
 
 ## References
 
-- Architecture: [Frontend Modular Architecture](/technologies/frontend/modular-architecture/concepts.md).
-- Vue practices: [Vue Ecosystem](/technologies/frontend/modular-architecture/vue-ecosystem.md).
-- Conventions: [Vue](/conventions/vue.md) and [TypeScript](/conventions/typescript.md).
+- Architecture: [Frontend Modular Architecture](/technologies/frontend/modular-architecture).
+- Vue practices: [Vue Ecosystem](/technologies/frontend/vue/ecosystem).
+- Conventions: [Vue 3 and TypeScript](/technologies/frontend/vue/conventions).
 - Testing: [TypeScript and Vue](/technologies/testing/typescript-vue.md), [Unit Tests](/technologies/testing/unit-tests.md), [Integration Tests](/technologies/testing/integration-tests.md) and [End-to-End Tests](/technologies/testing/end-to-end-tests.md).

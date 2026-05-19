@@ -2,6 +2,10 @@
 
 Complete implementation examples of Vertical Slices in C# using Minimal APIs, following the conventions of the Flowsy ecosystem.
 
+This page is the C#/.NET implementation companion to the technology-agnostic [VSA concepts](./concepts.md). Start with the concepts when deciding slice boundaries, then use this page for concrete files, libraries and code.
+
+The examples use English domain terminology, aligned with the predominant language and community context of this guide. Projects should adapt business identifiers to the ubiquitous language chosen for their own domain.
+
 Each example includes: `Endpoint`, `Command`, `CommandValidator` and `State`.
 
 For HTTP API maturity, status codes and RFC 9457 Problem Details, see [HTTP API Design](../api-design.md).
@@ -1029,5 +1033,5 @@ public enum ShoppingCartStatus
 ## Cross Reference
 
 - [VSA: Concepts](./concepts.md) — principles and folder structure.
-- [C# Conventions](../../../conventions/csharp.md) — naming and general guidelines.
+- [C# Conventions](../dotnet/csharp) — naming and general guidelines.
 - [EDA: Background Services](../event-driven-architecture/csharp-background-services.md) — event consumption from workers.

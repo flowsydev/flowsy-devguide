@@ -7,6 +7,9 @@ hero:
   tagline: Techniques, practices and artifacts to explore the domain, align language and design solutions with business purpose.
   actions:
     - theme: brand
+      text: View Ubiquitous Language
+      link: /discovery/ubiquitous-language
+    - theme: alt
       text: View Event Storming
       link: /discovery/event-storming
     - theme: alt
@@ -17,6 +20,10 @@ hero:
       link: /discovery/documentation/
 
 features:
+  - icon: 🗣️
+    title: Ubiquitous Language
+    details: First project decision for aligning domain language, data models, examples, tests and documentation across a Bounded Context.
+    link: /discovery/ubiquitous-language
   - icon: 🧠
     title: Design Techniques
     details: Visual tools and collaborative practices for analysis, design and communication.
@@ -41,7 +48,13 @@ Collaborative modeling techniques to explore the business domain and design solu
 
 ## Available Guides
 
+### Domain Discovery
+
+- [Ubiquitous Language](./ubiquitous-language) — First project decision for choosing the language of business concepts in domain models, data models, examples, tests and documentation.
 - [Design Techniques](./design-techniques) — Catalog of techniques and visual tools for analysis, design and communication of systems.
 - [Event Storming](./event-storming) — Collaborative workshop to discover domain events, commands, aggregates and business policies visually.
 - [Domain-Driven Design](./domain-driven-design) — Principles and patterns of DDD applied pragmatically, complementing Vertical Slice Architecture.
+
+### Project Documentation
+
 - [Project Documentation](./documentation/) — Organization of documentation artifacts by disciplinary layers: strategy, analysis, architecture, delivery and validation.

@@ -4,7 +4,7 @@ Base guide for backend APIs and services, independent of specific language or fr
 
 ## HTTP API Design
 
-Start API work with [HTTP API Design](./api-design.md) when the change affects routes, methods, status codes, error responses or OpenAPI contracts. That guide defines the practical API maturity baseline, RFC 9457 Problem Details conventions and C# exception-handler mapping recommended for HTTP APIs.
+Start API work with [HTTP API Design](./api-design.md) when the change affects routes, methods, status codes, error responses or OpenAPI contracts. That guide defines the practical API maturity baseline, RFC 9457 Problem Details conventions and boundary error-mapping guidance for HTTP APIs.
 
 - Version APIs when there is a risk of breaking changes.
 - Validate input at the boundary with consistent errors.
@@ -13,7 +13,7 @@ Start API work with [HTTP API Design](./api-design.md) when the change affects r
 
 ## Design Conventions
 
-- Name contracts by functional role (`CreateOrderRequest`, `OrderSummary`).
+- Name contracts by functional role (`CreateOrderRequest`, `OrderSummary` or `CrearPedidoRequest`, `ResumenPedido`).
 - Avoid generic suffixes that add no semantics.
 - Choose the language of domain contracts, commands, events and persistence models according to the project's ubiquitous language and team agreements. English examples in this guide are illustrative, not a requirement for every consuming project.
 - Establish consistent naming rules per language:
@@ -21,9 +21,9 @@ Start API work with [HTTP API Design](./api-design.md) when the change affects r
   - **TypeScript/JavaScript**: `PascalCase` types/classes, `camelCase` functions.
   - **Java**: `PascalCase` classes, `camelCase` members.
   - **Go**: exported names in `PascalCase`, internal in `camelCase`.
-- Keep the selected domain language consistent inside each bounded context. For example, avoid mixing `ShoppingCart`, `orden_despacho` and `PedidoComercial` in the same context unless the boundary and reason are documented.
+- Keep the selected domain language consistent inside each Bounded Context. For example, avoid mixing `ShoppingCart`, `orden_despacho` and `PedidoComercial` in the same context unless the boundary and reason are documented. Prefer equivalent concepts such as `ShoppingCart` / `CarritoCompra` or `DispatchOrder` / `OrdenDespacho` when teaching language strategy.
 
-See the language-specific convention guides: [C#](../../conventions/csharp.md), [TypeScript](../../conventions/typescript.md).
+See the language-specific convention guides: [C#](./dotnet/csharp), [Vue 3 and TypeScript](../frontend/vue/conventions).
 
 ## Date and Time
 

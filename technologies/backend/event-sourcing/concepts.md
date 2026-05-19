@@ -38,6 +38,8 @@ Projections build read views from the event log:
 - Allow **complete reconstruction** from the event store (in case of corruption or new projection).
 - Consider **asynchronous projections** to decouple reads from writes (eventual consistency).
 
+The following diagrams are conceptual. Adapt event names, projection names, storage objects and operational policies to the project's domain language, database engine, framework and infrastructure conventions.
+
 ```text
 Event Store (append-only)
     ├── Projection: OrderSummaryView   → table order_summary

@@ -81,7 +81,7 @@ For repeatable scripts, group files by schema and aggregate. Use descriptive ope
             └── 📄 R__shopping_cart_view_abandoned_carts.sql
 ```
 
-Prefer the full aggregate name, such as `shopping_cart`, whenever possible. Use an abbreviation or code based on the aggregate name, such as `crple` for `CustomerRewardPointsLedgerEntry`, when the full name creates a practical problem, such as excessive length or an engine identifier limit. PostgreSQL identifiers are limited to 63 bytes by default, even though the internal `NAMEDATALEN` setting is commonly described as 64 bytes. Keep the prefix strategy consistent across the project, documenting any exception for a specific long aggregate name. The SQL routine created by the script must follow the target engine convention: lower `snake_case` for PostgreSQL and MySQL, `PascalCase` for SQL Server, `UPPER_SNAKE_CASE` for engines or projects that use uppercase unquoted identifiers, and so on. Do not add `_` between prefix and operation when the selected convention does not use underscores.
+Prefer the full aggregate name, such as `shopping_cart`, whenever possible. Use an abbreviation or code based on the aggregate name, such as `crple` for `CustomerRewardPointsLedgerEntry`, when the full name creates a practical problem, such as excessive length or a database engine identifier limit. PostgreSQL identifiers are limited to 63 bytes by default, even though the internal `NAMEDATALEN` setting is commonly described as 64 bytes. Keep the prefix strategy consistent across the project, documenting any exception for a specific long aggregate name. The SQL routine created by the script must follow the target database engine convention: lower `snake_case` for PostgreSQL and MySQL, `PascalCase` for SQL Server, `UPPER_SNAKE_CASE` for database engines or projects that use uppercase unquoted identifiers, and so on. Do not add `_` between prefix and operation when the selected convention does not use underscores.
 
 Keep `Operations/` and `Queries/` outside automatic migration execution.
 
@@ -100,4 +100,4 @@ Keep `Operations/` and `Queries/` outside automatic migration execution.
 - [Migration Concepts](./migration-concepts.md)
 - [Data and Migrations: Relational Modeling](./relational-modeling.md)
 - [Migration Tools and Strategies](./tools-and-strategies.md)
-- [PostgreSQL Conventions](../../../conventions/postgresql.md)
+- [PostgreSQL Conventions](./database-engines/postgresql.md)

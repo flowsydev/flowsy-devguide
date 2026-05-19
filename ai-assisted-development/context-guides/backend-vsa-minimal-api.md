@@ -12,7 +12,7 @@ applies_when:
   - the task mentions Vertical Slice Architecture
   - the task creates or changes endpoints, commands, queries, handlers or state
 read_first:
-  - /conventions/csharp.md
+  - /technologies/backend/dotnet/csharp
   - /technologies/backend/vertical-slice-architecture/concepts.md
 read_if_implementing:
   - /technologies/backend/api-design.md
@@ -76,7 +76,7 @@ For queries, use `Queries/[ActionName]/` with `Query`, `QueryResult`, `QueryHand
 
 ## References
 
-- Naming and contracts: [C# Conventions](/conventions/csharp.md).
+- Naming and contracts: [C# Conventions](/technologies/backend/dotnet/csharp).
 - Structure and principles: [VSA Concepts](/technologies/backend/vertical-slice-architecture/concepts.md).
 - Complete examples: [VSA: C# with Minimal APIs](/technologies/backend/vertical-slice-architecture/csharp-minimal-apis.md).
 - Backend baseline and traceability: [Backend Concepts](/technologies/backend/concepts.md).

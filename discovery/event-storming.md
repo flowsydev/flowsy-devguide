@@ -16,6 +16,8 @@ Event Storming is a collaborative modeling technique that brings together busine
 
 ## Artifacts (Post-it Notation)
 
+Use business terms in the ubiquitous language selected for the Bounded Context. The notation labels, such as `Command`, `Aggregate`, `Domain Event`, `Policy`, `Read Model`, `External System` and `Wireframe`, can remain in English as technical Event Storming vocabulary.
+
 ```mermaid
 flowchart LR
   %% Actors
@@ -72,8 +74,8 @@ flowchart LR
 
 | Color | Artifact | Description |
 | --- | --- | --- |
-| 🟠 Orange | **Domain Event** | Relevant fact that occurred in the past. Past tense verb: `OrderPlaced`, `PaymentApproved`. |
-| 🔵 Blue | **Command** | Intention or action that triggers an event. Imperative: `PlaceOrder`, `ApprovePayment`. |
+| 🟠 Orange | **Domain Event** | Relevant fact that occurred in the past. Past tense verb: `OrderPlaced`, `PaymentApproved` or `PedidoCapturado`, `PagoAprobado`. |
+| 🔵 Blue | **Command** | Intention or action that triggers an event. Imperative: `PlaceOrder`, `ApprovePayment` or `CapturarPedido`, `AprobarPago`. |
 | 🟡 Yellow | **Aggregate** | Entity or cluster of entities that processes the command and produces the event. |
 | 🟣 Lilac | **Policy** | Business rule or reaction: "When X occurs, then Y". |
 | 🟢 Green | **Read Model** | Information that an actor needs to make a decision (screen, report). |

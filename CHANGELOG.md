@@ -6,6 +6,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.7.0] - 2026-05-18
+
+### Fixed
+
+- Cross-reference link in `technologies/frontend/vue/ecosystem.md` corrected from absolute path with `.md` extension to relative path, consistent with the rest of the document.
+
+### Changed
+
+- Frontend Modular Architecture moved out of the Vue section and revised as a framework-agnostic guide with Vue, React, Angular and Svelte artifact equivalences.
+- Practical technology examples now follow the guide's predominant language, keeping Flowsy code, configuration and folder examples in English except where language strategy is the explicit topic.
+- C# Minimal API examples clarified to use English domain terminology consistently with the Flowsy guide context.
+- Technology-agnostic examples now clarify that folder structures, naming patterns and report paths must be adapted to each project's language, framework and conventions.
+- Folder structure examples in technology-agnostic guides now use consistent folder and file icons.
+- Technologies and Backend navigation reordered so technology-agnostic concepts appear before stack-specific implementation guides.
+- Vertical Slice Architecture and Clean Architecture concept pages revised to be technology-agnostic, with C#/.NET details framed as implementation mappings.
+- Home-page feature cards expanded and reordered as a 12-step reading path from ubiquitous language and discovery through project documentation, AI-assisted development, testing, architecture, implementation, data, frontend and events.
+- Backend and Discovery navigation regrouped by intent, keeping Testing visible as an early design and validation guide while organizing Backend into General, .NET, Architecture, Events and Messaging, and Data and Persistence.
+- Frontend Vue guides reorganized under `technologies/frontend/vue/`, merging TypeScript and Vue conventions into a single Vue 3 and TypeScript conventions guide.
+- Domain-Driven Design page reorganized so model language strategy appears before fundamental concepts, and concepts are grouped as strategic, tactical and implementation-level guidance.
+- Ubiquitous language guidance expanded to distinguish compact Spanish identifiers from natural user-facing wording, with examples for code, UI and database objects.
+- Domain-Driven Design guidance expanded with more descriptive Bounded Context and Aggregate sections, including classical Aggregates, Dynamic Consistency Boundaries, examples, diagrams and trade-off tables.
+- Overlapping C#, Vue and database-engine convention sections consolidated so implementation structure, testing, source control and aggregate routine design each have one primary guide.
+- Technology-specific convention pages moved from Conventions into Backend, Data and Migrations and Frontend sections, with navigation and links updated accordingly.
+- Audit guidance distinguishes active-state windows (`ActiveFrom` / `ActiveUntil`, `ActivoDesde` / `ActivoHasta`) from domain-specific business validity periods.
+- Audit field conventions updated to use `created_by` / `updated_by` and `creado_por` / `modificado_por`, with actor key types left project-specific.
+- Relational modeling guidance expanded with primary key data type recommendations, advantages and trade-offs.
+- Database guidance now avoids cross-database-engine naming comparisons inside database-engine-specific pages and prefers invocation-time timestamp functions in examples.
+- Date and time wording adjusted to use friendlier local date/time terminology.
+- Centered home-page feature cards when the final row does not fill the full desktop grid.
+- Promoted ubiquitous language selection to a dedicated Discovery guide and standalone home-page section before the Flowsy ecosystem overview.
+- Home-page ubiquitous language guidance strengthened to emphasize domain discovery and modeling before writing code.
+- Writing guidelines simplified to reference the dedicated ubiquitous language guide while preserving multi-language documentation rules.
+- Writing guidelines reorganized into general rules, multi-language documentation, language-specific rules and unified terminology guidance.
+- Spanish terminology for `requirement` updated from `requisito` to `requerimiento`.
+- Multi-language naming examples aligned so English and Spanish variants use equivalent translated concepts for keys, constraints, domain language and routine naming guidance.
+- Writing guidelines and project entry points updated to make ubiquitous language selection the first project-level decision, with bilingual business examples across domain, code, testing and data conventions.
+
 ## [1.6.0] - 2026-05-18
 
 ### Changed
@@ -29,7 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Repeatable migration guidance updated to avoid lifecycle ordering recommendations that depend on English operation names or numeric prefixes.
 - Data and Migrations pages physically reorganized under `technologies/backend/data-and-migrations/`, with audit schema guidance consolidated into relational modeling.
 - Domain-Driven Design guidance expanded to explain Bounded Contexts as conceptual domain boundaries, decoupled from `Features/` or any specific architecture.
-- Testing guidance reorganized under `technologies/testing/database/`, replacing PostgreSQL-specific testing with engine-neutral relational database testing plus separate migration testing.
+- Testing guidance reorganized under `technologies/testing/database/`, replacing PostgreSQL-specific testing with database-engine-neutral relational database testing plus separate migration testing.
 - Relational modeling naming guidance expanded to include common database objects such as schemas, routines, parameters, views, sequences, triggers and scheduled jobs.
 - Primary key naming guidance table reorganized by case style with English and Spanish naming columns to improve readability.
 - Top navigation simplified to single-level dropdowns that link only to main section and subsection indexes, leaving detailed page navigation to the sidebar.

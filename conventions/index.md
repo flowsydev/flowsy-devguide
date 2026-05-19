@@ -4,7 +4,7 @@ layout: section-home
 hero:
   name: "Conventions"
   text: "Shared standards for the entire ecosystem"
-  tagline: Coding rules, naming, structure and source control to maintain technical consistency across teams and solutions.
+  tagline: Writing, repository documentation and source-control rules that keep shared work understandable and consistent.
 
 features:
   - icon: ✍️
@@ -15,32 +15,20 @@ features:
     title: Repository Documentation
     details: README, agent instructions, specs and local docs that keep repositories understandable and safe to operate.
     link: /conventions/repository-documentation
-  - icon: ⚙️
-    title: C#
-    details: Naming, patterns and guidelines for maintainable backend solutions in .NET.
-    link: /conventions/csharp
-  - icon: 🟦
-    title: TypeScript
-    details: Strict typing, consistent contracts and standards for modern frontend development.
-    link: /conventions/typescript
-  - icon: 🧩
-    title: Vue
-    details: Rules for components, composables and clear organization in Vue 3 applications.
-    link: /conventions/vue
-  - icon: 🗄️
-    title: PostgreSQL
-    details: PostgreSQL-specific naming and modeling conventions for SQL artifacts.
-    link: /conventions/postgresql
-  - icon: 🧱
-    title: SQL Server
-    details: SQL Server and Azure SQL naming, temporal and change-control conventions.
-    link: /conventions/sql-server
-  - icon: 🐬
-    title: MySQL and MariaDB
-    details: MySQL and MariaDB naming, temporal and change-control conventions.
-    link: /conventions/mysql-mariadb
   - icon: 🌿
     title: Git
     details: Branch strategy, versioning and commit messages aligned to the team workflow.
     link: /conventions/source-control/git
 ---
+
+## Available Guides
+
+- [Writing Guidelines](./writing-guidelines) — Editorial rules for durable documentation.
+- [Repository Documentation](./repository-documentation) — README, agent instructions, specs and local documentation conventions.
+- [Git](./source-control/git) — Branch strategy, Pull Requests, versioning and commit messages.
+
+Technology-specific conventions now live with their implementation areas:
+
+- [C#](../technologies/backend/dotnet/csharp) under Backend .NET.
+- [PostgreSQL](../technologies/backend/data-and-migrations/database-engines/postgresql), [SQL Server](../technologies/backend/data-and-migrations/database-engines/sql-server) and [MySQL and MariaDB](../technologies/backend/data-and-migrations/database-engines/mysql-mariadb) under Data and Migrations.
+- [Vue 3 and TypeScript Conventions](../technologies/frontend/vue/conventions) under Frontend Vue.

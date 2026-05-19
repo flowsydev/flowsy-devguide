@@ -25,7 +25,7 @@ Choose the language of the domain model with domain experts and the delivery tea
 | --- | --- | --- |
 | English domain model | The product, team, documentation and integrations use English consistently. | `ShoppingCart`, `AddItem`, `CartCheckedOut` |
 | Business-language domain model | Domain experts and operational processes use another language as the main business language. | `CarritoCompra`, `AgregarArticulo`, `CarritoCompraConfirmado` |
-| Mixed strategy with boundaries | Technical platform terms stay in English, while domain concepts stay in the business language. | `ShoppingCartIntegrationClient`, `CarritoCompra`, `obtener_carritos_abandonados` |
+| Mixed strategy with boundaries | The team works within an English-language platform ecosystem but models the domain using another language agreed with domain experts. Infrastructure code — adapters, API clients, integration services — stays in English because it maps to platform concepts and third-party contracts. Domain aggregates, commands, events and queries use the business language because they reflect the terms used in conversations with the business. This boundary must be documented and enforced by each Bounded Context. | Infrastructure: `ShoppingCartIntegrationClient`. Domain: `CarritoCompra`, `ConfirmarCarritoCompra`, `CarritoCompraConfirmado`. |
 
 Keep the decision consistent inside each Bounded Context and document exceptions. The data model should follow the same language strategy unless integration, reporting or platform constraints justify a different one.
 
@@ -59,9 +59,11 @@ flowchart LR
 
     Sales -- CustomerPlacedOrder event --> Invoicing
     Identity -- AccountLinkedToCustomer event --> Sales
-    Sales -. translation / contract .- Identity
-    Invoicing -. translation / contract .- Sales
+    Sales -. model mapping .- Identity
+    Invoicing -. model mapping .- Sales
 ```
+
+Solid arrows represent domain events flowing from one context to another. Dashed lines indicate that the two contexts must explicitly agree on how to translate their models when exchanging data. The word `Customer` means something different in each context; neither can assume the other uses the same definition. The consuming context must translate or adapt the data it receives into its own model before using it. This translation is commonly implemented as an **Anti-Corruption Layer (ACL)** — an adapter that converts incoming concepts into the internal language of the consuming context, protecting its model from being contaminated by another context's terminology.
 
 | Aspect | Inside One Bounded Context | Between Bounded Contexts |
 | --- | --- | --- |
@@ -378,6 +380,59 @@ public async Task Handle(StudentJoinsCourse command)
 
 In a relational implementation, the `StateHandler` may use `SELECT ... FOR UPDATE`, serializable isolation, row versions, filtered unique indexes, check constraints or explicit application-level concurrency tokens. The point is not to imitate Event Sourcing, but to make the behavior's consistency boundary explicit and protected by the database and application together.
 
+###### DCB as Design Approach: Implementation Paths
+
+The strong recommendation is to approach every command with the DCB mental model: think about the minimum information required to make domain-rule-based decisions and apply the corresponding mutations, rather than loading large aggregates. This principle applies regardless of the implementation path chosen.
+
+The implementation can take two valid paths depending on the complexity of the mutation.
+
+###### Path 1 — Direct mutation in the command handler (simple mutations)
+
+The command handler loads the required data and applies the domain mutation directly, without a dedicated `State` class or `StateHandler`. Use this path when:
+
+- The mutation targets a single entity or a tightly coupled set.
+- Business rules can be verified with a focused, minimal data load.
+- Concurrency can be delegated to the database (row version, optimistic lock, unique constraint, check constraint).
+- There is no need for an independently testable or reusable decision model.
+
+```csharp
+// DCB thinking: I only need the course status to decide whether
+// deactivation is valid. No State or StateHandler needed.
+public async Task Handle(DeactivateCourse command)
+{
+    var course = await db.Courses
+        .Where(c => c.Id == command.CourseId)
+        .FirstOrDefaultAsync()
+        ?? throw new NotFoundException("Course not found.");
+
+    if (!course.IsActive)
+        throw new DomainStateValidationException("The course is already inactive.");
+
+    course.Deactivate();
+    await db.SaveChangesAsync();
+}
+```
+
+###### Path 2 — State and StateHandler (complex mutations)
+
+The command handler acts as an orchestrator: it delegates loading and persistence to the `StateHandler`, while the `State` encapsulates the domain decision logic. The `StudentJoinsCourse` examples above illustrate this path. Use it when:
+
+- The mutation involves multiple entities or decision data from different sources.
+- Business rules require combining information from more than one subject.
+- Concurrency must be explicitly managed (`SELECT FOR UPDATE`, append conditions, row versions with locks).
+- The decision model benefits from being tested in isolation.
+- The behavior or decision logic may be reused across handlers.
+
+Choosing between paths:
+
+| Scenario | Recommended Path |
+| --- | --- |
+| Single entity, simple invariants | Direct mutation in handler |
+| Single entity, concurrency-sensitive | Direct mutation + DB constraint or row version |
+| Multiple entities or cross-cutting rules | State + StateHandler |
+| Explicit concurrency boundary required | State + StateHandler |
+| Decision model reused across handlers | State + StateHandler |
+
 Advantages:
 
 | Advantage | Why It Helps |
@@ -445,7 +500,7 @@ Representation of the domain at a given moment, built from databases, files or e
 Specific functionality that adds value to the end user and is related to the domain.
 
 - English examples: `AddItemToCart`, `CheckOrderStatus`, `SuspendUserAccount`.
-- Spanish examples: `AgregarArticuloAlCarrito`, `ConsultarEstadoPedido`, `SuspenderCuentaUsuario`.
+- Spanish examples: `AgregarArticuloCarrito`, `ConsultarEstadoPedido`, `SuspenderCuentaUsuario`.
 - In Vertical Slice Architecture, a feature can be implemented as an independent slice under a convention such as `Features/`. Other architectures may place the same behavior in use-case classes, application services, handlers, modules or packages.
 
 #### Module

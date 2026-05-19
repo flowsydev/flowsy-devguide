@@ -6,27 +6,235 @@ This page is the C#/.NET implementation companion to the technology-agnostic [VS
 
 The examples use English domain terminology, aligned with the predominant language and community context of this guide. Projects should adapt business identifiers to the ubiquitous language chosen for their own domain.
 
-Each example includes: `Endpoint`, `Command`, `CommandValidator` and `State`.
-
 For HTTP API maturity, status codes and RFC 9457 Problem Details, see [HTTP API Design](../api-design.md).
 
-> **Mediator vs. direct handler**: Endpoints send commands and queries through `IMediator`. If the project does not use the Mediator pattern, the endpoint should directly inject the `CommandHandler` or `QueryHandler` and call its `HandleAsync` method.
+## Feature-Set Folder Structure
 
-## General Convention
-
-Each slice contains the following files:
+A complete feature-set organizes its slices under a module and submodule path. `Commands` and `Queries` contain one subfolder per slice. `Infrastructure` holds shared finders and services. `Model` holds data structures and enums shared by multiple slices.
 
 ```text
-📁 Features/[Module]/[Submodule]/Commands/[ActionName]/
-├── 📄 [ActionName]Endpoint.cs           ← Minimal API endpoint
-├── 📄 [ActionName]Command.cs            ← Command + Result + Handler
-├── 📄 [ActionName]CommandValidator.cs   ← Validation with FluentValidation
-└── 📄 [ActionName]State.cs              ← State + IStateHandler + StateHandler
+📁 Features/[Module]/[Submodule]/
+├── 📁 Commands/
+│   └── 📁 [ActionName]/
+│       ├── 📄 [ActionName]Endpoint.cs           ← Minimal API endpoint
+│       ├── 📄 [ActionName]Command.cs            ← Command + Result + Handler
+│       ├── 📄 [ActionName]CommandValidator.cs   ← Validation with FluentValidation
+│       └── 📄 [ActionName]State.cs              ← State + IStateHandler + StateHandler
+├── 📁 Infrastructure/
+│   ├── 📄 [EntityName]Finder.cs                ← read-only lookups shared across slices
+│   ├── 📄 [ServiceName]Gateway.cs              ← external API or service integration
+│   └── 📄 [ServiceName]Publisher.cs            ← event or message publishing
+├── 📁 Model/
+│   ├── 📄 ShoppingCartOverview.cs              ← decision data loaded into State classes
+│   ├── 📄 CartCheckoutPreview.cs               ← full cart data for checkout and confirmation
+│   ├── 📄 ProductOption.cs                     ← minimal product data for the item picker
+│   └── 📄 ShoppingCartStatus.cs               ← shared enums
+└── 📁 Queries/
+    └── 📁 [ActionName]/
+        ├── 📄 [ActionName]Endpoint.cs           ← Minimal API endpoint
+        ├── 📄 [ActionName]Query.cs              ← Query + Result + Handler
+        └── 📄 [ActionName]QueryValidator.cs     ← Validation with FluentValidation (optional)
 ```
 
-## HTTP Results and Problem Details
+## Endpoints
 
-Keep Minimal API endpoints thin. Let handlers own business behavior, and centralize repeated domain-error mapping in a global exception handler that returns RFC 9457 Problem Details.
+Endpoints are the HTTP entry point for each slice. A single static class with a `Map(RouteGroupBuilder)` method registers the route and wires it to its command or query.
+
+- Keep endpoints thin — bind input, dispatch to the handler, return a typed result. No business logic or domain rules.
+- Name the file `[ActionName]Endpoint.cs`.
+- Map to HTTP verbs with `MapPost`, `MapGet`, `MapPut` or `MapDelete`.
+- Dispatch through `IMediator`, or inject the handler directly if the project does not use the Mediator pattern.
+- Use `.WithSummary()` for a one-line title and `.WithDescription()` for extended context — preconditions, enforced rules, return behavior and notable failure scenarios. Declare known responses with `.Produces<>()` and `.ProducesValidationProblem()`.
+
+```csharp
+routeGroup.MapPost("/projects", CreateProjectAsync)
+    .WithSummary("Create a project.")
+    .WithDescription("""
+        Creates a new project under the authenticated organization.
+        The project name must be unique within the organization.
+        Returns the project summary including the assigned identifier and creation timestamp.
+        """)
+    .Produces<ProjectSummary>(StatusCodes.Status201Created)
+    .ProducesValidationProblem(StatusCodes.Status422UnprocessableEntity)
+    .Produces<ProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")
+    .Produces<ProblemDetails>(StatusCodes.Status409Conflict, "application/problem+json");
+```
+
+### HTTP Results and Problem Details
+
+Centralize repeated domain-error mapping in a global exception handler that returns RFC 9457 Problem Details.
+
+## Commands
+
+- Name in **imperative** form using the selected business language: `CreateShoppingCart`, `SuspendUserAccount`, `AddItemToCart`.
+- Files:
+  - `[ActionName]Command.cs` — `record Command`, `record CommandResult`, `class CommandHandler`.
+  - `[ActionName]CommandValidator.cs` — validation with FluentValidation.
+  - `[ActionName]State.cs` — `class State`, `interface IStateHandler`, `class StateHandler`.
+
+## Queries
+
+- Name as **report or screen titles**: `AbandonedCarts`, `SuspendedUsers`.
+- Files:
+  - `[ActionName]Query.cs` — `record Query`, `record QueryResult`, `class QueryHandler`.
+  - `[ActionName]QueryValidator.cs` — optional.
+
+## Model
+
+Data structures in the `Model` folder are shared by multiple commands and queries of the same module. Each model should be named after its purpose and context of use — not after a technical level of completeness. The same aggregate may need several read models for different scenarios: one loaded into `State` classes for decision-making, another for a detail review screen, and a third with only the fields needed for a lookup picker. Each deserves a name that makes its role immediately clear.
+
+### Naming Recommendations
+
+#### Name models after their context of use
+
+Choose names that describe what the model is used for and which data it exposes in that context. Avoid mechanical tier patterns (`EntityCompact` + `EntityOverview` + `EntityDetail`) — add a model only when a specific behavior requires a data shape that no existing model covers, and name it after that need.
+
+| Context | Example | Avoid |
+| --- | --- | --- |
+| Decision data loaded into `State` classes | `ShoppingCartOverview` | `ShoppingCartDto`, `ShoppingCartData` |
+| Full data for a review or confirmation screen | `CartCheckoutPreview` | `ShoppingCartDetail`, `ShoppingCartFull` |
+| Minimal data for a lookup — no sensitive fields | `ProductOption` | `ProductCompact`, `ProductLight` |
+| Categorized states of an aggregate | `ShoppingCartStatus` | `CartStatusEnum`, `Status` |
+
+#### Avoid suffixes that describe structure or size, not purpose
+
+Technical suffixes — `Dto`, `Model`, `Data`, `Base` — describe structure rather than domain meaning. Generic completeness suffixes — `Compact`, `Slim`, `Light`, `Full` — describe size without conveying the model's actual role.
+
+```csharp
+// Prefer: name reflects the model's role in the domain
+public record ShoppingCartOverview(...);   // decision context for State classes
+public record CartCheckoutPreview(...);    // full data for checkout screens
+public record ProductOption(...);          // minimal data for the product picker
+
+// Avoid: suffix describes structure or size, not domain role
+public record ShoppingCartDto(...);
+public record ShoppingCartCompact(...);
+public record ProductLight(...);
+```
+
+#### Enum values must reflect the agreed domain vocabulary
+
+Enum names should be self-contained. Values must express the actual states the domain recognizes, not generic lifecycle terms or technical sequences.
+
+| Prefer | Avoid | Reason |
+| --- | --- | --- |
+| `Open`, `Abandoned`, `Converted` | `Active`, `Inactive`, `State1` | Generic lifecycle terms and numeric sequences hide business meaning. |
+| `ShoppingCartStatus` | `CartStatusEnum`, `Status` | The `Enum` suffix and single-word names add noise without adding clarity. |
+
+## State and StateHandler
+
+`State` and `StateHandler` are the VSA pair that implements the DCB mental model: load the minimum decision data, validate the business rules, then persist the result with an explicit consistency boundary. See [Domain-Driven Design](../../../discovery/domain-driven-design.md) for the design principle and implementation path guidance.
+
+### Responsibilities
+
+| Component | Responsibility |
+| --- | --- |
+| `State` | Holds the decision data and exposes methods that enforce domain invariants. Contains no I/O. |
+| `IStateHandler` | Defines the load and persist contract for one behavior or a group of behaviors that share the same aggregate scope. |
+| `StateHandler` | Implements `IStateHandler`. Handles all database interaction — loads data into `State` and persists the result. Contains no domain rules. |
+
+### Naming
+
+#### Name `State` after the behavior, not the entity
+
+The `State` class models the decision context of a specific behavior. Naming it after the entity is too broad and hides which rules it enforces.
+
+```csharp
+// Prefer: names the behavior
+public sealed class StudentJoinsCourseState { ... }
+public interface IStudentJoinsCourseStateHandler
+    : IStateHandler<StudentJoinsCourseState, StudentCourseKey>;
+
+// Avoid: names the entity — too broad, hides intent
+public sealed class StudentState { ... }
+```
+
+#### Name shared `State` after the aggregate condition
+
+When two or more commands share the same decision data, the `State` name should describe the aggregate condition that makes the behavior possible, not one specific action.
+
+```csharp
+// AddItemToCart and RemoveItemFromCart both require an open cart
+public sealed class OpenShoppingCartState { ... }
+public interface IOpenShoppingCartStateHandler
+    : IStateHandler<OpenShoppingCartState, Guid>;
+```
+
+#### Naming conventions for State and StateHandler
+
+| Concept | Convention | Example |
+| --- | --- | --- |
+| Behavior-specific State | `[BehaviorName]State` | `StudentJoinsCourseState` |
+| Shared State | `[AggregateCondition]State` | `OpenShoppingCartState` |
+| Handler interface | `I[StateName]Handler` | `IStudentJoinsCourseStateHandler` |
+| Handler implementation | `[StateName]Handler` | `StudentJoinsCourseStateHandler` |
+
+Avoid generic or entity-named suffixes: `StudentStateModel`, `CartStateData`, `IShoppingCartStateHandlerInterface`.
+
+### Implementation Recommendations
+
+#### `State` only holds data and validates rules — no I/O
+
+The constructor receives plain decision data. Services, repositories and database connections have no place inside `State`.
+
+```csharp
+public sealed class StudentJoinsCourseState
+{
+    public StudentJoinsCourseState(
+        IReadOnlyCollection<CourseEnrollment> studentEnrollments,
+        IReadOnlyCollection<CourseEnrollment> courseEnrollments)
+    {
+        StudentEnrollments = studentEnrollments;
+        CourseEnrollments = courseEnrollments;
+    }
+
+    public IReadOnlyCollection<CourseEnrollment> StudentEnrollments { get; }
+    public IReadOnlyCollection<CourseEnrollment> CourseEnrollments { get; }
+
+    public void EnsureStudentHasCapacity() { ... }
+    public void EnsureCourseHasCapacity() { ... }
+    public void EnsureStudentIsNotAlreadyEnrolled() { ... }
+}
+```
+
+#### Validation methods throw on violation — they do not return booleans
+
+Throwing keeps the command handler clean and makes the violated invariant unambiguous.
+
+```csharp
+// Prefer: throws, so the handler needs no conditional logic
+public void EnsureStudentHasCapacity()
+{
+    if (StudentEnrollments.Count(e => e.IsActive) >= 5)
+        throw new DomainStateValidationException("The student cannot exceed 5 active courses.");
+}
+
+// Avoid: the caller must interpret the return value and decide what to do
+public bool CanStudentJoin() => StudentEnrollments.Count(e => e.IsActive) < 5;
+```
+
+#### `StateHandler` is an orchestrator — no domain logic
+
+The handler calls the database and delegates all rule evaluation to `State`. It should contain no `if` statements that encode business rules.
+
+#### `State` is independently testable
+
+Because `State` receives plain data in its constructor and has no I/O dependencies, it can be unit-tested by instantiating it directly — no mocks required.
+
+```csharp
+[Fact]
+public void EnsureCourseHasCapacity_ThrowsWhenFull()
+{
+    var enrollments = Enumerable.Range(0, 30)
+        .Select(_ => new CourseEnrollment(Guid.NewGuid(), _courseId, isActive: true))
+        .ToList();
+
+    var state = new StudentJoinsCourseState([], enrollments);
+
+    Assert.Throws<DomainStateValidationException>(
+        () => state.EnsureCourseHasCapacity());
+}
+```
 
 Use typed results for the success path in the endpoint:
 
@@ -130,17 +338,6 @@ public sealed class ApiExceptionHandler : IExceptionHandler
 }
 ```
 
-Document known responses in endpoint metadata:
-
-```csharp
-routeGroup.MapPost("/projects", CreateProjectAsync)
-    .WithSummary("Create a project.")
-    .Produces<ProjectSummary>(StatusCodes.Status201Created)
-    .ProducesValidationProblem(StatusCodes.Status422UnprocessableEntity)
-    .Produces<ProblemDetails>(StatusCodes.Status404NotFound, "application/problem+json")
-    .Produces<ProblemDetails>(StatusCodes.Status409Conflict, "application/problem+json");
-```
-
 This keeps every endpoint focused on input binding, mediation and successful response construction. The global handler owns the repeated mapping from domain errors to HTTP status codes, `application/problem+json`, stable `code` values and sanitized details.
 
 ---
@@ -168,7 +365,11 @@ public static class CreateShoppingCartEndpoint
         })
         .MapToApiVersion(1)
         .WithSummary("Create a new shopping cart.")
-        .WithDescription("Creates a new shopping cart for the specified user and returns the operation result.")
+        .WithDescription("""
+            Creates a new open shopping cart for the specified user account.
+            The operation is rejected if the user already has an open cart.
+            Returns the identifier of the newly created cart.
+            """)
         .Produces<CreateShoppingCartCommandResult>()
         .Produces(StatusCodes.Status400BadRequest);
     }
@@ -192,7 +393,11 @@ public static class CreateShoppingCartEndpoint
         })
         .MapToApiVersion(1)
         .WithSummary("Create a new shopping cart.")
-        .WithDescription("Creates a new shopping cart for the specified user and returns the operation result.")
+        .WithDescription("""
+            Creates a new open shopping cart for the specified user account.
+            The operation is rejected if the user already has an open cart.
+            Returns the identifier of the newly created cart.
+            """)
         .Produces<CreateShoppingCartCommandResult>()
         .Produces(StatusCodes.Status400BadRequest);
     }
@@ -348,6 +553,11 @@ public static class AddItemToShoppingCartEndpoint
         })
         .MapToApiVersion(1)
         .WithSummary("Add an item to the shopping cart.")
+        .WithDescription("""
+            Adds a product to the user's open shopping cart with the specified quantity.
+            Requires the product to exist and the cart to be in an open state.
+            Returns the new item identifier and an updated cart summary.
+            """)
         .Produces<AddItemToShoppingCartCommandResult>()
         .Produces(StatusCodes.Status400BadRequest);
     }
@@ -375,6 +585,11 @@ public static class AddItemToShoppingCartEndpoint
         })
         .MapToApiVersion(1)
         .WithSummary("Add an item to the shopping cart.")
+        .WithDescription("""
+            Adds a product to the user's open shopping cart with the specified quantity.
+            Requires the product to exist and the cart to be in an open state.
+            Returns the new item identifier and an updated cart summary.
+            """)
         .Produces<AddItemToShoppingCartCommandResult>()
         .Produces(StatusCodes.Status400BadRequest);
     }
@@ -456,6 +671,11 @@ public static class RemoveItemFromShoppingCartEndpoint
         })
         .MapToApiVersion(1)
         .WithSummary("Remove an item from the shopping cart.")
+        .WithDescription("""
+            Removes an item from the user's open shopping cart.
+            Requires the cart to be in an open state and the item to exist in it.
+            Returns an updated cart summary reflecting the removal.
+            """)
         .Produces<RemoveItemFromShoppingCartCommandResult>()
         .Produces(StatusCodes.Status400BadRequest);
     }
@@ -481,6 +701,11 @@ public static class RemoveItemFromShoppingCartEndpoint
         })
         .MapToApiVersion(1)
         .WithSummary("Remove an item from the shopping cart.")
+        .WithDescription("""
+            Removes an item from the user's open shopping cart.
+            Requires the cart to be in an open state and the item to exist in it.
+            Returns an updated cart summary reflecting the removal.
+            """)
         .Produces<RemoveItemFromShoppingCartCommandResult>()
         .Produces(StatusCodes.Status400BadRequest);
     }
@@ -705,7 +930,11 @@ public static class AbandonedCartsEndpoint
         })
         .MapToApiVersion(1)
         .WithSummary("Query abandoned shopping carts.")
-        .WithDescription("Gets a paginated list of carts abandoned for more than a specific number of days.")
+        .WithDescription("""
+            Returns a paginated list of shopping carts that have been inactive for at least the specified number of days,
+            defaulting to seven when no threshold is provided.
+            Results include the user's contact information, item count and total amount for each cart.
+            """)
         .Produces<AbandonedCartsQueryResult>()
         .Produces(StatusCodes.Status400BadRequest);
     }
@@ -729,7 +958,11 @@ public static class AbandonedCartsEndpoint
         })
         .MapToApiVersion(1)
         .WithSummary("Query abandoned shopping carts.")
-        .WithDescription("Gets a paginated list of carts abandoned for more than a specific number of days.")
+        .WithDescription("""
+            Returns a paginated list of shopping carts that have been inactive for at least the specified number of days,
+            defaulting to seven when no threshold is provided.
+            Results include the user's contact information, item count and total amount for each cart.
+            """)
         .Produces<AbandonedCartsQueryResult>()
         .Produces(StatusCodes.Status400BadRequest);
     }
@@ -861,7 +1094,11 @@ public static class ShoppingCartDetailEndpoint
         })
         .MapToApiVersion(1)
         .WithSummary("Query shopping cart detail.")
-        .WithDescription("Gets the complete detail of a specific cart, including all its items.")
+        .WithDescription("""
+            Returns the full detail of a shopping cart: basic cart information, the associated user's data,
+            all line items with quantities and prices, and a total summary.
+            Returns 404 if no cart with the given identifier exists.
+            """)
         .Produces<ShoppingCartDetailQueryResult>()
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status400BadRequest);
@@ -891,7 +1128,11 @@ public static class ShoppingCartDetailEndpoint
         })
         .MapToApiVersion(1)
         .WithSummary("Query shopping cart detail.")
-        .WithDescription("Gets the complete detail of a specific cart, including all its items.")
+        .WithDescription("""
+            Returns the full detail of a shopping cart: basic cart information, the associated user's data,
+            all line items with quantities and prices, and a total summary.
+            Returns 404 if no cart with the given identifier exists.
+            """)
         .Produces<ShoppingCartDetailQueryResult>()
         .Produces(StatusCodes.Status404NotFound)
         .Produces(StatusCodes.Status400BadRequest);
@@ -1003,9 +1244,11 @@ public class ShoppingCartDetailQueryValidator : AbstractValidator<ShoppingCartDe
 
 **Location**: `Features/Sales/OrderPlacement/Model/`
 
-Data structures and enums shared by multiple commands and queries of the same module.
+Data structures shared by multiple commands and queries of the same module, each named after its context of use. For naming guidelines, see [Model](#model) above.
 
 ### ShoppingCartOverview.cs
+
+Decision data loaded by `State` classes. Contains the fields needed to enforce business rules — not more.
 
 ```csharp
 public record ShoppingCartOverview(
@@ -1014,6 +1257,41 @@ public record ShoppingCartOverview(
     ShoppingCartStatus Status,
     DateTimeOffset CreationInstant,
     DateTimeOffset LastModified);
+```
+
+### CartCheckoutPreview.cs
+
+Full cart data for the checkout and order confirmation screen. Includes fields that are too detailed for state decision-making but necessary for user review.
+
+```csharp
+public record CartCheckoutPreview(
+    Guid ShoppingCartId,
+    string UserEmail,
+    string ShippingAddress,
+    IEnumerable<CartLineItem> Items,
+    decimal Subtotal,
+    decimal Tax,
+    decimal Total,
+    DateTimeOffset CreationInstant);
+
+public record CartLineItem(
+    Guid ProductId,
+    string ProductName,
+    double Quantity,
+    decimal UnitPrice,
+    decimal TotalPrice);
+```
+
+### ProductOption.cs
+
+Minimal product data for the item picker. Omits pricing history, internal SKUs and other fields that are sensitive or irrelevant in a selection context.
+
+```csharp
+public record ProductOption(
+    Guid ProductId,
+    string ProductName,
+    string Category,
+    bool IsAvailable);
 ```
 
 ### ShoppingCartStatus.cs

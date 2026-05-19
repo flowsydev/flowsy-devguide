@@ -6,6 +6,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.9.0] - 2026-05-19
+
+### Changed
+
+- Vertical Slice Architecture with C# and Minimal APIs page fully restructured to guide the reader from definitions and guidelines to practical examples:
+  - Feature-set folder structure section moved to the top of the page, with inline descriptions for each file inside `Commands/`, `Infrastructure/`, `Model/` and `Queries/` folders, including representative infrastructure services (`Finder`, `Gateway`, `Publisher`) and representative read models (`ShoppingCartOverview`, `CartCheckoutPreview`, `ProductOption`, `ShoppingCartStatus`).
+  - New `Endpoints` section added as an explicit definition, with guidelines on thin endpoints, `[ActionName]Endpoint.cs` naming convention, use of `.WithSummary()` and `.WithDescription()` with multiline `"""..."""` raw string literals, and response documentation with `.Produces<>()`. The `HTTP Results and Problem Details` subsection is now nested inside `Endpoints`.
+  - `Commands` section refocused to describe only the command, validator and handler; the endpoint file was removed from this section as it is covered by the new `Endpoints` section.
+  - `Queries` section refocused analogously to `Commands`.
+  - `Model` section rewritten with a purpose- and context-of-use naming philosophy instead of mechanical completeness-level suffixes (`Compact`, `Overview`, `Detail`). Added subsections for naming by context, suffixes to avoid, and state vocabulary with enums; examples replaced with concrete shopping-cart domain models.
+  - `State and StateHandler` section added as a standalone definition with a responsibilities table, naming guidelines and implementation recommendations.
+  - `General Convention` section removed; its content was absorbed into the inline descriptions of the feature-set folder tree.
+  - Mediator vs. direct handler note repositioned as a blockquote before the first example, to avoid interrupting the definitions flow.
+  - `Example 4: Shared Model` expanded with three distinct read models: `ShoppingCartOverview` (decision data for State classes), `CartCheckoutPreview` (full checkout data for review screens, with the `CartLineItem` record) and `ProductOption` (minimal picker data), plus the `ShoppingCartStatus` enum.
+  - `.WithDescription()` applied with multiline `"""..."""` raw string literals and extended descriptions (preconditions, business rules, return value, failure scenarios) on all endpoints across all four examples.
+- C# naming conventions page (`technologies/backend/dotnet/csharp.md`) cleaned up: removed the "Naming of Commands, Queries and State" section, which is now fully covered by the dedicated VSA with C# and Minimal APIs page.
+- Language strategy table in the Ubiquitous Language guide simplified: removed the "Examples and templates" row, which was redundant with the surrounding content.
+- Vite build configuration added to split Mermaid, D3, Dagre, Cytoscape, markdown-it and Shiki into separate chunks, preventing chunk-size warnings during production builds.
+
+## [1.8.0] - 2026-05-19
+
+### Changed
+
+- Domain-Driven Design guidance expanded with an explicit DCB implementation-paths section: DCB is established as the recommended mental model for designing every command, and two valid implementation paths are introduced — direct mutation in the command handler for simple mutations, and the State + StateHandler pattern as an orchestrated approach for complex mutations. Each path includes when-to-use guidelines and a code example.
+
 ## [1.7.0] - 2026-05-18
 
 ### Fixed

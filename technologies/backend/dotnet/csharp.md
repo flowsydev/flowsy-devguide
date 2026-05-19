@@ -37,35 +37,6 @@ public record CreateShoppingCartCommandResult(Guid ShoppingCartId);
 public record ShoppingCartSummary(Guid ShoppingCartId, int TotalItems, double TotalProducts, decimal TotalPrice);
 ```
 
-## Naming of Commands, Queries and State
-
-### Commands
-
-- Name in **imperative** form using the selected business language: `CreateShoppingCart`, `SuspendUserAccount`, `AddItemToCart`.
-- Files:
-  - `[ActionName]Command.cs` — `record Command`, `record CommandResult`, `class CommandHandler`.
-  - `[ActionName]CommandValidator.cs` — validation with FluentValidation.
-  - `[ActionName]Endpoint.cs` — Minimal API endpoint.
-  - `[ActionName]State.cs` — `class State`, `interface IStateHandler`, `class StateHandler`.
-
-### Queries
-
-- Name as **report or screen titles**: `AbandonedCarts`, `SuspendedUsers`.
-- Files:
-  - `[ActionName]Query.cs` — `record Query`, `record QueryResult`, `class QueryHandler`.
-  - `[ActionName]QueryValidator.cs` — optional.
-  - `[ActionName]Endpoint.cs` — Minimal API endpoint.
-
-### State
-
-- The `State` encapsulates the entities needed to execute a command.
-- When multiple actions operate on the same aggregate, they share a common `State`:
-
-```csharp
-// AddItemToCart and RemoveItemFromCart share OpenShoppingCartState
-public interface IOpenShoppingCartStateHandler : IStateHandler<OpenShoppingCartState, Guid>;
-```
-
 ## Architecture and API Implementation References
 
 Keep this page focused on C# naming and language-level conventions. Use the specialized backend guides for implementation structure:

@@ -21,7 +21,6 @@ The language may differ by Bounded Context when the business reality requires it
 | --- | --- |
 | Domain model language | Use the language that best supports collaboration with domain experts and keeps the ubiquitous language clear. |
 | Data model language | Align table, column, routine and event names with the domain language and the database engine naming convention. |
-| Examples and templates | Show or adapt business examples in the chosen project language; when teaching language strategy, include English and Spanish equivalents. |
 | Mixed-language projects | Define where English technical terms are acceptable and where domain terms must remain in the business language. |
 | Team agreement | Document the chosen language strategy in project conventions, ADRs or repository instructions. |
 

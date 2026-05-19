@@ -5,6 +5,25 @@ export default withMermaid({
   title: "Flowsy DevGuide",
   description: "Guide for Designing and Developing Solutions",
   srcExclude: ['AGENTS.md', 'docs/iterations/**', 'specs/**'],
+  vite: {
+    build: {
+      chunkSizeWarningLimit: 2048,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules/d3')) return 'd3'
+            if (id.includes('node_modules/dagre-d3-es')) return 'dagre'
+            if (id.includes('node_modules/cytoscape')) return 'cytoscape'
+            if (id.includes('node_modules/@mermaid-js')) return 'mermaid-parser'
+            if (id.includes('node_modules/khroma')) return 'mermaid-core'
+            if (id.includes('node_modules/mermaid')) return 'mermaid-core'
+            if (id.includes('node_modules/markdown-it')) return 'markdown-it'
+            if (id.includes('node_modules/shiki')) return 'shiki'
+          }
+        }
+      }
+    }
+  },
   themeConfig: {
     logo: {
       src: '/assets/img/flowsy-isotype-three-color.svg?v=transparent',

@@ -4,7 +4,7 @@ import { withMermaid } from 'vitepress-plugin-mermaid'
 export default withMermaid({
   title: "Flowsy DevGuide",
   description: "Guide for Designing and Developing Solutions",
-  srcExclude: ['AGENTS.md', 'docs/iterations/**', 'specs/**'],
+  srcDir: './content',
   vite: {
     build: {
       chunkSizeWarningLimit: 2048,

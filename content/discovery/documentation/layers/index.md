@@ -204,9 +204,51 @@ A project documentation site should group the durable project layers under a `la
         └── 📄 05.summary.md
 ```
 
+## Language Alignment
+
+Subdomain and module folder names and artifact file slugs should follow the project's ubiquitous language decision. See [Ubiquitous Language](/discovery/ubiquitous-language) for guidance on choosing and applying the domain language consistently across code, data models and documentation.
+
+Both the disciplinary layer folder names and the discipline and artifact type prefix segments inside IDs must follow the domain language. In English: `strategy/`, `analysis/`, `architecture/`, `delivery/`, `validation/` and prefixes `STR`, `ANA`, `ARC`, `DLV`, `VAL`. In Spanish: `estrategia/`, `analisis/`, `arquitectura/`, `entrega/`, `validacion/` and prefixes `EST`, `ANA`, `ARQ`, `ENT`, `VAL`. Only the numeric segment is language-independent.
+
+The same folder structure for a rental and fleet management project looks like this when the domain language is English compared to Spanish:
+
+### English Domain Language
+
+```text
+📁 rental/
+  📁 analysis/
+    📄 RNT-ANA-NED-001-self-service-rental-access.md
+    📄 RNT-ANA-REQ-001-rental-registration.md
+  📁 delivery/
+    📄 RNT-DLV-EPC-001-rental-intake.md
+    📄 RNT-DLV-PBI-001-submit-quote-inquiry.md
+📁 fleet/
+  📁 architecture/
+    📄 FLT-ARC-ADR-001-async-availability-sync.md
+    📄 FLT-ARC-CTR-001-vehicle-availability-api.md
+```
+
+### Spanish Domain Language
+
+```text
+📁 arrendamiento/
+  📁 analisis/
+    📄 ARR-ANA-NEC-001-acceso-arrendamiento-autonomo.md
+    📄 ARR-ANA-REQ-001-registro-arrendamiento.md
+  📁 entrega/
+    📄 ARR-ENT-EPC-001-recepcion-arrendamiento.md
+    📄 ARR-ENT-PBI-001-enviar-solicitud-cotizacion.md
+📁 flota/
+  📁 arquitectura/
+    📄 FLT-ARQ-ADR-001-sincronizacion-asincrona-disponibilidad.md
+    📄 FLT-ARQ-CTR-001-api-disponibilidad-vehiculos.md
+```
+
+The same principle applies to all segments of the ID: the discipline and artifact type prefix segments, together with the descriptive slug, follow the domain language. Only the numeric segment is language-independent. An artifact such as `RNT-ANA-NED-001-self-service-rental-access.md` in an English-language project becomes `ARR-ANA-NEC-001-acceso-arrendamiento-autonomo.md` in a Spanish-language project.
+
 ## IDs and Traceability
 
-Each artifact uses a stable identifier independent of the path, with a prefix indicating the layer:
+Each artifact uses a stable identifier independent of the path, with a prefix indicating the layer. The prefixes below correspond to an English-domain project. When the project's ubiquitous language is Spanish, adapt each prefix to its Spanish equivalent — see [Language Alignment](#language-alignment) for examples.
 
 | Layer | Artifact | Prefix | Example |
 | --- | --- | --- | --- |

@@ -141,6 +141,10 @@
     --vp-home-hero-image-filter: blur(52px);
   }
 
+  .VPHome .VPFeatures .items {
+    justify-content: center;
+  }
+
   .VPHome .VPFeatures .item {
     width: calc(100% / 3);
   }
@@ -167,6 +171,12 @@
 
 .VPNavBarTitle .logo {
   height: 28px;
+}
+
+.VPNavBarMenu .VPNavBarMenuLink,
+.VPNavBarMenu .VPNavBarMenuGroup .button {
+  padding: 0 8px;
+  font-size: 13px;
 }
 
 h1.heading .text {

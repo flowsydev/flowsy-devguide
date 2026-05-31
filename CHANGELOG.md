@@ -4,6 +4,114 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [1.10.0] - 2026-05-31
+
+### Added
+
+- Error Handling guide added under Backend General guidance, covering validation before state changes, domain errors, infrastructure error translation, transaction boundaries, outbox usage, idempotency and testing expectations.
+
+### Changed
+
+- Backend, HTTP API Design, DDD, VSA, Clean Architecture, Event-Driven Architecture, Event Sourcing and C# Minimal API guidance updated with cross-references and stack- or architecture-specific error-handling recommendations.
+- VSA with Minimal APIs guidance updated so `State`/`StateHandler` is optional for complex mutations, simple commands use direct mutation in the command handler, per-state handler interfaces are no longer recommended, and examples keep an active session/transaction while loading, mutating and saving state.
+- Commands and Queries definitions in the VSA with Minimal APIs guide clarified to distinguish state-changing actions from read-only data extraction.
+
+### Fixed
+
+- Backend subsection labels in the Technologies index now use Markdown headings instead of bold text, resolving the MD036 lint warning.
+
+## [1.9.0] - 2026-05-19
+
+### Changed
+
+- Vertical Slice Architecture with C# and Minimal APIs page fully restructured to guide the reader from definitions and guidelines to practical examples:
+  - Feature-set folder structure section moved to the top of the page, with inline descriptions for each file inside `Commands/`, `Infrastructure/`, `Model/` and `Queries/` folders, including representative infrastructure services (`Finder`, `Gateway`, `Publisher`) and representative read models (`ShoppingCartOverview`, `CartCheckoutPreview`, `ProductOption`, `ShoppingCartStatus`).
+  - New `Endpoints` section added as an explicit definition, with guidelines on thin endpoints, `[ActionName]Endpoint.cs` naming convention, use of `.WithSummary()` and `.WithDescription()` with multiline `"""..."""` raw string literals, and response documentation with `.Produces<>()`. The `HTTP Results and Problem Details` subsection is now nested inside `Endpoints`.
+  - `Commands` section refocused to describe only the command, validator and handler; the endpoint file was removed from this section as it is covered by the new `Endpoints` section.
+  - `Queries` section refocused analogously to `Commands`.
+  - `Model` section rewritten with a purpose- and context-of-use naming philosophy instead of mechanical completeness-level suffixes (`Compact`, `Overview`, `Detail`). Added subsections for naming by context, suffixes to avoid, and state vocabulary with enums; examples replaced with concrete shopping-cart domain models.
+  - `State and StateHandler` section added as a standalone definition with a responsibilities table, naming guidelines and implementation recommendations.
+  - `General Convention` section removed; its content was absorbed into the inline descriptions of the feature-set folder tree.
+  - Mediator vs. direct handler note repositioned as a blockquote before the first example, to avoid interrupting the definitions flow.
+  - `Example 4: Shared Model` expanded with three distinct read models: `ShoppingCartOverview` (decision data for State classes), `CartCheckoutPreview` (full checkout data for review screens, with the `CartLineItem` record) and `ProductOption` (minimal picker data), plus the `ShoppingCartStatus` enum.
+  - `.WithDescription()` applied with multiline `"""..."""` raw string literals and extended descriptions (preconditions, business rules, return value, failure scenarios) on all endpoints across all four examples.
+- C# naming conventions page (`technologies/backend/dotnet/csharp.md`) cleaned up: removed the "Naming of Commands, Queries and State" section, which is now fully covered by the dedicated VSA with C# and Minimal APIs page.
+- Language strategy table in the Ubiquitous Language guide simplified: removed the "Examples and templates" row, which was redundant with the surrounding content.
+- Vite build configuration added to split Mermaid, D3, Dagre, Cytoscape, markdown-it and Shiki into separate chunks, preventing chunk-size warnings during production builds.
+
+## [1.8.0] - 2026-05-19
+
+### Changed
+
+- Domain-Driven Design guidance expanded with an explicit DCB implementation-paths section: DCB is established as the recommended mental model for designing every command, and two valid implementation paths are introduced — direct mutation in the command handler for simple mutations, and the State + StateHandler pattern as an orchestrated approach for complex mutations. Each path includes when-to-use guidelines and a code example.
+
+## [1.7.0] - 2026-05-18
+
+### Fixed
+
+- Cross-reference link in `technologies/frontend/vue/ecosystem.md` corrected from absolute path with `.md` extension to relative path, consistent with the rest of the document.
+
+### Changed
+
+- Frontend Modular Architecture moved out of the Vue section and revised as a framework-agnostic guide with Vue, React, Angular and Svelte artifact equivalences.
+- Practical technology examples now follow the guide's predominant language, keeping Flowsy code, configuration and folder examples in English except where language strategy is the explicit topic.
+- C# Minimal API examples clarified to use English domain terminology consistently with the Flowsy guide context.
+- Technology-agnostic examples now clarify that folder structures, naming patterns and report paths must be adapted to each project's language, framework and conventions.
+- Folder structure examples in technology-agnostic guides now use consistent folder and file icons.
+- Technologies and Backend navigation reordered so technology-agnostic concepts appear before stack-specific implementation guides.
+- Vertical Slice Architecture and Clean Architecture concept pages revised to be technology-agnostic, with C#/.NET details framed as implementation mappings.
+- Home-page feature cards expanded and reordered as a 12-step reading path from ubiquitous language and discovery through project documentation, AI-assisted development, testing, architecture, implementation, data, frontend and events.
+- Backend and Discovery navigation regrouped by intent, keeping Testing visible as an early design and validation guide while organizing Backend into General, .NET, Architecture, Events and Messaging, and Data and Persistence.
+- Frontend Vue guides reorganized under `technologies/frontend/vue/`, merging TypeScript and Vue conventions into a single Vue 3 and TypeScript conventions guide.
+- Domain-Driven Design page reorganized so model language strategy appears before fundamental concepts, and concepts are grouped as strategic, tactical and implementation-level guidance.
+- Ubiquitous language guidance expanded to distinguish compact Spanish identifiers from natural user-facing wording, with examples for code, UI and database objects.
+- Domain-Driven Design guidance expanded with more descriptive Bounded Context and Aggregate sections, including classical Aggregates, Dynamic Consistency Boundaries, examples, diagrams and trade-off tables.
+- Overlapping C#, Vue and database-engine convention sections consolidated so implementation structure, testing, source control and aggregate routine design each have one primary guide.
+- Technology-specific convention pages moved from Conventions into Backend, Data and Migrations and Frontend sections, with navigation and links updated accordingly.
+- Audit guidance distinguishes active-state windows (`ActiveFrom` / `ActiveUntil`, `ActivoDesde` / `ActivoHasta`) from domain-specific business validity periods.
+- Audit field conventions updated to use `created_by` / `updated_by` and `creado_por` / `modificado_por`, with actor key types left project-specific.
+- Relational modeling guidance expanded with primary key data type recommendations, advantages and trade-offs.
+- Database guidance now avoids cross-database-engine naming comparisons inside database-engine-specific pages and prefers invocation-time timestamp functions in examples.
+- Date and time wording adjusted to use friendlier local date/time terminology.
+- Centered home-page feature cards when the final row does not fill the full desktop grid.
+- Promoted ubiquitous language selection to a dedicated Discovery guide and standalone home-page section before the Flowsy ecosystem overview.
+- Home-page ubiquitous language guidance strengthened to emphasize domain discovery and modeling before writing code.
+- Writing guidelines simplified to reference the dedicated ubiquitous language guide while preserving multi-language documentation rules.
+- Writing guidelines reorganized into general rules, multi-language documentation, language-specific rules and unified terminology guidance.
+- Spanish terminology for `requirement` updated from `requisito` to `requerimiento`.
+- Multi-language naming examples aligned so English and Spanish variants use equivalent translated concepts for keys, constraints, domain language and routine naming guidance.
+- Writing guidelines and project entry points updated to make ubiquitous language selection the first project-level decision, with bilingual business examples across domain, code, testing and data conventions.
+
+## [1.6.0] - 2026-05-18
+
+### Changed
+
+- Database object and migration script naming guidance updated to follow each database provider's community conventions, with aggregate-oriented routine naming examples for abbreviated and full aggregate prefixes across PostgreSQL, MySQL/MariaDB, SQL Server, Oracle, Snowflake and BigQuery.
+- Top navigation made more compact while preserving dropdown access to the main site sections and technology subsections.
+- Evolve/Flyway repeatable migration structure expanded with additional aggregate folder examples under sales, billing and inventory schemas.
+- Routine prefix guidance clarified to prefer full aggregate names and reserve derived abbreviations or codes for practical constraints such as PostgreSQL identifier length.
+- Routine prefix guidance expanded to require a consistent full-name or abbreviation strategy across each project, with documented exceptions for specific long aggregate names.
+- Evolve/Flyway naming guidance reformatted with decision tables and descriptive aggregate-operation examples for easier scanning.
+- Repeatable routine naming guidance refined so prefix selection rules appear as bullets and the table focuses on case-style examples.
+- Evolve/Flyway guidance reorganized into migration model, script-type selection and naming rules, clarifying repeatable scripts as recreated object definitions.
+- Routine prefix wording standardized around "abbreviation or code" for long aggregate exceptions.
+- Migration guidance expanded with a cross-tool aggregate operation vocabulary, recommending `create`, `get`, `modify`, `remove` and `view` for aggregate-oriented database objects.
+- Database migration repository structure expanded with examples for `Operations/` and `Queries/` scripts outside automatic migration execution.
+- Database migration folder guidance clarified so `Resources/Databases/...` is treated as an adaptable base-path recommendation, with lowercase and framework-specific alternatives for non-.NET projects.
+- Audit attribute and column guidance updated to make actor fields project- and domain-driven, with English and Spanish examples for user- and application-originated changes.
+- Domain and data model language guidance expanded so consuming projects choose English, Spanish or another project language by team agreement, independently from the language of the Flowsy guide.
+- Backend relational database and migration guidance unified under a single Data and Migrations navigation section.
+- Primary and foreign key naming guidance added for English and Spanish model strategies, including case-style-aware `id` prefix/suffix examples.
+- Repeatable migration guidance updated to avoid lifecycle ordering recommendations that depend on English operation names or numeric prefixes.
+- Data and Migrations pages physically reorganized under `technologies/backend/data-and-migrations/`, with audit schema guidance consolidated into relational modeling.
+- Domain-Driven Design guidance expanded to explain Bounded Contexts as conceptual domain boundaries, decoupled from `Features/` or any specific architecture.
+- Testing guidance reorganized under `technologies/testing/database/`, replacing PostgreSQL-specific testing with database-engine-neutral relational database testing plus separate migration testing.
+- Relational modeling naming guidance expanded to include common database objects such as schemas, routines, parameters, views, sequences, triggers and scheduled jobs.
+- Primary key naming guidance table reorganized by case style with English and Spanish naming columns to improve readability.
+- Top navigation simplified to single-level dropdowns that link only to main section and subsection indexes, leaving detailed page navigation to the sidebar.
+
 ## [1.5.0] - 2026-05-03
 
 ### Added

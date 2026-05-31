@@ -4,7 +4,26 @@ import { withMermaid } from 'vitepress-plugin-mermaid'
 export default withMermaid({
   title: "Flowsy DevGuide",
   description: "Guide for Designing and Developing Solutions",
-  srcExclude: ['AGENTS.md', 'docs/iterations/**', 'specs/**'],
+  srcDir: './content',
+  vite: {
+    build: {
+      chunkSizeWarningLimit: 2048,
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes('node_modules/d3')) return 'd3'
+            if (id.includes('node_modules/dagre-d3-es')) return 'dagre'
+            if (id.includes('node_modules/cytoscape')) return 'cytoscape'
+            if (id.includes('node_modules/@mermaid-js')) return 'mermaid-parser'
+            if (id.includes('node_modules/khroma')) return 'mermaid-core'
+            if (id.includes('node_modules/mermaid')) return 'mermaid-core'
+            if (id.includes('node_modules/markdown-it')) return 'markdown-it'
+            if (id.includes('node_modules/shiki')) return 'shiki'
+          }
+        }
+      }
+    }
+  },
   themeConfig: {
     logo: {
       src: '/assets/img/flowsy-isotype-three-color.svg?v=transparent',
@@ -15,62 +34,29 @@ export default withMermaid({
     nav: [
       { text: 'Home', link: '/' },
       {
-        text: 'AI-Assisted Development',
+        text: 'AI',
         items: [
           { text: 'Overview', link: '/ai-assisted-development/' },
-          { text: 'Best Practices', link: '/ai-assisted-development/best-practices' },
-          { text: 'Agent Context Routing', link: '/ai-assisted-development/agent-routing' },
           { text: 'Agent Context Guides', link: '/ai-assisted-development/context-guides/' },
-          { text: 'Specs-Driven Development', link: '/ai-assisted-development/specs-driven-development' },
-          { text: 'Platform Guidance', link: '/ai-assisted-development/platform-guidance' },
-          { text: 'Official References', link: '/ai-assisted-development/official-references' },
         ]
       },
       {
-        text: 'Discovery & Design',
+        text: 'Discovery',
         items: [
           { text: 'Overview', link: '/discovery/' },
-          { text: 'Design Techniques', link: '/discovery/design-techniques' },
-          { text: 'Event Storming', link: '/discovery/event-storming' },
-          { text: 'Domain-Driven Design', link: '/discovery/domain-driven-design' },
+          { text: 'Ubiquitous Language', link: '/discovery/ubiquitous-language' },
           { text: 'Project Documentation', link: '/discovery/documentation/' },
+          { text: 'Disciplinary Layers', link: '/discovery/documentation/layers/' },
+          { text: 'Static Site Generators', link: '/discovery/documentation/static-site-generators/' },
         ]
       },
       {
-        text: 'Technologies',
+        text: 'Tech',
         items: [
           { text: 'Overview', link: '/technologies/' },
-          {
-            text: 'Testing',
-            items: [
-              { text: 'Start', link: '/technologies/testing/' },
-              { text: 'Automated Testing Strategy', link: '/technologies/testing/automated-testing' },
-              { text: 'Unit Tests', link: '/technologies/testing/unit-tests' },
-              { text: 'Integration Tests', link: '/technologies/testing/integration-tests' },
-              { text: 'End-to-End Tests', link: '/technologies/testing/end-to-end-tests' },
-              { text: 'Evidence and Reporting', link: '/technologies/testing/evidence-and-reporting' },
-            ]
-          },
-          {
-            text: 'Backend',
-            items: [
-              { text: 'General Concepts', link: '/technologies/backend/concepts' },
-              { text: 'HTTP API Design', link: '/technologies/backend/api-design' },
-              { text: 'Vertical Slice Architecture', link: '/technologies/backend/vertical-slice-architecture/concepts' },
-              { text: 'Clean Architecture', link: '/technologies/backend/clean-architecture/concepts' },
-              { text: 'Event-Driven Architecture', link: '/technologies/backend/event-driven-architecture/concepts' },
-              { text: 'Event Sourcing', link: '/technologies/backend/event-sourcing/concepts' },
-              { text: 'Relational Databases', link: '/technologies/backend/relational-databases/concepts' },
-              { text: 'Database Migrations', link: '/technologies/backend/database-migrations/concepts' },
-            ]
-          },
-          {
-            text: 'Frontend',
-            items: [
-              { text: 'Modular Architecture', link: '/technologies/frontend/modular-architecture/concepts' },
-              { text: 'Vue Ecosystem', link: '/technologies/frontend/modular-architecture/vue-ecosystem' },
-            ]
-          },
+          { text: 'Testing', link: '/technologies/testing/' },
+          { text: 'Backend', link: '/technologies/backend/concepts' },
+          { text: 'Frontend', link: '/technologies/frontend/' },
         ]
       },
       {
@@ -79,12 +65,6 @@ export default withMermaid({
           { text: 'Overview', link: '/conventions/' },
           { text: 'Writing Guidelines', link: '/conventions/writing-guidelines' },
           { text: 'Repository Documentation', link: '/conventions/repository-documentation' },
-          { text: 'C#', link: '/conventions/csharp' },
-          { text: 'PostgreSQL', link: '/conventions/postgresql' },
-          { text: 'SQL Server', link: '/conventions/sql-server' },
-          { text: 'MySQL and MariaDB', link: '/conventions/mysql-mariadb' },
-          { text: 'TypeScript', link: '/conventions/typescript' },
-          { text: 'Vue', link: '/conventions/vue' },
           { text: 'Git', link: '/conventions/source-control/git' },
         ]
       },
@@ -121,9 +101,16 @@ export default withMermaid({
         collapsed: true,
         items: [
           { text: 'Overview', link: '/discovery/' },
-          { text: 'Design Techniques', link: '/discovery/design-techniques' },
-          { text: 'Event Storming', link: '/discovery/event-storming' },
-          { text: 'Domain-Driven Design', link: '/discovery/domain-driven-design' },
+          {
+            text: 'Domain Discovery',
+            collapsed: true,
+            items: [
+              { text: 'Ubiquitous Language', link: '/discovery/ubiquitous-language' },
+              { text: 'Design Techniques', link: '/discovery/design-techniques' },
+              { text: 'Event Storming', link: '/discovery/event-storming' },
+              { text: 'Domain-Driven Design', link: '/discovery/domain-driven-design' },
+            ]
+          },
           {
             text: 'Project Documentation',
             link: '/discovery/documentation/',
@@ -211,8 +198,8 @@ export default withMermaid({
               { text: 'Evidence and Reporting', link: '/technologies/testing/evidence-and-reporting' },
               { text: 'C#/.NET', link: '/technologies/testing/csharp-dotnet' },
               { text: 'TypeScript and Vue', link: '/technologies/testing/typescript-vue' },
-              { text: 'PostgreSQL', link: '/technologies/testing/postgresql' },
-              { text: 'Database Migrations', link: '/technologies/testing/database-migrations' },
+              { text: 'Relational Databases', link: '/technologies/testing/database/relational-databases' },
+              { text: 'Database Migration Testing', link: '/technologies/testing/database/migrations' },
               { text: 'Event-Driven Systems', link: '/technologies/testing/event-driven-systems' },
             ]
           },
@@ -220,53 +207,64 @@ export default withMermaid({
             text: 'Backend',
             collapsed: true,
             items: [
-              { text: 'General Concepts', link: '/technologies/backend/concepts' },
-              { text: 'HTTP API Design', link: '/technologies/backend/api-design' },
               {
-                text: 'Vertical Slice Architecture',
+                text: 'General',
                 collapsed: true,
                 items: [
-                  { text: 'Concepts', link: '/technologies/backend/vertical-slice-architecture/concepts' },
-                  { text: 'C# with Minimal APIs', link: '/technologies/backend/vertical-slice-architecture/csharp-minimal-apis' },
+                  { text: 'General Concepts', link: '/technologies/backend/concepts' },
+                  { text: 'HTTP API Design', link: '/technologies/backend/api-design' },
+                  { text: 'Error Handling', link: '/technologies/backend/error-handling' },
                 ]
               },
               {
-                text: 'Clean Architecture',
+                text: 'Architecture',
                 collapsed: true,
                 items: [
-                  { text: 'Concepts', link: '/technologies/backend/clean-architecture/concepts' },
+                  { text: 'Vertical Slice Architecture', link: '/technologies/backend/vertical-slice-architecture/concepts' },
+                  { text: 'Clean Architecture', link: '/technologies/backend/clean-architecture/concepts' },
                 ]
               },
               {
-                text: 'Event-Driven Architecture',
+                text: 'Events and Messaging',
                 collapsed: true,
                 items: [
-                  { text: 'Concepts', link: '/technologies/backend/event-driven-architecture/concepts' },
-                  { text: 'Background Services in C#', link: '/technologies/backend/event-driven-architecture/csharp-background-services' },
-                ]
-              },
-              {
-                text: 'Event Sourcing',
-                collapsed: true,
-                items: [
-                  { text: 'Concepts', link: '/technologies/backend/event-sourcing/concepts' },
+                  { text: 'Event-Driven Architecture', link: '/technologies/backend/event-driven-architecture/concepts' },
+                  { text: 'Event Sourcing', link: '/technologies/backend/event-sourcing/concepts' },
                   { text: 'Kafka and Redpanda', link: '/technologies/backend/event-sourcing/kafka-redpanda' },
                 ]
               },
               {
-                text: 'Relational Databases',
+                text: 'Data and Persistence',
                 collapsed: true,
                 items: [
-                  { text: 'Concepts', link: '/technologies/backend/relational-databases/concepts' },
+                  { text: 'Relational Modeling', link: '/technologies/backend/data-and-migrations/relational-modeling' },
+                  {
+                    text: 'Migrations',
+                    collapsed: true,
+                    items: [
+                      { text: 'Migration Concepts', link: '/technologies/backend/data-and-migrations/migration-concepts' },
+                      { text: 'Tools and Strategies', link: '/technologies/backend/data-and-migrations/tools-and-strategies' },
+                      { text: 'flwdb CLI', link: '/technologies/backend/data-and-migrations/cli' },
+                    ]
+                  },
+                  {
+                    text: 'Database Engines',
+                    collapsed: true,
+                    items: [
+                      { text: 'PostgreSQL', link: '/technologies/backend/data-and-migrations/database-engines/postgresql' },
+                      { text: 'SQL Server', link: '/technologies/backend/data-and-migrations/database-engines/sql-server' },
+                      { text: 'MySQL and MariaDB', link: '/technologies/backend/data-and-migrations/database-engines/mysql-mariadb' },
+                    ]
+                  },
                 ]
               },
               {
-                text: 'Database Migrations',
+                text: '.NET',
                 collapsed: true,
                 items: [
-                  { text: 'Concepts', link: '/technologies/backend/database-migrations/concepts' },
-                  { text: 'Tools and Strategies', link: '/technologies/backend/database-migrations/tools-and-strategies' },
-                  { text: 'flwdb CLI', link: '/technologies/backend/database-migrations/cli' },
+                  { text: 'Lenguaje C#', link: '/technologies/backend/dotnet/csharp' },
+                  { text: 'VSA with Minimal APIs', link: '/technologies/backend/dotnet/csharp-minimal-apis' },
+                  { text: 'Background Services', link: '/technologies/backend/dotnet/csharp-background-services' },
                 ]
               },
             ]
@@ -275,12 +273,14 @@ export default withMermaid({
             text: 'Frontend',
             collapsed: true,
             items: [
+              { text: 'Overview', link: '/technologies/frontend/' },
+              { text: 'Modular Architecture', link: '/technologies/frontend/modular-architecture' },
               {
-                text: 'Modular Architecture',
+                text: 'Vue',
                 collapsed: true,
                 items: [
-                  { text: 'Concepts', link: '/technologies/frontend/modular-architecture/concepts' },
-                  { text: 'Vue Ecosystem', link: '/technologies/frontend/modular-architecture/vue-ecosystem' },
+                  { text: 'Vue 3 and TypeScript Conventions', link: '/technologies/frontend/vue/conventions' },
+                  { text: 'Vue Ecosystem', link: '/technologies/frontend/vue/ecosystem' },
                 ]
               },
             ]
@@ -294,12 +294,6 @@ export default withMermaid({
           { text: 'Overview', link: '/conventions/' },
           { text: 'Writing Guidelines', link: '/conventions/writing-guidelines' },
           { text: 'Repository Documentation', link: '/conventions/repository-documentation' },
-          { text: 'C#', link: '/conventions/csharp' },
-          { text: 'PostgreSQL', link: '/conventions/postgresql' },
-          { text: 'SQL Server', link: '/conventions/sql-server' },
-          { text: 'MySQL and MariaDB', link: '/conventions/mysql-mariadb' },
-          { text: 'TypeScript', link: '/conventions/typescript' },
-          { text: 'Vue', link: '/conventions/vue' },
           { text: 'Git', link: '/conventions/source-control/git' },
         ]
       },

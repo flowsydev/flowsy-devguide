@@ -1,4 +1,4 @@
-# EDA: Background Services in C#
+# Background Services
 
 Implementation of event consumers in .NET using `BackgroundService` and the worker pattern. Recommended for asynchronous processing of events published by the Web API.
 
@@ -241,6 +241,6 @@ if (alreadyProcessed is true)
 
 ## Cross Reference
 
-- [EDA: Concepts](./concepts.md) — event-driven architecture principles and patterns.
+- [EDA: Concepts](../event-driven-architecture/concepts.md) — event-driven architecture principles and patterns.
 - [Kafka/Redpanda as Event Store](../event-sourcing/kafka-redpanda.md)
-- [VSA: C# Minimal APIs](../vertical-slice-architecture/csharp-minimal-apis.md) — event generation from commands.
+- [C# with Minimal APIs](./csharp-minimal-apis.md) — event generation from commands.

@@ -11,6 +11,16 @@ Start API work with [HTTP API Design](./api-design.md) when the change affects r
 - Standardize error structure to facilitate observability and support.
 - Follow the HTTP API design baseline for resource-oriented contracts, HTTP semantics, status codes and Problem Details.
 
+## Error Handling
+
+Use [Error Handling](./error-handling.md) when a change affects validation flow, domain errors, transaction boundaries, infrastructure failure translation, retries, idempotency or side effects. That guide defines where errors should be detected, how domain rules differ from persistence safeguards and how infrastructure-specific failures stay behind adapters.
+
+- Validate what can be known before changing durable state.
+- Keep domain rules in application and domain code.
+- Use database constraints and concurrency controls as safeguards, not as the only rule expression.
+- Translate provider-specific errors at infrastructure or delivery boundaries.
+- Test representative failure paths, including conflicts and side-effect reliability.
+
 ## Design Conventions
 
 - Name contracts by functional role (`CreateOrderRequest`, `OrderSummary` or `CrearPedidoRequest`, `ResumenPedido`).
@@ -48,6 +58,7 @@ See [DDD principles](../../discovery/domain-driven-design.md) for more context o
 
 - [Vertical Slice Architecture](./vertical-slice-architecture/concepts.md) — code organization by feature.
 - [HTTP API Design](./api-design.md) — API maturity baseline, HTTP semantics and Problem Details.
+- [Error Handling](./error-handling.md) — validation flow, domain errors, infrastructure error translation and side-effect boundaries.
 - [Clean Architecture](./clean-architecture/concepts.md) — code organization by layer.
 - [Event-Driven Architecture](./event-driven-architecture/concepts.md) — asynchronous communication between services.
 - [Event Sourcing](./event-sourcing/concepts.md) — event-based persistence.

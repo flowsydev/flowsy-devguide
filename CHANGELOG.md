@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.10.0] - 2026-05-31
+
+### Added
+
+- Error Handling guide added under Backend General guidance, covering validation before state changes, domain errors, infrastructure error translation, transaction boundaries, outbox usage, idempotency and testing expectations.
+
+### Changed
+
+- Backend, HTTP API Design, DDD, VSA, Clean Architecture, Event-Driven Architecture, Event Sourcing and C# Minimal API guidance updated with cross-references and stack- or architecture-specific error-handling recommendations.
+- VSA with Minimal APIs guidance updated so `State`/`StateHandler` is optional for complex mutations, simple commands use direct mutation in the command handler, per-state handler interfaces are no longer recommended, and examples keep an active session/transaction while loading, mutating and saving state.
+- Commands and Queries definitions in the VSA with Minimal APIs guide clarified to distinguish state-changing actions from read-only data extraction.
+
+### Fixed
+
+- Backend subsection labels in the Technologies index now use Markdown headings instead of bold text, resolving the MD036 lint warning.
+
 ## [1.9.0] - 2026-05-19
 
 ### Changed

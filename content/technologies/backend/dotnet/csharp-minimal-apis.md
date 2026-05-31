@@ -1,8 +1,8 @@
-# VSA: C# with Minimal APIs
+# VSA with Minimal APIs
 
 Complete implementation examples of Vertical Slices in C# using Minimal APIs, following the conventions of the Flowsy ecosystem.
 
-This page is the C#/.NET implementation companion to the technology-agnostic [VSA concepts](./concepts.md). Start with the concepts when deciding slice boundaries, then use this page for concrete files, libraries and code.
+This page is the C#/.NET implementation companion to the technology-agnostic [VSA concepts](../vertical-slice-architecture/concepts.md). Start with the concepts when deciding slice boundaries, then use this page for concrete files, libraries and code.
 
 The examples use English domain terminology, aligned with the predominant language and community context of this guide. Projects should adapt business identifiers to the ubiquitous language chosen for their own domain.
 
@@ -19,7 +19,7 @@ A complete feature-set organizes its slices under a module and submodule path. `
 │       ├── 📄 [ActionName]Endpoint.cs           ← Minimal API endpoint
 │       ├── 📄 [ActionName]Command.cs            ← Command + Result + Handler
 │       ├── 📄 [ActionName]CommandValidator.cs   ← Validation with FluentValidation
-│       └── 📄 [ActionName]State.cs              ← State + IStateHandler + StateHandler
+│       └── 📄 [ActionName]State.cs              ← Optional State + StateHandler for complex mutations
 ├── 📁 Infrastructure/
 │   ├── 📄 [EntityName]Finder.cs                ← read-only lookups shared across slices
 │   ├── 📄 [ServiceName]Gateway.cs              ← external API or service integration
@@ -64,15 +64,30 @@ routeGroup.MapPost("/projects", CreateProjectAsync)
 
 Centralize repeated domain-error mapping in a global exception handler that returns RFC 9457 Problem Details.
 
+### Error Handling in VSA with Minimal APIs
+
+Apply the broader [Error Handling](../error-handling.md) guidance inside the slice:
+
+- validate the command before loading or mutating state when the rule does not require current state;
+- let `State` or aggregate methods throw domain errors before `StateHandler.SaveStateAsync`;
+- keep database and SDK exceptions inside `StateHandler`, gateway or publisher implementations;
+- translate unique constraint, concurrency and provider failures to application exceptions before the API boundary maps them to Problem Details;
+- use an outbox for integration events that must follow a successful mutation.
+- test representative failure paths with integration tests that assert status code, content type, stable `code` and sanitized details.
+
 ## Commands
+
+Commands represent actions that intentionally modify application state, such as creating, updating, cancelling, publishing or assigning something in the domain.
 
 - Name in **imperative** form using the selected business language: `CreateShoppingCart`, `SuspendUserAccount`, `AddItemToCart`.
 - Files:
   - `[ActionName]Command.cs` — `record Command`, `record CommandResult`, `class CommandHandler`.
   - `[ActionName]CommandValidator.cs` — validation with FluentValidation.
-  - `[ActionName]State.cs` — `class State`, `interface IStateHandler`, `class StateHandler`.
+  - `[ActionName]State.cs` — optional `class State` and `class StateHandler` when the mutation needs an explicit decision model.
 
 ## Queries
+
+Queries only extract data. They must not intentionally modify application state or trigger business side effects.
 
 - Name as **report or screen titles**: `AbandonedCarts`, `SuspendedUsers`.
 - Files:
@@ -123,15 +138,34 @@ Enum names should be self-contained. Values must express the actual states the d
 
 ## State and StateHandler
 
-`State` and `StateHandler` are the VSA pair that implements the DCB mental model: load the minimum decision data, validate the business rules, then persist the result with an explicit consistency boundary. See [Domain-Driven Design](../../../discovery/domain-driven-design.md) for the design principle and implementation path guidance.
+`State` and `StateHandler` are an optional VSA pair for complex mutations that need an explicit decision model and consistency boundary. They implement the DCB mental model: load the minimum decision data, validate business rules, mutate the decision state, then persist the result while the same database session, transaction, event-store append condition, file handle, message consumer context or equivalent source-of-truth object remains active.
+
+Do not create this pair by habit. See [Domain-Driven Design](../../../discovery/domain-driven-design.md) for the full DCB design principle and implementation path guidance.
+
+### When to Use It
+
+Use direct mutation in the command handler when:
+
+- the mutation targets one entity or a tightly coupled set;
+- rules can be checked with a small focused load;
+- concurrency can be handled by a row version, optimistic lock, unique constraint or check constraint;
+- there is no need for a reusable or independently testable decision model.
+
+Use `State` and `StateHandler` when:
+
+- the mutation combines decision data from multiple entities, tables, streams, files or external sources of truth;
+- rules involve more than one subject and would clutter the command handler;
+- the consistency boundary must remain explicit while the state is loaded, mutated and saved;
+- the decision model benefits from isolated unit tests;
+- two or more handlers reuse the same decision state.
 
 ### Responsibilities
 
 | Component | Responsibility |
 | --- | --- |
 | `State` | Holds the decision data and exposes methods that enforce domain invariants. Contains no I/O. |
-| `IStateHandler` | Defines the load and persist contract for one behavior or a group of behaviors that share the same aggregate scope. |
-| `StateHandler` | Implements `IStateHandler`. Handles all database interaction — loads data into `State` and persists the result. Contains no domain rules. |
+| `StateHandler` | Receives an already opened source-of-truth context, such as `IDbSession` and `IDbTransaction`, loads data into `State` and persists the result. Contains no domain rules. |
+| Command handler | Opens the session/transaction, creates the `StateHandler`, loads `State`, invokes domain behavior, saves changes and commits. |
 
 ### Naming
 
@@ -142,8 +176,7 @@ The `State` class models the decision context of a specific behavior. Naming it 
 ```csharp
 // Prefer: names the behavior
 public sealed class StudentJoinsCourseState { ... }
-public interface IStudentJoinsCourseStateHandler
-    : IStateHandler<StudentJoinsCourseState, StudentCourseKey>;
+public sealed class StudentJoinsCourseStateHandler { ... }
 
 // Avoid: names the entity — too broad, hides intent
 public sealed class StudentState { ... }
@@ -156,8 +189,7 @@ When two or more commands share the same decision data, the `State` name should 
 ```csharp
 // AddItemToCart and RemoveItemFromCart both require an open cart
 public sealed class OpenShoppingCartState { ... }
-public interface IOpenShoppingCartStateHandler
-    : IStateHandler<OpenShoppingCartState, Guid>;
+public sealed class OpenShoppingCartStateHandler { ... }
 ```
 
 #### Naming conventions for State and StateHandler
@@ -166,10 +198,9 @@ public interface IOpenShoppingCartStateHandler
 | --- | --- | --- |
 | Behavior-specific State | `[BehaviorName]State` | `StudentJoinsCourseState` |
 | Shared State | `[AggregateCondition]State` | `OpenShoppingCartState` |
-| Handler interface | `I[StateName]Handler` | `IStudentJoinsCourseStateHandler` |
-| Handler implementation | `[StateName]Handler` | `StudentJoinsCourseStateHandler` |
+| StateHandler | `[StateName]Handler` | `StudentJoinsCourseStateHandler` |
 
-Avoid generic or entity-named suffixes: `StudentStateModel`, `CartStateData`, `IShoppingCartStateHandlerInterface`.
+Avoid generic or entity-named suffixes: `StudentStateModel`, `CartStateData`, `ShoppingCartStateHandler`.
 
 ### Implementation Recommendations
 
@@ -213,7 +244,30 @@ public void EnsureStudentHasCapacity()
 public bool CanStudentJoin() => StudentEnrollments.Count(e => e.IsActive) < 5;
 ```
 
-#### `StateHandler` is an orchestrator — no domain logic
+#### Command handlers create `StateHandler` with an active source-of-truth context
+
+Do not create per-state interfaces for this pair. The command handler should open the required session and transaction, then instantiate the concrete `StateHandler` directly. This keeps the connection, transaction or append context alive while the `State` is loaded, mutated and saved.
+
+```csharp
+await using var db = await _connectionHub.CreateSessionAsync("School", cancellationToken);
+await using var transaction = await db.BeginTransactionAsync(cancellationToken);
+
+var stateHandler = new StudentJoinsCourseStateHandler(db, transaction);
+var state = await stateHandler.LoadStateAsync(
+    request.StudentId,
+    request.CourseId,
+    cancellationToken);
+
+state.EnsureStudentCanJoin(request.StudentId, request.CourseId);
+state.JoinCourse(request.StudentId, request.CourseId);
+
+await stateHandler.SaveStateAsync(state, cancellationToken);
+await transaction.CommitAsync(cancellationToken);
+```
+
+The constructor can receive whatever source-of-truth objects the scenario needs: `IDbSession`, `IDbTransaction`, `IDbConnection`, an event stream session, files, message consumers, queue consumers or provider contexts. Keep those objects in `StateHandler`, never in `State`.
+
+#### `StateHandler` is an infrastructure orchestrator — no domain logic
 
 The handler calls the database and delegates all rule evaluation to `State`. It should contain no `if` statements that encode business rules.
 
@@ -415,20 +469,42 @@ public record CreateShoppingCartCommandResult(Guid ShoppingCartId);
 public class CreateShoppingCartCommandHandler
     : ApplicationRequestHandler<CreateShoppingCartCommand, CreateShoppingCartCommandResult>
 {
-    private readonly ICreateShoppingCartStateHandler _stateHandler;
+    private readonly IDbConnectionHub _connectionHub;
 
-    public CreateShoppingCartCommandHandler(ICreateShoppingCartStateHandler stateHandler)
+    public CreateShoppingCartCommandHandler(IDbConnectionHub connectionHub)
     {
-        _stateHandler = stateHandler;
+        _connectionHub = connectionHub;
     }
 
     public async Task<CreateShoppingCartCommandResult> HandleAsync(
         CreateShoppingCartCommand request,
         CancellationToken cancellationToken = default)
     {
-        var state = await _stateHandler.LoadStateAsync(request.UserAccountId, cancellationToken);
-        var shoppingCartId = state.CreateShoppingCart(request.UserAccountId);
-        await _stateHandler.SaveStateAsync(state, cancellationToken);
+        await using var db = await _connectionHub.CreateSessionAsync("Ecommerce", cancellationToken);
+        await using var transaction = await db.BeginTransactionAsync(cancellationToken);
+
+        var existingCart = await db.QuerySingleOrDefaultFromRoutineAsync<ShoppingCartOverview>(
+            "sales.shpcrt_get_open_by_user_account_id",
+            new { request.UserAccountId },
+            transaction,
+            cancellationToken);
+
+        if (existingCart is not null)
+            throw new DomainStateValidationException("The user already has an open shopping cart.");
+
+        var shoppingCartId = Guid.NewGuid();
+        await db.ExecuteRoutineAsync(
+            "sales.shpcrt_create",
+            new
+            {
+                ShoppingCartId = shoppingCartId,
+                request.UserAccountId,
+                CreationInstant = Clock.GetTimestamp()
+            },
+            transaction,
+            cancellationToken);
+
+        await transaction.CommitAsync(cancellationToken);
         return new CreateShoppingCartCommandResult(shoppingCartId);
     }
 }
@@ -443,81 +519,6 @@ public class CreateShoppingCartCommandValidator : AbstractValidator<CreateShoppi
     {
         RuleFor(command => command.UserAccountId)
             .NotEmpty().WithMessage("The user account ID cannot be empty.");
-    }
-}
-```
-
-### CreateShoppingCartState.cs
-
-```csharp
-public record NewShoppingCart(Guid ShoppingCartId, Guid UserAccountId, DateTimeOffset CreationInstant);
-
-public class CreateShoppingCartState
-{
-    // ShoppingCartOverview defined in Features/Sales/OrderPlacement/Model/ShoppingCartOverview.cs
-    private readonly ShoppingCartOverview? _existingCart;
-
-    public NewShoppingCart? NewShoppingCart { get; private set; }
-
-    public CreateShoppingCartState(ShoppingCartOverview? existingCart)
-    {
-        _existingCart = existingCart;
-    }
-
-    public Guid CreateShoppingCart(Guid userAccountId)
-    {
-        if (_existingCart is not null)
-            throw new DomainStateValidationException("The user already has an open shopping cart.");
-
-        var shoppingCartId = Guid.NewGuid();
-        var creationInstant = Clock.GetTimestamp();
-        NewShoppingCart = new NewShoppingCart(shoppingCartId, userAccountId, creationInstant);
-        return shoppingCartId;
-    }
-}
-
-public interface ICreateShoppingCartStateHandler : IStateHandler<CreateShoppingCartState, Guid>;
-
-public class CreateShoppingCartStateHandler : ICreateShoppingCartStateHandler
-{
-    private readonly IDbConnectionHub _connectionHub;
-
-    public CreateShoppingCartStateHandler(IDbConnectionHub connectionHub)
-    {
-        _connectionHub = connectionHub;
-    }
-
-    public async Task<CreateShoppingCartState> LoadStateAsync(
-        Guid userAccountId,
-        CancellationToken cancellationToken = default)
-    {
-        var db = await _connectionHub.CreateSessionAsync("Ecommerce", cancellationToken);
-        var existingCart = await db.QuerySingleOrDefaultFromRoutineAsync<ShoppingCartOverview>(
-            "sales.shpcrt_get_open_by_user_account_id",
-            new { UserAccountId = userAccountId },
-            cancellationToken);
-        return new CreateShoppingCartState(existingCart);
-    }
-
-    public async Task SaveStateAsync(
-        CreateShoppingCartState state,
-        CancellationToken cancellationToken = default)
-    {
-        var newCart = state.NewShoppingCart
-            ?? throw new DomainStateValidationException("No new shopping cart has been created.");
-
-        var db = await _connectionHub.CreateSessionAsync("Ecommerce", cancellationToken);
-        await db.BeginTransactionAsync();
-        await db.ExecuteRoutineAsync(
-            "sales.shpcrt_create",
-            new
-            {
-                newCart.ShoppingCartId,
-                newCart.UserAccountId,
-                newCart.CreationInstant
-            },
-            cancellationToken);
-        await db.CommitTransactionAsync(cancellationToken);
     }
 }
 ```
@@ -607,15 +608,11 @@ public record AddItemToShoppingCartCommandResult(Guid ItemId, ShoppingCartSummar
 public class AddItemToShoppingCartCommandHandler
     : ApplicationRequestHandler<AddItemToShoppingCartCommand, AddItemToShoppingCartCommandResult>
 {
-    private readonly IProductFinder _productFinder;
-    private readonly IOpenShoppingCartStateHandler _stateHandler;
+    private readonly IDbConnectionHub _connectionHub;
 
-    public AddItemToShoppingCartCommandHandler(
-        IProductFinder productFinder,
-        IOpenShoppingCartStateHandler stateHandler)
+    public AddItemToShoppingCartCommandHandler(IDbConnectionHub connectionHub)
     {
-        _productFinder = productFinder;
-        _stateHandler = stateHandler;
+        _connectionHub = connectionHub;
     }
 
     public async Task<AddItemToShoppingCartCommandResult> HandleAsync(
@@ -624,12 +621,14 @@ public class AddItemToShoppingCartCommandHandler
     {
         var (shoppingCartId, productId, quantity) = request;
 
-        var product = await _productFinder.GetProductOverviewByIdAsync(productId, cancellationToken)
-            ?? throw new DomainStateValidationException($"Product with ID {productId} was not found.");
+        await using var db = await _connectionHub.CreateSessionAsync("Ecommerce", cancellationToken);
+        await using var transaction = await db.BeginTransactionAsync(cancellationToken);
 
-        var state = await _stateHandler.LoadStateAsync(shoppingCartId, cancellationToken);
-        var itemId = state.AddItem(product, quantity);
-        await _stateHandler.SaveStateAsync(state, cancellationToken);
+        var stateHandler = new OpenShoppingCartStateHandler(db, transaction);
+        var state = await stateHandler.LoadStateAsync(shoppingCartId, productId, cancellationToken);
+        var itemId = state.AddItem(quantity);
+        await stateHandler.SaveStateAsync(state, cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
 
         return new AddItemToShoppingCartCommandResult(itemId, state.Summary);
     }
@@ -723,11 +722,11 @@ public record RemoveItemFromShoppingCartCommandResult(ShoppingCartSummary Summar
 public class RemoveItemFromShoppingCartCommandHandler
     : ApplicationRequestHandler<RemoveItemFromShoppingCartCommand, RemoveItemFromShoppingCartCommandResult>
 {
-    private readonly IOpenShoppingCartStateHandler _stateHandler;
+    private readonly IDbConnectionHub _connectionHub;
 
-    public RemoveItemFromShoppingCartCommandHandler(IOpenShoppingCartStateHandler stateHandler)
+    public RemoveItemFromShoppingCartCommandHandler(IDbConnectionHub connectionHub)
     {
-        _stateHandler = stateHandler;
+        _connectionHub = connectionHub;
     }
 
     public async Task<RemoveItemFromShoppingCartCommandResult> HandleAsync(
@@ -735,9 +734,16 @@ public class RemoveItemFromShoppingCartCommandHandler
         CancellationToken cancellationToken = default)
     {
         var (shoppingCartId, itemId) = request;
-        var state = await _stateHandler.LoadStateAsync(shoppingCartId, cancellationToken);
+
+        await using var db = await _connectionHub.CreateSessionAsync("Ecommerce", cancellationToken);
+        await using var transaction = await db.BeginTransactionAsync(cancellationToken);
+
+        var stateHandler = new OpenShoppingCartStateHandler(db, transaction);
+        var state = await stateHandler.LoadStateAsync(shoppingCartId, cancellationToken);
         state.RemoveItem(itemId);
-        await _stateHandler.SaveStateAsync(state, cancellationToken);
+        await stateHandler.SaveStateAsync(state, cancellationToken);
+        await transaction.CommitAsync(cancellationToken);
+
         return new RemoveItemFromShoppingCartCommandResult(state.Summary);
     }
 }
@@ -761,31 +767,39 @@ public record ShoppingCartSummary(Guid ShoppingCartId, int TotalItems, double To
 public class OpenShoppingCartState
 {
     public ShoppingCartOverview? ShoppingCart { get; }
+    public ProductOverview? ProductToAdd { get; }
 
     private readonly List<ShoppingCartItem> _items = [];
     public IReadOnlyList<ShoppingCartItem> Items => _items.AsReadOnly();
     public ShoppingCartSummary Summary { get; private set; }
 
-    public OpenShoppingCartState(ShoppingCartOverview? shoppingCart, IEnumerable<ShoppingCartItem> items)
+    public OpenShoppingCartState(
+        ShoppingCartOverview? shoppingCart,
+        ProductOverview? productToAdd,
+        IEnumerable<ShoppingCartItem> items)
     {
         ShoppingCart = shoppingCart;
+        ProductToAdd = productToAdd;
         _items.AddRange(items);
         Summary = BuildSummary();
     }
 
-    public Guid AddItem(ProductOverview product, double quantity)
+    public Guid AddItem(double quantity)
     {
         if (ShoppingCart is null)
             throw new DomainStateValidationException("Shopping cart was not found.");
 
+        if (ProductToAdd is null)
+            throw new DomainStateValidationException("Product was not found.");
+
         var itemId = Guid.NewGuid();
         var item = new ShoppingCartItem(
             itemId,
-            product.ProductId,
-            product.ProductName,
-            product.Price,
+            ProductToAdd.ProductId,
+            ProductToAdd.ProductName,
+            ProductToAdd.Price,
             quantity,
-            product.Price * (decimal)quantity,
+            ProductToAdd.Price * (decimal)quantity,
             Added: true);
         _items.Add(item);
         Summary = BuildSummary();
@@ -812,54 +826,62 @@ public class OpenShoppingCartState
     }
 }
 
-public interface IOpenShoppingCartStateHandler : IStateHandler<OpenShoppingCartState, Guid>;
-
-public class OpenShoppingCartStateHandler : IOpenShoppingCartStateHandler
+public class OpenShoppingCartStateHandler
 {
-    private readonly IDbConnectionHub _connectionHub;
+    private readonly IDbSession _db;
+    private readonly IDbTransaction _transaction;
 
-    public OpenShoppingCartStateHandler(IDbConnectionHub connectionHub)
+    public OpenShoppingCartStateHandler(IDbSession db, IDbTransaction transaction)
     {
-        _connectionHub = connectionHub;
+        _db = db;
+        _transaction = transaction;
     }
 
     public async Task<OpenShoppingCartState> LoadStateAsync(
         Guid shoppingCartId,
+        Guid? productId = null,
         CancellationToken cancellationToken = default)
     {
-        var db = await _connectionHub.CreateSessionAsync("Ecommerce", cancellationToken);
-
-        var shoppingCart = await db.QuerySingleOrDefaultFromRoutineAsync<ShoppingCartOverview>(
+        var shoppingCart = await _db.QuerySingleOrDefaultFromRoutineAsync<ShoppingCartOverview>(
             "sales.shpcrt_get_overview_by_id",
             new { ShoppingCartId = shoppingCartId },
+            _transaction,
             cancellationToken);
 
         IEnumerable<ShoppingCartItem> items = [];
         if (shoppingCart is not null)
         {
-            items = await db.QueryFromRoutineAsync<ShoppingCartItem>(
+            items = await _db.QueryFromRoutineAsync<ShoppingCartItem>(
                 "sales.shpcrt_get_items_by_cart_id",
                 new { ShoppingCartId = shoppingCartId },
+                _transaction,
                 cancellationToken);
         }
 
-        return new OpenShoppingCartState(shoppingCart, items);
+        ProductOverview? productToAdd = null;
+        if (productId is not null)
+        {
+            productToAdd = await _db.QuerySingleOrDefaultFromRoutineAsync<ProductOverview>(
+                "sales.product_get_overview_by_id",
+                new { ProductId = productId.Value },
+                _transaction,
+                cancellationToken);
+        }
+
+        return new OpenShoppingCartState(shoppingCart, productToAdd, items);
     }
 
     public async Task SaveStateAsync(
         OpenShoppingCartState state,
         CancellationToken cancellationToken = default)
     {
-        var db = await _connectionHub.CreateSessionAsync("Ecommerce", cancellationToken);
-        await db.BeginTransactionAsync();
-
         var (shoppingCartId, totalItems, totalProducts, totalPrice) = state.Summary;
 
         foreach (var item in state.Items)
         {
             if (item.Added)
             {
-                await db.ExecuteRoutineAsync(
+                await _db.ExecuteRoutineAsync(
                     "sales.shpcrt_add_item",
                     new
                     {
@@ -868,22 +890,24 @@ public class OpenShoppingCartStateHandler : IOpenShoppingCartStateHandler
                         ProductId = item.ProductId,
                         Quantity = item.Quantity
                     },
+                    _transaction,
                     cancellationToken);
             }
             else if (item.Removed)
             {
-                await db.ExecuteRoutineAsync(
+                await _db.ExecuteRoutineAsync(
                     "sales.shpcrt_remove_item",
                     new
                     {
                         ShoppingCartId = shoppingCartId,
                         ItemId = item.ShoppingCartItemId
                     },
+                    _transaction,
                     cancellationToken);
             }
         }
 
-        await db.ExecuteRoutineAsync(
+        await _db.ExecuteRoutineAsync(
             "sales.shpcrt_update_summary",
             new
             {
@@ -892,9 +916,8 @@ public class OpenShoppingCartStateHandler : IOpenShoppingCartStateHandler
                 TotalProducts = totalProducts,
                 TotalPrice = totalPrice
             },
+            _transaction,
             cancellationToken);
-
-        await db.CommitTransactionAsync(cancellationToken);
     }
 }
 ```
@@ -1310,6 +1333,6 @@ public enum ShoppingCartStatus
 
 ## Cross Reference
 
-- [VSA: Concepts](./concepts.md) — principles and folder structure.
-- [C# Conventions](../dotnet/csharp) — naming and general guidelines.
-- [EDA: Background Services](../event-driven-architecture/csharp-background-services.md) — event consumption from workers.
+- [VSA: Concepts](../vertical-slice-architecture/concepts.md) — principles and folder structure.
+- [C# Conventions](./csharp) — naming and general guidelines.
+- [Background Services](./csharp-background-services.md) — event consumption from workers.

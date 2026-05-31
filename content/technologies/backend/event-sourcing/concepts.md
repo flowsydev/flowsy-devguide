@@ -8,6 +8,7 @@ Guide for systems that persist state as a sequence of immutable events. Event So
 - Events are **immutable** and stored in append-only mode.
 - Separation between **write model** (events) and **read model** (projections).
 - The **event store** is the sole source of truth; records are never updated or deleted.
+- Invalid commands do not append events; validation happens before the append and concurrency is protected by stream version or append conditions.
 
 ## Difference with EDA
 
@@ -98,5 +99,6 @@ Avoid in simple CRUD systems without advanced audit requirements.
 ## Cross Reference
 
 - [Kafka and Redpanda as Event Store](./kafka-redpanda.md)
+- [Error Handling](../error-handling.md) — validation before state changes, conflicts and infrastructure boundaries.
 - [EDA: Concepts](../event-driven-architecture/concepts.md) — event-driven architecture.
 - [VSA: Concepts](../vertical-slice-architecture/concepts.md) — integration with slices.

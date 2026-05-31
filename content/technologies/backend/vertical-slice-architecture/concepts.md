@@ -120,6 +120,20 @@ Each behavior should define the artifacts it needs, usually:
 | Validator | Input and precondition validation. | Separate data-shape validation from domain invariants. |
 | Read model | Response or reporting model. | Optimize for the consumer when it does not distort the domain model. |
 
+## Error Handling in a Slice
+
+Each slice should make failure ownership explicit:
+
+- delivery adapters bind input and map known outcomes to the protocol;
+- validators reject malformed input and simple preconditions before any state change;
+- handlers load decision data, call domain behavior and own the consistency boundary;
+- `State`, aggregates or value objects enforce domain invariants;
+- infrastructure adapters translate provider-specific failures into application errors.
+
+Do not publish messages, send emails or call external services before the slice has validated the command and persisted the intended mutation. When persistence must trigger integration events, prefer an outbox so the state change and event record commit together.
+
+See [Error Handling](../error-handling.md) for the full validation, transaction and infrastructure-error guidance.
+
 ## Implementation Mapping
 
 The same slice can be implemented in different stacks:
@@ -135,7 +149,7 @@ The same slice can be implemented in different stacks:
 
 Use the stack-specific guides when you need concrete naming, files, libraries or code:
 
-- [C# Minimal APIs — Complete examples](./csharp-minimal-apis.md)
+- [C# Minimal APIs — Complete examples](../dotnet/csharp-minimal-apis.md)
 - [C# Conventions](../dotnet/csharp.md)
 
 ## Example Logical Structure

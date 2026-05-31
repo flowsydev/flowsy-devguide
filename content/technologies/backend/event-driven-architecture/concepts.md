@@ -51,6 +51,8 @@ CREATE TABLE domain_event_outbox (
 );
 ```
 
+Use the outbox when a validated domain mutation must trigger integration events. The command should validate before writing, persist the state change and outbox row in the same transaction, then let a relay publish asynchronously. Consumers must remain idempotent because relays and brokers can deliver duplicates.
+
 ### Saga / Choreography
 
 Coordination of distributed processes via events. Each service reacts to events and emits new events, forming a processing chain without a central coordinator.
@@ -102,6 +104,7 @@ Every event must include standard metadata:
 
 ## Cross Reference
 
-- [Background Services in C#](./csharp-background-services.md) — consumer implementation in .NET.
+- [Background Services](../dotnet/csharp-background-services.md) — consumer implementation in .NET.
+- [Error Handling](../error-handling.md) — validation, side-effect boundaries, retries and idempotency.
 - [Event Sourcing: Concepts](../event-sourcing/concepts.md) — using events as source of truth.
 - [VSA: Concepts](../vertical-slice-architecture/concepts.md) — EDA integration with slices.

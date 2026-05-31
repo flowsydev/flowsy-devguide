@@ -47,7 +47,7 @@ features:
   - icon: 🧱
     title: C# and APIs
     details: Minimal APIs and .NET backend implementation examples aligned to the conceptual architecture guidance.
-    link: /technologies/backend/vertical-slice-architecture/csharp-minimal-apis
+    link: /technologies/backend/dotnet/csharp-minimal-apis
   - icon: 📚
     title: Event Sourcing
     details: Event-based persistence for complete audit, state reconstruction and business-oriented derived models.
@@ -60,23 +60,23 @@ features:
 
 Backend guidance is organized from technology-agnostic concepts to specific implementations. Start with the conceptual pages, then move into concrete stacks, libraries and database engines.
 
-**General**
+#### General
 
 - [General Concepts](./backend/concepts.md) - Base guidelines for contracts, dates, value objects, traceability and API design.
 - [HTTP API Design](./backend/api-design.md) - API maturity baseline, HTTP semantics and Problem Details guidance.
 
-**Architecture**
+#### Architecture
 
 - [Vertical Slice Architecture](./backend/vertical-slice-architecture/concepts.md) - Organization by feature and complete use cases.
 - [Clean Architecture](./backend/clean-architecture/concepts.md) - Layer separation focused on protecting the domain.
 
-**Events and Messaging**
+#### Events and Messaging
 
 - [Event-Driven Architecture](./backend/event-driven-architecture/concepts.md) - Asynchronous integration, domain events and reactive infrastructure.
 - [Event Sourcing](./backend/event-sourcing/concepts.md) - Persisting changes as a sequence of events.
 - [Kafka and Redpanda](./backend/event-sourcing/kafka-redpanda.md) - Event-store and stream-processing guidance.
 
-**Data and Persistence**
+#### Data and Persistence
 
 - [Relational Modeling](./backend/data-and-migrations/relational-modeling.md) - Business-aligned relational modeling, keys and integrity.
 - [Migration Concepts](./backend/data-and-migrations/migration-concepts.md) - Tool-agnostic strategy for evolving schemas and SQL artifacts.
@@ -84,11 +84,11 @@ Backend guidance is organized from technology-agnostic concepts to specific impl
 - [Migration Tools and Strategies](./backend/data-and-migrations/tools-and-strategies.md) - Evolve, Flyway, Liquibase, DbUp, EF Core, Sqitch and Atlas.
 - [flwdb CLI](./backend/data-and-migrations/cli.md) - Database CLI usage and script conventions.
 
-**.NET**
+#### .NET
 
 - [C#](./backend/dotnet/csharp.md) - Naming, types, contracts and implementation conventions for .NET backend code.
-- [C# with Minimal APIs](./backend/vertical-slice-architecture/csharp-minimal-apis.md) - Complete VSA implementation examples with Minimal APIs.
-- [Background Services in C#](./backend/event-driven-architecture/csharp-background-services.md) - Worker and consumer implementation patterns.
+- [C# with Minimal APIs](./backend/dotnet/csharp-minimal-apis.md) - Complete VSA implementation examples with Minimal APIs.
+- [Background Services](./backend/dotnet/csharp-background-services.md) - Worker and consumer implementation patterns.
 
 ### Frontend
 

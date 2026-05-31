@@ -1,4 +1,4 @@
-# C# Conventions
+# Lenguaje C#
 
 Coding guidelines for backend projects in C# within the Flowsy ecosystem.
 
@@ -14,7 +14,7 @@ For Spanish identifiers, omit articles and prepositions when the meaning remains
 | Interfaces | `IPascalCase` | `IShoppingCartFinder` |
 | Methods and properties | `PascalCase` | `HandleAsync`, `ShoppingCartId` |
 | Variables and parameters | `camelCase` | `shoppingCartId`, `cancellationToken` |
-| Private fields | `_camelCase` | `_stateHandler`, `_connectionHub` |
+| Private fields | `_camelCase` | `_connectionHub`, `_logger` |
 | Constants | `PascalCase` | `MaxCartItems` |
 
 ## `record` Types
@@ -42,7 +42,7 @@ public record ShoppingCartSummary(Guid ShoppingCartId, int TotalItems, double To
 Keep this page focused on C# naming and language-level conventions. Use the specialized backend guides for implementation structure:
 
 - [VSA: Concepts](../vertical-slice-architecture/concepts.md) covers feature folders, slice boundaries and module structure.
-- [C# with Minimal APIs](../vertical-slice-architecture/csharp-minimal-apis.md) covers endpoint mapping, mediator usage, validation and complete examples.
+- [C# with Minimal APIs](./csharp-minimal-apis.md) covers endpoint mapping, mediator usage, validation and complete examples.
 - [HTTP API Design](../api-design.md) covers routes, status codes, Problem Details and OpenAPI conventions.
 
 ## IOptions\<T\>

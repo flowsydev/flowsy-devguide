@@ -184,5 +184,5 @@ Redpanda can be used as a Kafka replacement in local development without code ch
 ## Cross Reference
 
 - [Event Sourcing: Concepts](./concepts.md)
-- [EDA: Background Services in C#](../event-driven-architecture/csharp-background-services.md)
+- [Background Services](../dotnet/csharp-background-services.md)
 - [EDA: Concepts](../event-driven-architecture/concepts.md)

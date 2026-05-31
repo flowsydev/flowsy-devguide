@@ -6,7 +6,7 @@ intent:
   - create a Minimal API endpoint
   - implement a command or query
   - organize code under Features
-  - design State and StateHandler objects
+  - decide whether a command needs State and StateHandler
 applies_when:
   - the task modifies C# backend code
   - the task mentions Vertical Slice Architecture
@@ -16,7 +16,7 @@ read_first:
   - /technologies/backend/vertical-slice-architecture/concepts.md
 read_if_implementing:
   - /technologies/backend/api-design.md
-  - /technologies/backend/vertical-slice-architecture/csharp-minimal-apis.md
+  - /technologies/backend/dotnet/csharp-minimal-apis.md
   - /technologies/backend/concepts.md
   - /technologies/testing/csharp-dotnet.md
 related_guides:
@@ -49,15 +49,16 @@ Use this guide when implementing or modifying a backend feature organized as a v
 
 ## Expected Structure
 
-Keep each slice cohesive. A typical slice may include:
+Keep each slice cohesive. A simple command does not need a `State` file by default:
 
 ```text
 📁 Features/[Module]/[Submodule]/Commands/[ActionName]/
 ├── 📄 [ActionName]Endpoint.cs
 ├── 📄 [ActionName]Command.cs
-├── 📄 [ActionName]CommandValidator.cs
-└── 📄 [ActionName]State.cs
+└── 📄 [ActionName]CommandValidator.cs
 ```
+
+Add `[ActionName]State.cs` only when the mutation needs a `State` and concrete `StateHandler` for an explicit decision model and consistency boundary.
 
 For queries, use `Queries/[ActionName]/` with `Query`, `QueryResult`, `QueryHandler` and validator when applicable.
 
@@ -69,7 +70,10 @@ For queries, use `Queries/[ActionName]/` with `Query`, `QueryResult`, `QueryHand
 - When error behavior changes, validate status code, content type and `application/problem+json` shape in representative integration tests.
 - If the project uses a mediator, the endpoint should send the command or query to the mediator.
 - If the project does not use a mediator, the endpoint can inject the handler directly.
-- When several actions modify the same aggregate, share a common state object.
+- Prefer direct mutation in the command handler for simple single-entity changes with focused rules.
+- Use `State` and a concrete `StateHandler` for complex mutations that combine multiple data sources, require an explicit consistency boundary or benefit from isolated decision-model tests.
+- When using `StateHandler`, open the session/transaction in the command handler and instantiate the concrete `StateHandler` directly with those active source-of-truth objects.
+- When several actions need the same decision data, share a common state object.
 - Keep shared infrastructure inside the module when it has module-specific semantics. Avoid global helpers without domain meaning.
 - Use `Flowsy.Mediation` or the repository's established mediation pattern when the project already uses it.
 - Use `Flowsy.Db.Unity` or the repository's established data-access abstraction when present.
@@ -78,7 +82,7 @@ For queries, use `Queries/[ActionName]/` with `Query`, `QueryResult`, `QueryHand
 
 - Naming and contracts: [C# Conventions](/technologies/backend/dotnet/csharp).
 - Structure and principles: [VSA Concepts](/technologies/backend/vertical-slice-architecture/concepts.md).
-- Complete examples: [VSA: C# with Minimal APIs](/technologies/backend/vertical-slice-architecture/csharp-minimal-apis.md).
+- Complete examples: [VSA: C# with Minimal APIs](/technologies/backend/dotnet/csharp-minimal-apis.md).
 - Backend baseline and traceability: [Backend Concepts](/technologies/backend/concepts.md).
 - HTTP contracts and errors: [HTTP API Design](/technologies/backend/api-design.md).
 - Testing by stack: [Testing C#/.NET](/technologies/testing/csharp-dotnet.md).

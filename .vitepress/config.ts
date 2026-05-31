@@ -213,6 +213,7 @@ export default withMermaid({
                 items: [
                   { text: 'General Concepts', link: '/technologies/backend/concepts' },
                   { text: 'HTTP API Design', link: '/technologies/backend/api-design' },
+                  { text: 'Error Handling', link: '/technologies/backend/error-handling' },
                 ]
               },
               {
@@ -261,9 +262,9 @@ export default withMermaid({
                 text: '.NET',
                 collapsed: true,
                 items: [
-                  { text: 'C#', link: '/technologies/backend/dotnet/csharp' },
-                  { text: 'C# with Minimal APIs', link: '/technologies/backend/vertical-slice-architecture/csharp-minimal-apis' },
-                  { text: 'Background Services in C#', link: '/technologies/backend/event-driven-architecture/csharp-background-services' },
+                  { text: 'Lenguaje C#', link: '/technologies/backend/dotnet/csharp' },
+                  { text: 'VSA with Minimal APIs', link: '/technologies/backend/dotnet/csharp-minimal-apis' },
+                  { text: 'Background Services', link: '/technologies/backend/dotnet/csharp-background-services' },
                 ]
               },
             ]

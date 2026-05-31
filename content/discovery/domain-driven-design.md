@@ -128,6 +128,9 @@ Constraint or condition that must be satisfied within the domain.
   - "Un carrito no puede tener más de 100 productos."
   - "Un pedido no puede cancelarse si ya fue enviado."
 - Implement inside the `State` of the corresponding command, not in the handler.
+- Express the rule in application/domain code before persistence; database constraints may reinforce integrity, but they should not be the only place where the business rule exists.
+
+See [Error Handling](../technologies/backend/error-handling.md) for validation order and infrastructure error boundaries.
 
 #### Aggregates
 
@@ -283,9 +286,6 @@ public sealed class StudentJoinsCourseState
             throw new DomainStateValidationException("The student is already enrolled in this course.");
     }
 }
-
-public interface IStudentJoinsCourseStateHandler
-    : IStateHandler<StudentJoinsCourseState, StudentCourseKey>;
 ```
 
 Equivalent Spanish business language:
@@ -316,9 +316,6 @@ public sealed class AlumnoSeInscribeCursoState
             throw new DomainStateValidationException("El alumno ya está inscrito en este curso.");
     }
 }
-
-public interface IAlumnoSeInscribeCursoStateHandler
-    : IStateHandler<AlumnoSeInscribeCursoState, AlumnoCursoKey>;
 ```
 
 Example decision:
@@ -361,18 +358,17 @@ Conceptual relational pseudocode:
 public async Task Handle(StudentJoinsCourse command)
 {
     await using var transaction = await db.BeginTransactionAsync();
+    var stateHandler = new StudentJoinsCourseStateHandler(db, transaction);
 
     var state = await stateHandler.LoadStateForUpdateAsync(
-        new StudentCourseKey(command.StudentId, command.CourseId),
-        transaction);
+        new StudentCourseKey(command.StudentId, command.CourseId));
 
     state.EnsureStudentHasCapacity();
     state.EnsureCourseHasCapacity();
     state.EnsureStudentIsNotAlreadyEnrolled();
 
     await stateHandler.SaveEnrollmentAsync(
-        new CourseEnrollment(command.StudentId, command.CourseId),
-        transaction);
+        new CourseEnrollment(command.StudentId, command.CourseId));
 
     await transaction.CommitAsync();
 }
@@ -415,7 +411,7 @@ public async Task Handle(DeactivateCourse command)
 
 ###### Path 2 — State and StateHandler (complex mutations)
 
-The command handler acts as an orchestrator: it delegates loading and persistence to the `StateHandler`, while the `State` encapsulates the domain decision logic. The `StudentJoinsCourse` examples above illustrate this path. Use it when:
+The command handler acts as an orchestrator: it opens the source-of-truth session or transaction, creates the concrete `StateHandler`, and uses it to load and persist `State`. The `State` encapsulates the domain decision logic. The `StudentJoinsCourse` examples above illustrate this path. Use it when:
 
 - The mutation involves multiple entities or decision data from different sources.
 - Business rules require combining information from more than one subject.

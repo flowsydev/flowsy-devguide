@@ -4,6 +4,8 @@ HTTP APIs should expose stable contracts that are easy to consume, test, documen
 
 This guide is a baseline for APIs built with Flowsy guidance. It is not a REST certification checklist.
 
+Use [Error Handling](./error-handling.md) for the broader application guidance behind an API error: validation order, domain errors, infrastructure error translation, transaction boundaries, idempotency and side effects. This page focuses on the HTTP contract exposed after those decisions are made.
+
 ## Practical Maturity Baseline
 
 Use the [Richardson Maturity Model](https://martinfowler.com/articles/richardsonMaturityModel.html) as a teaching model:
@@ -169,7 +171,7 @@ For ASP.NET Core Minimal APIs:
 - keep endpoint handlers thin and avoid repeating domain-error mapping in every endpoint;
 - validate status code, content type and Problem Details shape in integration tests for representative failure paths.
 
-See [C# with Minimal APIs](./vertical-slice-architecture/csharp-minimal-apis.md) for implementation examples.
+See [C# with Minimal APIs](./dotnet/csharp-minimal-apis.md) for implementation examples.
 
 ## References
 

@@ -98,3 +98,16 @@ These approaches are not mutually exclusive:
 - Register dependencies via injection, module wiring or equivalent composition mechanism at the application boundary.
 - Keep use cases focused: one handler per command/query.
 - Validate input at the boundary (Presentation) and business rules in Domain.
+- Define application-level error contracts for ports that call external systems.
+- Translate database, broker, SDK and network failures in Infrastructure adapters before they cross into Application.
+
+## Error Handling
+
+Clean Architecture should make error direction match dependency direction:
+
+- Domain throws or returns domain errors using domain language.
+- Application use cases orchestrate validation, transactions, idempotency and port calls.
+- Infrastructure maps provider-specific failures to application errors.
+- Presentation maps application/domain errors to HTTP, messaging, CLI or UI responses.
+
+See [Error Handling](../error-handling.md) for validation order, transaction boundaries and infrastructure error translation.

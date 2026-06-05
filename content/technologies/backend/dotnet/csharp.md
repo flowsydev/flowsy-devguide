@@ -6,7 +6,7 @@ Business names in C# should follow the ubiquitous language chosen for the projec
 
 ## Naming
 
-For Spanish identifiers, omit articles and prepositions when the meaning remains clear. Prefer `OrdenDespacho`, `AsignarTerminalDespachoCommand` and `IdOrdenDespacho` over `OrdenDeDespacho`, `AsignarTerminalDeDespachoCommand` and `IdOrdenDeDespacho`. Keep articles and prepositions only when they are part of the official business term or avoid ambiguity, such as `PuestaEnOperacion` or `PagoAProveedor`.
+For Spanish identifiers, omit articles and prepositions when the meaning remains clear. Prefer `PedidoCliente`, `AsignarDireccionEnvioCommand` and `IdPedidoCliente` over `PedidoDeCliente`, `AsignarDireccionDeEnvioCommand` and `IdPedidoDeCliente`. Keep articles and prepositions only when they are part of the official business term or avoid ambiguity, such as `PuestaEnOperacion` or `PagoAProveedor`.
 
 | Element | Convention | Example |
 | --- | --- | --- |
@@ -96,22 +96,75 @@ Use [Source Control with Git](/conventions/source-control/git.md) for branch, pu
 
 Auditable entities should expose the audit properties required by the project and domain. These examples are recommendations to evaluate, not mandatory attributes for every aggregate. Choose the actor fields according to requirements analysis and what can actually create or change the aggregate: a user, application, service account, integration, device, tenant or background process.
 
+Choose one existence-state strategy per entity:
+
+| Alternative | English Property | Spanish Property | Type | Notes |
+| --- | --- | --- | --- | --- |
+| Boolean flag | `Active` | `Activo` | `bool` | Use for simple active/inactive behavior. It can often be calculated from `ActiveFrom` and `ActiveUntil`. |
+| Explicit status | `RecordStatus` | `EstadoRegistro` | `enum` | Use when the entity distinguishes states such as `Active`, `SoftDeleted` and `HardDeleted`, or their Spanish equivalents `Activo`, `EliminadoLogico` and `EliminadoFisico`. |
+
 Common English examples:
 
 ```csharp
+public bool Active { get; private set; }
+// or: public RecordStatus RecordStatus { get; private set; } = RecordStatus.Active;
 public DateTimeOffset CreatedAt { get; private set; }
 public Guid? CreatedBy { get; private set; }
 public DateTimeOffset UpdatedAt { get; private set; }
 public Guid? UpdatedBy { get; private set; }
-public string RecordStatus { get; private set; } = "Active";
 public DateTimeOffset? ActiveFrom { get; private set; }
 public DateTimeOffset? ActiveUntil { get; private set; }
 ```
 
-Choose the data type for `CreatedBy` and `UpdatedBy` according to each project's requirements. A `Guid` may be appropriate for user identifiers in some systems, while others may need an integer key, a service account identifier, an external identity-provider subject or a composite actor model.
+Common Spanish examples:
+
+```csharp
+public bool Activo { get; private set; }
+// o: public EstadoRegistro EstadoRegistro { get; private set; } = EstadoRegistro.Activo;
+public DateTimeOffset Creado { get; private set; }
+public Guid? IdUsuarioCreacion { get; private set; }
+public DateTimeOffset Modificado { get; private set; }
+public Guid? IdAplicacionModificacion { get; private set; }
+public DateTimeOffset? ActivoDesde { get; private set; }
+public DateTimeOffset? ActivoHasta { get; private set; }
+```
+
+Choose the data type for `CreatedBy`, `UpdatedBy`, `CreadoPor`, `Id*Creacion` and `Id*Modificacion` according to each project's requirements. A `Guid` may be appropriate for user identifiers in some systems, while others may need an integer key, a service account identifier, an external identity-provider subject or a composite actor model.
 
 Use active-state properties such as `ActiveFrom` and `ActiveUntil` only when the entity needs to record when the record itself is active. Use domain-specific names for business validity periods, such as `AppointmentValidFrom` or `AssignmentValidUntil`.
 
+For business validity, use `Valid` / `Vigente` when a boolean is enough, or `ValidityStatus` / `EstadoVigencia` when the domain recognizes states such as `Valid`, `Revoked` and `Expired`. `Valid` can often be calculated from `ValidFrom` and `ValidUntil`.
+
+| Purpose | English Property | Spanish Property |
+| --- | --- | --- |
+| Validity start | `ValidFrom` | `VigenteDesde` |
+| Validity end | `ValidUntil` | `VigenteHasta` |
+
 Do not add every audit field mechanically to every aggregate. Apply the attributes that are convenient for each entity and add other project-specific attributes when analysis and design justify them.
+
+## Public Identifiers
+
+Do not expose numeric auto-increment primary keys in external API contracts, frontend models, integration events or URLs. Add a public identifier to the domain and persistence model when an entity must cross backend boundaries:
+
+```csharp
+public long Id { get; private set; }
+public Guid PublicId { get; private set; }
+```
+
+Use UUID v4 when random identifiers are enough. Use UUID v7 when ordered identifiers better fit database locality, event ordering or observability requirements.
+
+For DTOs and read models, create explicit public and internal variants:
+
+```csharp
+public record UserAccountOverview(Guid PublicId, string DisplayName, string Email);
+
+public record UserAccountOverviewInternal(
+    long Id,
+    Guid PublicId,
+    string DisplayName,
+    string Email);
+```
+
+`Internal` / `Interno` is the recommended suffix for models used inside backend handlers, persistence code or trusted services. `Private` / `Privado` is a valid alternative when the model name should emphasize privacy classification.
 
 When an entity keeps its own event log, event entries should include at least `EventTimestamp`, `EventType`, `Payload` and `OperationContext`.

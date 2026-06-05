@@ -39,12 +39,12 @@ Keep the natural phrase in user-facing text, reports, labels, help text and busi
 
 | Context | Prefer | Avoid | Notes |
 | --- | --- | --- | --- |
-| C# entity | `OrdenDespacho` | `OrdenDeDespacho` | The compact identifier preserves the concept. |
-| C# command | `AsignarTerminalDespachoCommand` | `AsignarTerminalDeDespachoCommand` | Technical suffixes stay in English. |
-| TypeScript model | `ResumenOrdenDespacho` | `ResumenDeOrdenDeDespacho` | Keep identifiers short but meaningful. |
-| PostgreSQL table | `orden_despacho` | `orden_de_despacho` | Use the compact form in database objects. |
-| UI label | `Orden de despacho` | `Orden despacho` | User-facing text should read naturally. |
-| Report title | `Asignaciones a la terminal de despacho` | `Asignaciones terminal despacho` | Preserve articles and prepositions for readability. |
+| C# entity | `PedidoCliente` | `PedidoDeCliente` | The compact identifier preserves the concept. |
+| C# command | `AsignarDireccionEnvioCommand` | `AsignarDireccionDeEnvioCommand` | Technical suffixes stay in English. |
+| TypeScript model | `PedidoClienteResumen` | `PedidoDeClienteResumen` | Keep identifiers short but meaningful. |
+| PostgreSQL table | `pedido_cliente` | `pedido_de_cliente` | Use the compact form in database objects. |
+| UI label | `Pedido de cliente` | `Pedido cliente` | User-facing text should read naturally. |
+| Report title | `Asignaciones de dirección de envío` | `Asignaciones direccion envio` | Preserve articles and prepositions for readability. |
 
 Do not remove articles or prepositions mechanically. Keep them when they are part of an official term, avoid ambiguity or make the identifier clearer. For example, `PuestaEnOperacion` may be clearer than `PuestaOperacion`, and `PagoAProveedor` may be clearer than `PagoProveedor`.
 
@@ -56,10 +56,10 @@ Short examples:
 
 | Business Language | Prefer | Avoid |
 | --- | --- | --- |
-| Spanish | `CrearPedidoCommand` | `CrearPedidoComando` |
-| Spanish | `OrdenDespachoRepository` | `RepositorioOrdenDespacho` |
-| Spanish | `ResumenPedidoDTO` | `ResumenPedidoOTD` |
 | English | `CreateOrderCommand` | `CreateOrderComando` |
+| Spanish | `CrearPedidoCommand` | `CrearPedidoComando` |
+| Spanish | `PedidoClienteRepository` | `RepositorioPedidoCliente` |
+| Spanish | `ResumenPedidoDTO` | `ResumenPedidoOTD` |
 
 ## Documentation Alignment
 

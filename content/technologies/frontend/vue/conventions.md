@@ -2,11 +2,11 @@
 
 Coding guidelines for Vue 3 frontend projects with Composition API and strict TypeScript within the Flowsy ecosystem.
 
-Business names in TypeScript and Vue components should follow the ubiquitous language chosen for the project or Bounded Context. Keep technical terms such as `interface`, `type`, `DTO`, `ViewModel`, `component`, `props`, `emits`, `Composable`, `Store`, `Adapter`, `Storybook`, `Pinia` and framework names in English. For example, use `OrdenDespachoViewModel` instead of `OrdenDespachoModeloVista`, and `useOrdenDespachoStore` instead of `usarAlmacenOrdenDespacho`.
+Business names in TypeScript and Vue components should follow the ubiquitous language chosen for the project or Bounded Context. Keep technical terms such as `interface`, `type`, `DTO`, `ViewModel`, `component`, `props`, `emits`, `Composable`, `Store`, `Adapter`, `Storybook`, `Pinia` and framework names in English. For example, use `PedidoClienteViewModel` instead of `PedidoClienteModeloVista`, and `usePedidoClienteStore` instead of `usarAlmacenPedidoCliente`.
 
 ## Naming
 
-For Spanish identifiers, use compact domain names when articles or prepositions do not add meaning. Prefer `OrdenDespachoViewModel`, `useAsignacionTerminalDespacho` and `idOrdenDespacho` over `OrdenDeDespachoViewModel`, `useAsignacionDeTerminalDeDespacho` and `idOrdenDeDespacho`. Keep the natural phrase in UI labels, report titles and translations.
+For Spanish identifiers, use compact domain names when articles or prepositions do not add meaning. Prefer `PedidoClienteViewModel`, `useAsignacionDireccionEnvio` and `idPedidoCliente` over `PedidoDeClienteViewModel`, `useAsignacionDeDireccionDeEnvio` and `idPedidoDeCliente`. Keep the natural phrase in UI labels, report titles and translations.
 
 | Element | Convention | Example |
 | --- | --- | --- |

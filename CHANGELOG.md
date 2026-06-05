@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.11.0] - 2026-06-05
+
+### Changed
+
+- Audit and business-validity guidance expanded with explicit alternatives for boolean flags and enum statuses, bilingual attribute examples and clearer separation between record existence and business validity.
+- Domain-Driven Design record-status table now shows English and Spanish state names and descriptions side by side.
+- Entity lifecycle guidance now owns record existence state, while audit attributes reference that lifecycle decision instead of redefining it.
+- Multi-language examples reviewed so Flowsy guidance presents English examples before Spanish equivalents.
+- Backend modeling guidance now recommends public UUID identifiers (`PublicId` / `IdPublico`) for external contracts and explicit `Internal` / `Interno` model variants when private backend identifiers are required.
+
 ## [1.10.0] - 2026-05-31
 
 ### Added

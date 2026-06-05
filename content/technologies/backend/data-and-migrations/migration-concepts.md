@@ -28,7 +28,7 @@ This page is intentionally tool-agnostic. File naming such as `V*.sql` or `R__*.
 
 Choose a base folder for database scripts according to the repository organization, language, framework and casing conventions. `Resources/Databases/...` is a good fit for many .NET repositories, but it is a recommendation, not a universal requirement.
 
-Also choose the language of schemas, aggregate folders and script names according to the project's domain and data model language. The folder structure can use English examples such as `sales/shopping-cart` or Spanish examples such as `logistica/orden-despacho`; the important part is consistency within the database boundary.
+Also choose the language of schemas, aggregate folders and script names according to the project's domain and data model language. The folder structure can use English examples such as `sales/shopping-cart` or Spanish examples such as `ventas/pedido-cliente`; the important part is consistency within the database boundary.
 
 Use the same logical structure even when folder casing changes:
 

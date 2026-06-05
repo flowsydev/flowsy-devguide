@@ -27,7 +27,7 @@ When showing equivalent examples in multiple languages, use the same business co
 
 Do not translate stable technical vocabulary just because the surrounding paragraph is in another language. For example, a Spanish business model may still use suffixes such as `Command`, `Repository`, `DTO` or `ViewModel` when those words identify established software concepts.
 
-For Spanish business concepts, use compact forms in identifiers when articles or prepositions are not needed for meaning: `OrdenDespacho`, `AsignarTerminalDespacho`, `orden_despacho`. Use natural forms in visible text: "Orden de despacho", "Asignar terminal de despacho", "Reporte de asignaciones a la terminal".
+For Spanish business concepts, use compact forms in identifiers when articles or prepositions are not needed for meaning: `PedidoCliente`, `AsignarDireccionEnvio`, `pedido_cliente`. Use natural forms in visible text: "Pedido de cliente", "Asignar dirección de envío", "Reporte de asignaciones de dirección de envío".
 
 ## Language-Specific Rules
 

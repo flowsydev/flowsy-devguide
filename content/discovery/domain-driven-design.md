@@ -29,7 +29,7 @@ Choose the language of the domain model with domain experts and the delivery tea
 
 Keep the decision consistent inside each Bounded Context and document exceptions. The data model should follow the same language strategy unless integration, reporting or platform constraints justify a different one.
 
-For Spanish identifiers in code and data models, prefer compact business names without articles or prepositions when meaning is preserved: `OrdenDespacho`, `AsignacionTerminalDespacho`, `id_orden_despacho`. Keep the natural phrase in user-facing text: "Orden de despacho", "Asignación a la terminal de despacho". Preserve articles and prepositions in identifiers only when they are official, necessary to avoid ambiguity or improve clarity.
+For Spanish identifiers in code and data models, prefer compact business names without articles or prepositions when meaning is preserved: `PedidoCliente`, `AsignacionDireccionEnvio`, `id_pedido_cliente`. Keep the natural phrase in user-facing text: "Pedido de cliente", "Asignación de dirección de envío". Preserve articles and prepositions in identifiers only when they are official, necessary to avoid ambiguity or improve clarity.
 
 Technical pattern names remain in English when they are part of the software design vocabulary. For example, keep `Domain-Driven Design`, `Bounded Context`, `Value Object`, `Aggregate`, `Repository`, `Factory`, `Adapter`, `Outbox`, `Saga`, `Vertical Slice Architecture`, `Clean Architecture`, `Minimal API` and framework names in English, while translating the business concepts that belong to the model.
 
@@ -519,44 +519,99 @@ Smaller grouping of features within a module.
 Pattern that organizes code by specific feature. Each slice contains everything needed: models, logic, validations, endpoints and its own infrastructure.
 
 ## Entity Record Status
-For auditable entities, define an explicit existence state:
+For auditable entities, define an explicit existence state. Choose the smallest representation that still expresses the domain, compliance and operational requirements.
 
-| State | Description |
-| --- | --- |
-| `Active` | Normal operational state. |
-| `SoftDeleted` | Recoverable deletion — preserves historical traceability. |
-| `HardDeleted` | Permanent deletion — without breaking historical traceability. |
+| English State | Spanish State | English Description | Spanish Description |
+| --- | --- | --- | --- |
+| `Active` | `Activo` | Normal operational state. | Estado operativo normal. |
+| `SoftDeleted` | `EliminadoLogico` | Recoverable deletion that preserves historical traceability. | Eliminación lógica recuperable que conserva la trazabilidad histórica. |
+| `HardDeleted` | `EliminadoFisico` | Permanent deletion without breaking historical traceability. | Eliminación física sin romper la trazabilidad histórica. |
 
 If the business requires functional names, document the functional→technical mapping in the specification.
+
+### Representation Alternatives
+
+Use one of these alternatives when the entity must expose its record existence state:
+
+| Alternative | English Attribute | Spanish Attribute | Type | Use When |
+| --- | --- | --- | --- | --- |
+| Boolean flag | `Active` | `Activo` | `boolean` / `bool` | The entity only needs to distinguish active records from records that should not participate in normal operations. In many cases this value can be calculated from `ActiveFrom` and `ActiveUntil`. |
+| Explicit status | `RecordStatus` | `EstadoRegistro` | `enum` | The entity needs more than two states, such as `Active`, `SoftDeleted` and `HardDeleted`, or their Spanish equivalents `Activo`, `EliminadoLogico` and `EliminadoFisico`. |
+
+Use active-state fields only when the entity needs to record the period in which the record itself was active:
+
+| Purpose | English Attribute | Spanish Attribute | Type Guidance | Description |
+| --- | --- | --- | --- | --- |
+| Active-state start | `ActiveFrom` | `ActivoDesde` | Instant, usually `DateTimeOffset` or database timestamp with time zone. | Date and time when the record starts being `Active`. |
+| Active-state end | `ActiveUntil` | `ActivoHasta` | Nullable instant. | Date and time when the record stops being `Active`. |
+
+Active-state fields such as `ActiveFrom`, `ActiveUntil`, `ActivoDesde` and `ActivoHasta` do not apply to every entity. Determine during analysis and design which aggregates need to record the period in which the record itself was active, such as catalog records, configuration records, reference data, published policies or rows that use soft deletion with historical traceability.
 
 ## Audit Attributes
 
 Design audit attributes according to the requirements of each project, domain and actor model. The guide proposes common attributes, but each team must validate them through requirements analysis instead of treating one fixed list as universal: some domains need to know the user that performed an action, while others need to record the application, service account, integration, device, tenant or process that caused the change.
 
-Auditable entities commonly need:
+For record existence state, use the strategy defined in [Entity Record Status](#entity-record-status). Audit attributes below complement that lifecycle decision; they should not redefine it.
 
-| Field | Description |
-| --- | --- |
-| `RecordStatus` | Record state (if applicable for a given entity). |
-| `ActiveFrom` | UTC timestamp from which the record has or had `RecordStatus = Active`, when the entity needs an explicit active-state window. |
-| `ActiveUntil` | UTC timestamp until which the record has or had `RecordStatus = Active`, when the entity needs an explicit active-state window. |
-| `CreatedAt` | UTC creation timestamp. |
-| `CreatedBy` | Actor that created the entity. |
-| `UpdatedAt` | UTC timestamp of last modification. |
-| `UpdatedBy` | Actor that updated the entity for the last time. |
+| Purpose | English Attribute | Spanish Attribute | Type Guidance | Description |
+| --- | --- | --- | --- | --- |
+| Creation instant | `CreatedAt` | `Creado` | Instant. | Date and time when the entity was created. |
+| Creation actor | `CreatedBy`, `CreatedBy*Id` | `CreadoPor`, `Id*Creacion` | Depends on the actor model. | Identifier of the user, application, service, process or other actor that created the entity. |
+| Last modification instant | `UpdatedAt` | `Modificado` | Instant. | Date and time when the entity was last modified. |
+| Last modification actor | `UpdatedBy`, `UpdatedBy*Id` | `ModificadoPor`, `Id*Modificacion` | Depends on the actor model. | Identifier of the user, application, service, process or other actor that last modified the entity. |
 
 Choose names in the language and naming style of the project. The data type for actor fields such as `CreatedBy`, `UpdatedBy`, `CreadoPor` and `ModificadoPor` depends on each project's requirements and identity model: a user ID, application ID, service account, external subject or another actor representation may be appropriate.
 
-| Language Strategy | Example Attributes |
-| --- | --- |
-| English domain and code | `CreatedAt`, `CreatedBy`, `UpdatedAt`, `UpdatedBy`, `RecordStatus`, `ActiveFrom`, `ActiveUntil` |
-| Spanish domain and code | `Creado`, `CreadoPor`, `Modificado`, `ModificadoPor`, `EstadoRegistro`, `ActivoDesde`, `ActivoHasta` |
+| Language Strategy | Example Entity | Example Attributes |
+| --- | --- | --- |
+| English domain and code | `UserAccount` | `CreatedAt`, `CreatedByUserId`, `UpdatedAt`, `UpdatedByApplicationId` |
+| Spanish domain and code | `CuentaUsuario` | `Creado`, `IdUsuarioCreacion`, `Modificado`, `IdAplicacionModificacion` |
 
-Active-state fields such as `ActiveFrom`, `ActiveUntil`, `ActivoDesde` and `ActivoHasta` do not apply to every entity. Determine during analysis and design which aggregates need to record the period in which the record itself was active, such as catalog records, configuration records, reference data, published policies or rows that use soft deletion with historical traceability.
+## Business Validity
 
-Do not use `ActiveFrom` / `ActiveUntil` for business validity periods such as a contract administrator appointment, a supervisor assignment, a user role grant, a price validity period or a contract term. Name those fields with the domain concept: `AppointmentValidFrom` / `AppointmentValidUntil`, `AssignmentValidFrom` / `AssignmentValidUntil`, `RoleGrantValidFrom` / `RoleGrantValidUntil`, or in Spanish `nombramiento_vigente_desde` / `nombramiento_vigente_hasta`, `asignacion_vigente_desde` / `asignacion_vigente_hasta`, `rol_vigente_desde` / `rol_vigente_hasta`.
+Do not use `ActiveFrom` / `ActiveUntil` for business validity periods such as a contract administrator appointment, a supervisor assignment, a user role grant, a price validity period or a contract term. Existence state answers whether the record participates in the system. Business validity answers whether a business right, assignment, policy, price or term is currently effective.
+
+Use one of these alternatives when the domain needs an explicit validity state:
+
+| Alternative | English Attribute | Spanish Attribute | Type | Use When |
+| --- | --- | --- | --- | --- |
+| Boolean flag | `Valid` | `Vigente` | `boolean` / `bool` | The domain only needs to distinguish currently valid items from non-valid items. In many cases this value can be calculated from `ValidFrom` and `ValidUntil`. |
+| Explicit status | `ValidityStatus` | `EstadoVigencia` | `enum` | The domain needs states such as `Valid`, `Revoked`, `Expired`, `Suspended` or `PendingReview`. |
+
+| Purpose | English Attribute | Spanish Attribute | Type Guidance | Description |
+| --- | --- | --- | --- | --- |
+| Validity start | `ValidFrom` | `VigenteDesde` | Instant or business local date/time, depending on the domain. | Date and time when the business validity starts. |
+| Validity end | `ValidUntil` | `VigenteHasta` | Nullable instant or business local date/time. | Date and time when the business validity ends. |
+
+Name validity fields with the domain concept when a generic name would be ambiguous:
+
+| Context | English Example | Spanish Example |
+| --- | --- | --- |
+| Appointment | `AppointmentValidFrom`, `AppointmentValidUntil` | `NombramientoVigenteDesde`, `NombramientoVigenteHasta` |
+| Assignment | `AssignmentValidFrom`, `AssignmentValidUntil` | `AsignacionVigenteDesde`, `AsignacionVigenteHasta` |
+| Role grant | `RoleGrantValidFrom`, `RoleGrantValidUntil` | `RolVigenteDesde`, `RolVigenteHasta` |
 
 The guide shows common audit and validity attributes, but it does not recommend adding all of them to every entity. Apply only the fields that are useful for each entity, and add other project-specific attributes when the domain, compliance or operational design requires them.
+
+## Public Identifiers
+
+Do not expose numeric auto-increment primary keys outside backend applications, trusted internal jobs or controlled operational tooling. Sequential numeric IDs can reveal record volume, make enumeration easier and couple external contracts to persistence details.
+
+For externally visible contracts, include a public identifier in the domain and persistence model:
+
+| Purpose | English Attribute | Spanish Attribute | Recommended Type | Notes |
+| --- | --- | --- | --- | --- |
+| Public identifier | `PublicId` | `IdPublico` | UUID v4 or UUID v7 | Use v4 for random identifiers and v7 when ordered UUIDs help storage locality or event ordering. Choose according to project design and database support. |
+
+Model public and internal variants explicitly instead of reusing one shape everywhere:
+
+| Variant | English Example | Spanish Example | Includes |
+| --- | --- | --- | --- |
+| Public model | `UserAccountOverview` | `CuentaUsuarioResumen` | `PublicId` / `IdPublico` and attributes safe for external consumers. |
+| Recommended internal model | `UserAccountOverviewInternal` | `CuentaUsuarioResumenInterno` | Same public attributes plus backend-only identifiers or operational fields. |
+| Alternative private model | `UserAccountOverviewPrivate` | `CuentaUsuarioResumenPrivado` | Use when the project wants to emphasize that the model carries private data. |
+
+Prefer `Internal` / `Interno` for domain models, read models and DTOs used by backend handlers, persistence adapters or trusted services. Use `Private` / `Privado` when the distinction is specifically about privacy classification.
 
 If there is an event log per entity, also include:
 

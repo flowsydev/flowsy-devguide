@@ -33,9 +33,11 @@ created_at         TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
 created_by         UUID        NULL,
 updated_at         TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
 updated_by         UUID        NULL,
-record_status      TEXT        NOT NULL DEFAULT 'Active',
+active             BOOLEAN     NOT NULL DEFAULT TRUE,
+-- or: record_status TEXT NOT NULL DEFAULT 'Active',
 active_from        TIMESTAMPTZ NULL,
-active_until       TIMESTAMPTZ NULL
+active_until       TIMESTAMPTZ NULL,
+public_id          UUID        NOT NULL
 ```
 
 Spanish names can be appropriate when the project deliberately keeps the data model in Spanish:
@@ -45,13 +47,19 @@ creado         TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
 creado_por     UUID        NULL,
 modificado     TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
 modificado_por UUID        NULL,
-estado_registro TEXT       NOT NULL DEFAULT 'Activo',
+activo         BOOLEAN     NOT NULL DEFAULT TRUE,
+-- o: estado_registro TEXT NOT NULL DEFAULT 'Activo',
 activo_desde TIMESTAMPTZ NULL,
-activo_hasta TIMESTAMPTZ NULL
+activo_hasta TIMESTAMPTZ NULL,
+id_publico   UUID        NOT NULL
 ```
 
 These names are examples. Align them with the entity properties, database engine naming convention and project language strategy. Determine the data types for `created_by`, `updated_by`, `creado_por` and `modificado_por` according to each project's actor model and identity requirements.
-Active-state columns such as `active_from`, `active_until`, `activo_desde` and `activo_hasta` are optional and should be added only when analysis and design show that the entity needs to record when the record itself is active. Use domain-specific names for business validity periods, such as `assignment_valid_from` or `asignacion_vigente_desde`.
+Use `active` / `activo` for simple existence state, or `record_status` / `estado_registro` when the record needs states such as `Active`, `SoftDeleted` and `HardDeleted`. Active-state columns such as `active_from`, `active_until`, `activo_desde` and `activo_hasta` are optional and should be added only when analysis and design show that the entity needs to record when the record itself is active.
+
+Use `valid` / `vigente` for simple business validity, or `validity_status` / `estado_vigencia` when the domain needs states such as `Valid`, `Revoked` and `Expired`. Use domain-specific validity names when they add clarity, such as `assignment_valid_from` or `asignacion_vigente_desde`.
+
+Do not expose numeric auto-increment primary keys outside backend boundaries. Add `public_id` / `id_publico` with UUID v4 or v7 when records must be referenced from APIs, frontend models or integration contracts.
 
 - When maintaining an event log per entity, use at least:
 

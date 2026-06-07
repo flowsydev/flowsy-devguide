@@ -50,9 +50,11 @@ CreatedAt              datetimeoffset(7) NOT NULL DEFAULT TODATETIMEOFFSET(SYSUT
 CreatedBy              uniqueidentifier  NULL,
 UpdatedAt              datetimeoffset(7) NOT NULL DEFAULT TODATETIMEOFFSET(SYSUTCDATETIME(), '+00:00'),
 UpdatedBy              uniqueidentifier  NULL,
-RecordStatus           nvarchar(40)      NOT NULL DEFAULT 'Active',
+Active                 bit               NOT NULL DEFAULT 1,
+-- or: RecordStatus nvarchar(40) NOT NULL DEFAULT 'Active',
 ActiveFrom             datetimeoffset(7) NULL,
-ActiveUntil            datetimeoffset(7) NULL
+ActiveUntil            datetimeoffset(7) NULL,
+PublicId               uniqueidentifier  NOT NULL
 ```
 
 Spanish names can be appropriate when the project deliberately keeps the data model in Spanish:
@@ -62,13 +64,17 @@ Creado        datetimeoffset(7) NOT NULL DEFAULT TODATETIMEOFFSET(SYSUTCDATETIME
 CreadoPor     uniqueidentifier  NULL,
 Modificado    datetimeoffset(7) NOT NULL DEFAULT TODATETIMEOFFSET(SYSUTCDATETIME(), '+00:00'),
 ModificadoPor uniqueidentifier  NULL,
-EstadoRegistro nvarchar(40)     NOT NULL DEFAULT 'Activo',
+Activo        bit               NOT NULL DEFAULT 1,
+-- o: EstadoRegistro nvarchar(40) NOT NULL DEFAULT 'Activo',
 ActivoDesde    datetimeoffset(7) NULL,
-ActivoHasta    datetimeoffset(7) NULL
+ActivoHasta    datetimeoffset(7) NULL,
+IdPublico      uniqueidentifier  NOT NULL
 ```
 
 Choose the data type for `CreatedBy`, `UpdatedBy`, `CreadoPor` and `ModificadoPor` according to the project's actor model and identity requirements.
-Add active-state columns such as `ActiveFrom`, `ActiveUntil`, `ActivoDesde` and `ActivoHasta` only when analysis and design show that the entity needs to record when the record itself is active. Use domain-specific names for business validity periods, such as `AssignmentValidFrom` or `AsignacionVigenteDesde`.
+Use `Active` / `Activo` for simple existence state, or `RecordStatus` / `EstadoRegistro` when the record needs states such as `Active`, `SoftDeleted` and `HardDeleted`. Add active-state columns such as `ActiveFrom`, `ActiveUntil`, `ActivoDesde` and `ActivoHasta` only when analysis and design show that the entity needs to record when the record itself is active.
+Use `Valid` / `Vigente` for simple business validity, or `ValidityStatus` / `EstadoVigencia` when the domain needs states such as `Valid`, `Revoked` and `Expired`. Use domain-specific validity names when they add clarity, such as `AssignmentValidFrom` or `AsignacionVigenteDesde`.
+Do not expose numeric auto-increment primary keys outside backend boundaries. Add `PublicId` / `IdPublico` with UUID v4 or v7 when records must be referenced from APIs, frontend models or integration contracts.
 
 Common SQL Server date and time functions:
 

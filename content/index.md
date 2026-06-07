@@ -85,7 +85,7 @@ Before creating the first entities, Value Objects, tables, columns, events, APIs
 
 The business language may be English, Spanish or another language by Bounded Context; the important part is that business concepts remain consistent across conversations, documentation, code, tests and data models.
 
-Keep established software design and development terms in English when they are technical vocabulary rather than business language. For example, `CrearPedidoCommand` translates the business action but keeps the technical `Command` suffix; `OrdenDespachoRepository` translates the aggregate but keeps the `Repository` pattern name. Start with [Ubiquitous Language](/discovery/ubiquitous-language), then apply the related [Writing Guidelines](/conventions/writing-guidelines).
+Keep established software design and development terms in English when they are technical vocabulary rather than business language. For example, `CrearPedidoCommand` translates the business action but keeps the technical `Command` suffix; `PedidoClienteRepository` translates the aggregate but keeps the `Repository` pattern name. Start with [Ubiquitous Language](/discovery/ubiquitous-language), then apply the related [Writing Guidelines](/conventions/writing-guidelines).
 
 ## Flowsy Ecosystem
 

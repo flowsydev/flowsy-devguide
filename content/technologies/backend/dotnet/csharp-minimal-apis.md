@@ -110,6 +110,7 @@ Choose names that describe what the model is used for and which data it exposes 
 | Full data for a review or confirmation screen | `CartCheckoutPreview` | `ShoppingCartDetail`, `ShoppingCartFull` |
 | Minimal data for a lookup — no sensitive fields | `ProductOption` | `ProductCompact`, `ProductLight` |
 | Categorized states of an aggregate | `ShoppingCartStatus` | `CartStatusEnum`, `Status` |
+| Backend-only variant with private IDs or operational fields | `UserAccountOverviewInternal` | `UserAccountOverviewFull`, `UserAccountOverviewWithEverything` |
 
 #### Avoid suffixes that describe structure or size, not purpose
 
@@ -120,11 +121,35 @@ Technical suffixes — `Dto`, `Model`, `Data`, `Base` — describe structure rat
 public record ShoppingCartOverview(...);   // decision context for State classes
 public record CartCheckoutPreview(...);    // full data for checkout screens
 public record ProductOption(...);          // minimal data for the product picker
+public record UserAccountOverviewInternal(...); // backend-only data
 
 // Avoid: suffix describes structure or size, not domain role
 public record ShoppingCartDto(...);
 public record ShoppingCartCompact(...);
 public record ProductLight(...);
+```
+
+#### Split public and internal identifiers
+
+Do not expose numeric auto-increment primary keys from backend slices through public API responses, frontend-facing DTOs, integration events or URLs. Persist a public identifier such as `PublicId` in the domain and database model when an entity crosses backend boundaries. Use UUID v4 or UUID v7 according to the project's storage, ordering and interoperability requirements.
+
+| Variant | Example | Includes |
+| --- | --- | --- |
+| Public read model | `UserAccountOverview` | `PublicId` and fields safe for external consumers. |
+| Recommended internal variant | `UserAccountOverviewInternal` | Same fields plus private primary keys or backend-only operational attributes. |
+| Alternative private variant | `UserAccountOverviewPrivate` | Use when the project wants the name to emphasize privacy classification. |
+
+```csharp
+public record UserAccountOverview(
+    Guid PublicId,
+    string DisplayName,
+    string Email);
+
+public record UserAccountOverviewInternal(
+    long Id,
+    Guid PublicId,
+    string DisplayName,
+    string Email);
 ```
 
 #### Enum values must reflect the agreed domain vocabulary

@@ -49,9 +49,11 @@ created_at         timestamp(6) NOT NULL DEFAULT (SYSDATE(6)),
 created_by         char(36)     NULL,
 updated_at         timestamp(6) NOT NULL DEFAULT (SYSDATE(6)),
 updated_by         char(36)     NULL,
-record_status      varchar(40)  NOT NULL DEFAULT 'Active',
+active             boolean      NOT NULL DEFAULT TRUE,
+-- or: record_status varchar(40) NOT NULL DEFAULT 'Active',
 active_from        timestamp(6) NULL,
-active_until       timestamp(6) NULL
+active_until       timestamp(6) NULL,
+public_id          char(36)     NOT NULL
 ```
 
 Spanish names can be appropriate when the project deliberately keeps the data model in Spanish:
@@ -61,13 +63,17 @@ creado         timestamp(6) NOT NULL DEFAULT (SYSDATE(6)),
 creado_por     char(36)     NULL,
 modificado     timestamp(6) NOT NULL DEFAULT (SYSDATE(6)),
 modificado_por char(36)     NULL,
-estado_registro varchar(40) NOT NULL DEFAULT 'Activo',
+activo         boolean      NOT NULL DEFAULT TRUE,
+-- o: estado_registro varchar(40) NOT NULL DEFAULT 'Activo',
 activo_desde timestamp(6) NULL,
-activo_hasta timestamp(6) NULL
+activo_hasta timestamp(6) NULL,
+id_publico   char(36)     NOT NULL
 ```
 
 Adjust actor identity types when the project uses binary UUIDs, numeric identifiers, external identity-provider subjects or different actor identifiers.
-Add active-state columns such as `active_from`, `active_until`, `activo_desde` and `activo_hasta` only when analysis and design show that the entity needs to record when the record itself is active. Use domain-specific names for business validity periods, such as `assignment_valid_from` or `asignacion_vigente_desde`.
+Use `active` / `activo` for simple existence state, or `record_status` / `estado_registro` when the record needs states such as `Active`, `SoftDeleted` and `HardDeleted`. Add active-state columns such as `active_from`, `active_until`, `activo_desde` and `activo_hasta` only when analysis and design show that the entity needs to record when the record itself is active.
+Use `valid` / `vigente` for simple business validity, or `validity_status` / `estado_vigencia` when the domain needs states such as `Valid`, `Revoked` and `Expired`. Use domain-specific validity names when they add clarity, such as `assignment_valid_from` or `asignacion_vigente_desde`.
+Do not expose numeric auto-increment primary keys outside backend boundaries. Add `public_id` / `id_publico` with UUID v4 or v7 when records must be referenced from APIs, frontend models or integration contracts.
 Update `updated_at` or `modificado` from the routine, trigger or persistence layer that performs the change, using `SYSDATE(6)` when the database engine allows that function at the assignment point.
 
 Common MySQL and MariaDB date and time functions:

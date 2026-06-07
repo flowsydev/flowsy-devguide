@@ -31,7 +31,7 @@ Use [Error Handling](./error-handling.md) when a change affects validation flow,
   - **TypeScript/JavaScript**: `PascalCase` types/classes, `camelCase` functions.
   - **Java**: `PascalCase` classes, `camelCase` members.
   - **Go**: exported names in `PascalCase`, internal in `camelCase`.
-- Keep the selected domain language consistent inside each Bounded Context. For example, avoid mixing `ShoppingCart`, `orden_despacho` and `PedidoComercial` in the same context unless the boundary and reason are documented. Prefer equivalent concepts such as `ShoppingCart` / `CarritoCompra` or `DispatchOrder` / `OrdenDespacho` when teaching language strategy.
+- Keep the selected domain language consistent inside each Bounded Context. For example, avoid mixing `ShoppingCart`, `pedido_cliente` and `PedidoComercial` in the same context unless the boundary and reason are documented. Prefer equivalent concepts such as `ShoppingCart` / `CarritoCompra` or `PurchaseOrder` / `PedidoCliente` when teaching language strategy.
 
 See the language-specific convention guides: [C#](./dotnet/csharp), [Vue 3 and TypeScript](../frontend/vue/conventions).
 

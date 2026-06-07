@@ -20,9 +20,9 @@ Use a consistent and explicit convention for:
 - Routine parameters and return objects.
 - Triggers, events and scheduled jobs when the database engine supports them.
 
-When the data model uses Spanish business names, omit articles and prepositions in database identifiers when the meaning remains clear. Prefer `orden_despacho`, `id_orden_despacho`, `asignacion_terminal_despacho` and `ix_orden_despacho_terminal_id` over `orden_de_despacho`, `id_orden_de_despacho` or `asignacion_de_terminal_de_despacho`.
+When the data model uses Spanish business names, omit articles and prepositions in database identifiers when the meaning remains clear. Prefer `pedido_cliente`, `id_pedido_cliente`, `asignacion_direccion_envio` and `ix_pedido_cliente_direccion_envio_id` over `pedido_de_cliente`, `id_pedido_de_cliente` or `asignacion_de_direccion_de_envio`.
 
-Keep articles and prepositions in user-facing labels, reports and documentation text: "Orden de despacho", "Asignación a la terminal de despacho". Preserve them in identifiers only when they are part of an official term or avoid ambiguity, such as `puesta_en_operacion` or `pago_a_proveedor`.
+Keep articles and prepositions in user-facing labels, reports and documentation text: "Pedido de cliente", "Asignación de dirección de envío". Preserve them in identifiers only when they are part of an official term or avoid ambiguity, such as `puesta_en_operacion` or `pago_a_proveedor`.
 
 ## Primary and Foreign Keys
 
@@ -59,43 +59,67 @@ English naming keeps `id` as a suffix for attributes and columns that reference 
 
 ```sql
 -- Primary key
-shopping_cart_id UUID PRIMARY KEY,
+shopping_cart_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+public_id        UUID   NOT NULL,
 
 -- Audit columns
 created_at        TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
 created_by        UUID        NULL,
 updated_at        TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
 updated_by        UUID        NULL,
-record_status     TEXT        NOT NULL DEFAULT 'Active', -- or enum, if supported
+active            BOOLEAN     NOT NULL DEFAULT TRUE,
+-- or: record_status TEXT NOT NULL DEFAULT 'Active',
 active_from       TIMESTAMPTZ NULL,
 active_until      TIMESTAMPTZ NULL,
 
 -- Constraints
-CONSTRAINT ck_shopping_cart_record_status
-    CHECK (record_status IN ('Active', 'SoftDeleted', 'HardDeleted'))
+CONSTRAINT uq_shopping_cart_public_id UNIQUE (public_id)
+-- If record_status is used:
+-- CONSTRAINT ck_shopping_cart_record_status
+--     CHECK (record_status IN ('Active', 'SoftDeleted', 'HardDeleted'))
 ```
 
 Spanish naming keeps `id` as a prefix for attributes and columns that reference another entity:
 
 ```sql
-id_carrito_compra UUID        PRIMARY KEY,
+id_carrito_compra BIGINT      GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+id_publico        UUID        NOT NULL,
 creado            TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
 creado_por        UUID        NULL,
 modificado        TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
 modificado_por    UUID        NULL,
-estado_registro   TEXT        NOT NULL DEFAULT 'Activo', -- o enum, si se soporta
+activo            BOOLEAN     NOT NULL DEFAULT TRUE,
+-- o: estado_registro TEXT NOT NULL DEFAULT 'Activo',
 activo_desde      TIMESTAMPTZ NULL,
 activo_hasta      TIMESTAMPTZ NULL,
 
-CONSTRAINT ck_carrito_compra_estado_registro
-    CHECK (estado_registro IN ('Activo', 'EliminadoSuave', 'EliminadoDefinitivo'))
+CONSTRAINT uq_carrito_compra_id_publico UNIQUE (id_publico)
+-- Si se usa estado_registro:
+-- CONSTRAINT ck_carrito_compra_estado_registro
+--     CHECK (estado_registro IN ('Activo', 'EliminadoLogico', 'EliminadoFisico'))
 ```
 
 Adapt data types, nullability, defaults and status values to the target database engine and domain requirements. Determine the data types for `created_by`, `updated_by`, `creado_por` and `modificado_por` according to each project's actor model. Use `uuid` only when it matches the identity strategy; other projects may need integer keys, external identity-provider subjects, service-account identifiers or another actor representation.
 
+Use one of these alternatives for the record existence state:
+
+| Alternative | English Column | Spanish Column | Type | Notes |
+| --- | --- | --- | --- | --- |
+| Boolean flag | `active` | `activo` | `BOOLEAN` / `BIT` | Simple active/inactive state. In many schemas it can be calculated from `active_from` and `active_until`. |
+| Explicit status | `record_status` | `estado_registro` | Enum, lookup or constrained text | Use when the record needs values such as `Active`, `SoftDeleted` and `HardDeleted`, or their Spanish equivalents `Activo`, `EliminadoLogico` and `EliminadoFisico`. |
+
 Active-state columns such as `active_from`, `active_until`, `activo_desde` and `activo_hasta` do not apply to every table. Add them only when analysis and design show that the entity needs to record the period in which the record itself is active, such as catalog records, configuration records, reference data, published policies or rows that use soft deletion with historical traceability.
 
-Business validity periods should use domain-specific names to avoid confusion with `RecordStatus` / `EstadoRegistro`. Examples: `appointment_valid_from` / `appointment_valid_until`, `assignment_valid_from` / `assignment_valid_until`, `role_grant_valid_from` / `role_grant_valid_until`, `nombramiento_vigente_desde` / `nombramiento_vigente_hasta`, `asignacion_vigente_desde` / `asignacion_vigente_hasta` or `rol_vigente_desde` / `rol_vigente_hasta`.
+Business validity periods should use domain-specific names to avoid confusion with `RecordStatus` / `EstadoRegistro`. Use `valid` / `vigente` when a boolean is enough and can often be calculated from `valid_from` / `valid_until` or `vigente_desde` / `vigente_hasta`. Use `validity_status` / `estado_vigencia` when the domain needs values such as `Valid`, `Revoked` or `Expired`.
+
+| Purpose | English Column | Spanish Column |
+| --- | --- | --- |
+| Validity state flag | `valid` | `vigente` |
+| Validity state enum | `validity_status` | `estado_vigencia` |
+| Validity start | `valid_from` | `vigente_desde` |
+| Validity end | `valid_until` | `vigente_hasta` |
+
+Examples with domain-specific names: `appointment_valid_from` / `appointment_valid_until`, `assignment_valid_from` / `assignment_valid_until`, `role_grant_valid_from` / `role_grant_valid_until`, `nombramiento_vigente_desde` / `nombramiento_vigente_hasta`, `asignacion_vigente_desde` / `asignacion_vigente_hasta` or `rol_vigente_desde` / `rol_vigente_hasta`.
 
 The guide does not recommend using every audit, status or validity column in every table. Apply only the fields that fit each entity and add other project-specific fields when the domain, compliance or operational design requires them.
 
@@ -111,6 +135,16 @@ Choose primary key types from access patterns, scale, integration needs, storage
 | `int` identity / sequence | Small bounded catalogs or internal tables with clearly limited growth. | Compact and familiar. | Easy to outgrow; avoid for aggregates that may grow for years. |
 | Natural key | The business identifier is stable, short and truly immutable. | Expressive and avoids an extra surrogate key in simple reference tables. | Business identifiers often change; wide or mutable natural keys make foreign keys and updates costly. |
 | Composite key | The row only exists within a parent scope, such as join tables or localized values. | Enforces domain uniqueness directly and avoids artificial identifiers. | Wider foreign keys, more verbose queries and harder references from other aggregates. |
+
+## Public Identifiers
+
+Do not expose numeric auto-increment primary keys outside backend applications, trusted internal jobs or controlled operational tooling. External APIs, URLs, frontend models and integration contracts should use public identifiers instead.
+
+| Purpose | English Column | Spanish Column | Recommended Type | Notes |
+| --- | --- | --- | --- | --- |
+| Public identifier | `public_id` | `id_publico` | UUID v4 or UUID v7 | Use v4 for random public IDs. Use v7 when ordered UUIDs better fit index locality, event ordering or operational analysis. |
+
+Keep `public_id` / `id_publico` unique and immutable. The private primary key can still be used for joins and backend persistence, while the public ID becomes the stable identifier in external contracts.
 
 ## Date and Time
 

@@ -106,14 +106,97 @@ Use one folder per component when it has local model, stories, tests or assets. 
     ├── 📁 composables/
     ├── 📁 logic/
     ├── 📁 model/
-    ├── 📁 navigation/
-    ├── 📁 pages/
+    ├── 📁 routing/
     ├── 📁 stores/
-    ├── 📁 tests/
-    └── 📁 translations/
+    └── 📁 translation/
 ```
 
 Use the folders that are useful for the feature. Do not create empty folders just to satisfy the example.
+
+## Complete Vue Application Structure
+
+### Small Application
+
+For a small application, a single `routing.ts` file is enough to wire all routes:
+
+```text
+📁 src/
+├── 📁 app/
+│   ├── 📁 providers/
+│   │   ├── 🔧 charts.ts
+│   │   ├── 🔧 pinia.ts
+│   │   └── 🔧 vuetify.ts
+│   ├── 📁 styles/
+│   │   ├── 🎨 base.css
+│   │   └── 🎨 main.css
+│   ├── 🧩 App.vue
+│   ├── 📄 main.ts
+│   └── 📄 routing.ts
+└── 📁 features/
+    ├── 📁 kernel/
+    │   ├── 📁 components/
+    │   ├── 📁 composables/
+    │   ├── 📁 logic/
+    │   ├── 📁 model/
+    │   ├── 📁 routing/
+    │   ├── 📁 stores/
+    │   └── 📁 translation/
+    └── 📁 shopping-cart/
+        ├── 📁 components/
+        ├── 📁 composables/
+        ├── 📁 logic/
+        ├── 📁 model/
+        ├── 📁 routing/
+        ├── 📁 stores/
+        └── 📁 translation/
+```
+
+### Medium and Large Application
+
+When routing grows, split it into a `routing/` directory with one file per feature-set:
+
+```text
+📁 src/
+├── 📁 app/
+│   ├── 📁 providers/
+│   │   ├── 🔧 charts.ts
+│   │   ├── 🔧 pinia.ts
+│   │   └── 🔧 vuetify.ts
+│   ├── 📁 routing/
+│   │   ├── 📄 index.ts
+│   │   ├── 📄 shopping-cart.routes.ts
+│   │   └── 📄 user-profile.routes.ts
+│   ├── 📁 styles/
+│   │   ├── 🎨 base.css
+│   │   └── 🎨 main.css
+│   ├── 🧩 App.vue
+│   └── 📄 main.ts
+└── 📁 features/
+    ├── 📁 kernel/
+    │   ├── 📁 components/
+    │   ├── 📁 composables/
+    │   ├── 📁 logic/
+    │   ├── 📁 model/
+    │   ├── 📁 routing/
+    │   ├── 📁 stores/
+    │   └── 📁 translation/
+    ├── 📁 shopping-cart/
+    │   ├── 📁 components/
+    │   ├── 📁 composables/
+    │   ├── 📁 logic/
+    │   ├── 📁 model/
+    │   ├── 📁 routing/
+    │   ├── 📁 stores/
+    │   └── 📁 translation/
+    └── 📁 user-profile/
+        ├── 📁 components/
+        ├── 📁 composables/
+        ├── 📁 logic/
+        ├── 📁 model/
+        ├── 📁 routing/
+        ├── 📁 stores/
+        └── 📁 translation/
+```
 
 ## Pinia — Reactive State
 
@@ -226,62 +309,189 @@ export function useCartOperations() {
 
 ## UI / API Contracts
 
-Centralize the transformation between backend DTOs and UI models:
+Not every backend response needs to be mapped to a separate UI model. Applying an adapter layer as a blanket rule adds boilerplate without value. The right decision depends on whether the backend contract and the component's actual needs diverge — and that analysis is most effective when the project has defined and adopted a shared ubiquitous language from day one.
+
+### Use the Backend Type Directly
+
+When the API already uses the domain's language and the component needs the data in the same shape, type the response explicitly and pass it through. A ViewModel identical to the backend type adds noise without protection.
+
+#### Example: country selector in an address form
 
 ```typescript
-// model/CartItem.ts
-export interface CartItemResponse {      // Backend DTO
-  shoppingCartItemId: string;
-  productId: string;
-  productName: string;
-  productPrice: number;
-  quantity: number;
-  totalPrice: number;
-}
-
-export interface CartItemViewModel {     // UI Model
+// model/Country.ts
+export interface Country {
   id: string;
-  productName: string;
-  formattedPrice: string;
+  name: string;
+  isoCode: string;
+}
+```
+
+A `<CountrySelector>` component that renders a dropdown list needs exactly `id`, `name` and `isoCode`. No formatting, no renaming, no derived fields. Creating a `CountryViewModel` that mirrors this structure serves no purpose.
+
+The same applies to status catalogs, currency lists, timezone pickers and any other lookup data where the API response is already the right shape for the UI.
+
+### Introduce a ViewModel and Adapter When Needed
+
+The following scenarios justify the separation. In each case, the adapter concentrates a concern that would otherwise be scattered across templates, composables or stores — making it untestable and hard to change.
+
+#### 1. Formatting values for display
+
+The backend transmits raw values optimized for storage and transfer. Formatting logic does not belong in templates, and it should not be duplicated across multiple components.
+
+```typescript
+// model/InvoiceLine.ts
+
+export interface InvoiceLineResponse {
+  invoiceLineId: string;
+  description: string;
+  unitPriceUsd: number;
   quantity: number;
-  subtotal: number;
 }
 
-// adapters/cartItem.adapter.ts
-export function toCartItemViewModel(dto: CartItemResponse): CartItemViewModel {
+export interface InvoiceLineViewModel {
+  id: string;
+  description: string;
+  formattedUnitPrice: string;   // "$12.50"
+  quantity: number;
+  formattedTotal: string;       // "$37.50" — derived and formatted
+}
+
+export function toInvoiceLineViewModel(dto: InvoiceLineResponse): InvoiceLineViewModel {
+  const total = dto.unitPriceUsd * dto.quantity;
   return {
-    id: dto.shoppingCartItemId,
-    productName: dto.productName,
-    formattedPrice: new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' })
-      .format(dto.productPrice),
+    id: dto.invoiceLineId,
+    description: dto.description,
+    formattedUnitPrice: formatCurrency(dto.unitPriceUsd),
     quantity: dto.quantity,
-    subtotal: dto.totalPrice,
+    formattedTotal: formatCurrency(total),
   };
 }
 ```
 
-Do not pass raw backend DTOs to presentation components.
+This example also illustrates a combined case: the adapter renames (`invoiceLineId` → `id`), formats currency and derives `formattedTotal` from two raw fields — all in one place.
+
+#### 2. Closing the gap between persistence and domain language
+
+When the backend names fields after database columns or internal service conventions and the project has defined a different ubiquitous language, the adapter is the explicit translation point between both layers.
+
+```typescript
+// Backend response — persistence-oriented naming
+export interface ProductListingResponse {
+  skuCode: string;
+  displayTitle: string;
+  stockQty: number;
+  listPriceUsd: number;
+  isActiveFlag: boolean;
+}
+
+// UI model — domain-oriented naming agreed by the team
+export interface ProductViewModel {
+  sku: string;
+  name: string;
+  availableStock: number;
+  price: number;
+  isAvailable: boolean;
+}
+```
+
+If this kind of gap is common in a project, it usually signals that the ubiquitous language was not applied consistently during backend design. When the team shares a common vocabulary across requirements, design sessions and code, most of these translations vanish naturally.
+
+#### 3. Derived or computed fields
+
+The backend sends the raw building blocks; the component needs values computed from them. Inline computation in templates or `computed` properties scatters logic that should live in one testable place.
+
+```typescript
+// model/Shipment.ts
+
+export interface ShipmentResponse {
+  origin: string;
+  destination: string;
+  scheduledAt: string;          // ISO-8601
+  deliveredAt: string | null;
+  totalWeightKg: number;
+  totalVolumeM3: number;
+}
+
+export interface ShipmentViewModel {
+  origin: string;
+  destination: string;
+  scheduledDate: string;        // "Jan 15, 2025"
+  isDelivered: boolean;         // derived: deliveredAt !== null
+  deliveryDate: string | null;  // formatted or null
+  weightLabel: string;          // "12.5 kg"
+  volumeLabel: string;          // "2.3 m³"
+}
+```
+
+#### 4. Merging data from multiple endpoints
+
+A single screen often needs data from two or more endpoints. The adapter creates the unified object the component binds to, keeping orchestration logic out of the template and the composable focused on data fetching.
+
+```typescript
+// Merges /orders/:id and /customers/:id into a single view object
+export interface OrderDetailViewModel {
+  orderId: string;
+  orderDate: string;
+  status: string;
+  customerName: string;
+  customerEmail: string;
+  shippingAddress: string;
+  lines: OrderLineViewModel[];
+}
+```
+
+#### 5. UI-only state combined with backend data
+
+When a component needs to track per-item interaction state that does not exist in the backend response, the ViewModel is the right place to declare it.
+
+```typescript
+export interface ProductRowViewModel {
+  id: string;
+  name: string;
+  formattedPrice: string;
+  availableStock: number;
+  isSelected: boolean;    // UI state — not from backend
+  isExpanded: boolean;    // UI state — not from backend
+}
+```
+
+Initializing `isSelected` and `isExpanded` to `false` inside the adapter keeps the store and components free of per-item initialization boilerplate.
+
+#### 6. External or legacy APIs you do not control
+
+When the API belongs to a third party or a legacy system with no planned migration, field names, types and structure may change without your team's involvement. The adapter acts as an anti-corruption layer: update one file when the external contract changes, and the rest of the frontend remains untouched.
+
+### Ubiquitous Language as the Foundation
+
+The scenarios above do not arise with equal frequency in every project. A team that defines a shared ubiquitous language at the start — and applies it consistently across requirements, domain model, backend responses and frontend types — naturally narrows the gap between the API contract and what the UI needs.
+
+When the backend already uses `orderId`, `customerName`, `scheduledDate` and `availableStock` with the same vocabulary the team uses in design sessions, user stories and code reviews, many of the adapter scenarios above disappear. The remaining ones — formatting, derived fields, merged sources and external APIs — are structural and unavoidable regardless of how well-chosen the names are.
+
+#### The Cost of Deferring This Analysis
+
+A project that starts without a defined ubiquitous language tends to accumulate a different vocabulary in every layer: the database uses one naming convention, the backend API another, the frontend a third and the design documentation a fourth. Each of these gaps eventually becomes translation code. Adapters written to compensate for a language problem are not a solution — they are a symptom.
+
+Invest in language alignment before writing the first endpoint. Define the terms the domain uses, make them explicit in the team's vocabulary and apply them from the database schema to the UI types. The result is less translation code, more readable interfaces and faster onboarding for every developer who joins after the first sprint.
 
 ### Example Folder `model/`
 
 ```text
 📁 model/
-├── 📄 cart.dto.ts
-├── 📄 cart.view-model.ts
-└── 📄 cart.adapter.ts
+├── 📄 InvoiceLine.ts     ← response type, view model and adapter in one file when small
+└── 📄 index.ts
 ```
 
-### Example Folder `navigation/`
+### Example Folder `routing/`
 
 ```text
-📁 navigation/
+📁 routing/
 └── 📄 shopping-cart.routes.ts
 ```
 
 ### Example Folder `translation/`
 
 ```text
-📁 translations/
+📁 translation/
 ├── 📄 en.ts
 └── 📄 es.ts
 ```
@@ -298,8 +508,8 @@ Do not pass raw backend DTOs to presentation components.
 
 Use these only when they solve a real problem in the feature-set:
 
-- `navigation/` for route definitions, guards or navigation metadata owned by the feature.
-- `translations/` for localized labels and messages.
+- `routing/` for route definitions, guards or navigation metadata owned by the feature.
+- `translation/` for localized labels and messages.
 - `logic/` for pure functions that deserve direct unit tests outside Vue rendering.
 - `adapters/` when DTO-to-view-model transformation becomes too large for `model/`.
 - `assets/` when the feature owns images, fixtures or static resources.

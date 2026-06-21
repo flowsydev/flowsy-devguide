@@ -37,13 +37,13 @@ Concrete names vary by technology, but the architectural intent is the same:
 | --- | --- | --- | --- | --- |
 | Reusable visual unit | `components/` | `components/` | `components/` | Render UI and handle local interaction. |
 | Framework-bound reusable logic | `composables/` | `hooks/` | `services/` or presentation utilities | Encapsulate reusable behavior. |
-| Shared state | `state/` or Pinia stores | `state/`, context or state libraries | State services or global state tools | Share state between screens or sections. |
+| Shared state | `stores/` | `state/` or context | Services or state libraries | Share state between screens or sections. |
 | Pure logic | `logic/` | `logic/` | `logic/` | Rules without framework dependencies. |
-| Types and contracts | `model/` | `model/` or `types/` | `model/` or `interfaces/` | Define structures and contracts. |
-| Navigation | `router/` or `navigation/` | router config or route objects | routing modules | Wire feature routes into the application. |
-| Localization | `translations/` | `translations/` | `i18n/` or `translations/` | Keep feature-owned labels and messages near the feature. |
+| Types and contracts | `model/` | `model/` | `model/` | Define structures and contracts. |
+| Navigation | `routing/` | `routing/` | `routing/` | Wire feature routes into the application. |
+| Localization | `translation/` | `translation/` | `translation/` | Keep feature-owned labels and messages near the feature. |
 
-In this guide, names such as `components`, `state` and `logic` describe responsibilities. Use the equivalent terms already established by the selected framework when they communicate the same intent better.
+In this guide, `components`, `state`, `logic`, `routing` and `translation` describe responsibilities. The framework-specific sections show the equivalent terms for each stack.
 
 ## Folder Structure
 
@@ -51,43 +51,94 @@ This tree is a reference implementation, not a mandatory physical layout. Adapt 
 
 ```text
 📁 src/
-├── 📁 features/
-│   ├── 📁 kernel/                          ← Shared by all feature-sets
-│   │   ├── 📁 components/
-│   │   ├── 📁 framework-logic/             ← composables, hooks or equivalent
-│   │   ├── 📁 logic/
-│   │   ├── 📁 model/
-│   │   ├── 📁 navigation/
-│   │   ├── 📁 state/
-│   │   └── 📁 translation/
-│   ├── 📁 shopping-cart/
-│   │   ├── 📁 components/
-│   │   ├── 📁 framework-logic/
-│   │   ├── 📁 logic/
-│   │   ├── 📁 model/
-│   │   ├── 📁 navigation/
-│   │   ├── 📁 state/
-│   │   └── 📁 translation/
-│   └── 📁 user-profile/
-│       ├── 📁 components/
-│       ├── 📁 framework-logic/
-│       ├── 📁 logic/
-│       ├── 📁 model/
-│       ├── 📁 navigation/
-│       ├── 📁 state/
-│       └── 📁 translation/
+├── 📁 app/                                  ← Application bootstrap (see section below)
+│   ├── 📁 providers/
+│   ├── 📁 routing/                          ← or routing.ts for small apps
+│   └── 📁 styles/
+└── 📁 features/
+    ├── 📁 kernel/                           ← Shared by all feature-sets
+    │   ├── 📁 components/
+    │   ├── 📁 framework-logic/              ← composables, hooks or equivalent
+    │   ├── 📁 logic/
+    │   ├── 📁 model/
+    │   ├── 📁 routing/
+    │   ├── 📁 state/
+    │   └── 📁 translation/
+    ├── 📁 shopping-cart/
+    │   ├── 📁 components/
+    │   ├── 📁 framework-logic/
+    │   ├── 📁 logic/
+    │   ├── 📁 model/
+    │   ├── 📁 routing/
+    │   ├── 📁 state/
+    │   └── 📁 translation/
+    └── 📁 user-profile/
+        ├── 📁 components/
+        ├── 📁 framework-logic/
+        ├── 📁 logic/
+        ├── 📁 model/
+        ├── 📁 routing/
+        ├── 📁 state/
+        └── 📁 translation/
 ```
+
+## Application Bootstrap (`app/`)
+
+The `app/` folder holds everything needed to start the application: the entry point, application-wide routing assembly, library providers and global styles. Its contents are infrastructure, not domain logic — they wire up the application without knowing about feature-specific business rules.
+
+### Small Application
+
+For a small application, a single routing file is enough:
+
+```text
+📁 src/
+└── 📁 app/
+    ├── 📁 providers/
+    │   ├── 📄 charts.ts
+    │   ├── 📄 state.ts
+    │   └── 📄 ui.ts
+    ├── 📁 styles/
+    │   ├── 🎨 base.css
+    │   └── 🎨 main.css
+    ├── 📄 main.ts
+    └── 📄 routing.ts
+```
+
+### Medium and Large Application
+
+When routing grows, split it into route groups per feature-set or domain area:
+
+```text
+📁 src/
+└── 📁 app/
+    ├── 📁 providers/
+    │   ├── 📄 charts.ts
+    │   ├── 📄 state.ts
+    │   └── 📄 ui.ts
+    ├── 📁 routing/
+    │   ├── 📄 index.ts
+    │   ├── 📄 route-group-1.ts
+    │   ├── 📄 route-group-2.ts
+    │   └── 📄 route-group-n.ts
+    ├── 📁 styles/
+    │   ├── 🎨 base.css
+    │   └── 🎨 main.css
+    └── 📄 main.ts
+```
+
+The root component (e.g. `App.vue` in Vue, `App.tsx` in React) lives alongside `main.ts` following the framework's entry convention. Provider files (`state.ts`, `ui.ts`, `charts.ts`) initialize libraries — adapt names to the project's actual dependencies.
 
 ## Folder Rules
 
 | Folder | Content and Rules |
 | --- | --- |
+| `app/` | Application bootstrap: entry point, routing assembly, library providers and global styles. No domain logic. |
 | `kernel/` | Reusable capabilities shared by all feature-sets. Only what is genuinely generic lives here. |
 | `components/` | Visual components or UI units owned by the feature-set. |
 | `framework-logic/` | Framework-bound presentation or interaction logic. In Vue this may be `composables/`; in React, `hooks/`; in Angular, presentation services or equivalent utilities. |
 | `logic/` | Pure domain or UI-independent functions without framework dependencies. |
 | `model/` | Types, interfaces, enums and frontend contracts owned by the feature-set. |
-| `navigation/` | Routes, navigation entries or feature wiring into the application. |
+| `routing/` | Routes, navigation entries or feature wiring into the application. |
 | `state/` | Feature-set shared state. Implement it with the project state tool, such as Pinia, Redux, Zustand, signals, services or context. |
 | `translation/` | Localized texts, labels and messages owned by the feature-set. |
 
@@ -101,7 +152,7 @@ The `kernel` module centralizes capabilities genuinely shared by all feature-set
 - **`framework-logic/`**: cross-cutting logic for authentication, notifications, preferences or common frontend capabilities.
 - **`state/`**: global state such as user session, app configuration or organization context.
 - **`model/`**: shared base types such as `Pagination`, `ApiError` and `DateRange`.
-- **`navigation/`**: guards, base routes or shared integration with the navigation mechanism.
+- **`routing/`**: guards, base routes or shared integration with the navigation mechanism.
 - **`translation/`**: common texts such as global error messages and generic labels.
 
 Criterion for moving something to `kernel`: "Do three or more different feature-sets need it?"

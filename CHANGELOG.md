@@ -6,6 +6,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.12.0] - 2026-06-20
+
+### Changed
+
+- Frontend Modular Architecture guide updated with unified folder naming across all three frameworks (Vue, React, Angular): `routing/` replaces `navigation/` for route definitions and `translation/` (singular) replaces `translations/` for localized texts. All folder trees, tables and examples updated accordingly.
+- Frontend Modular Architecture guide updated with a new `app/` folder as the canonical location for application bootstrap: entry point, library providers, global styles and routing assembly. Two layout variants documented — single `routing.ts` file for small apps and a `routing/` directory split by feature-set for medium and large apps.
+- Vue Ecosystem guide updated with a "Complete Vue Application Structure" section showing a full Vue-specific `src/` layout, including Vue-specific provider files (`pinia.ts`, `vuetify.ts`), `App.vue`, `main.ts` and feature-set route files named `*.routes.ts`. Small-app and large-app variants included.
+- Vue Ecosystem guide updated: `UI / API Contracts` section rewritten with a decision-based approach detailing when transformation is necessary and when it is not. Covers six scenarios — direct backend type use, display formatting, closing persistence-vs-domain language gaps, derived fields, multi-endpoint merging and external or legacy APIs — with concrete domain examples and emphasis on adopting ubiquitous language before writing the first endpoint.
+- Vue Conventions guide updated: folder path example corrected (removed duplicate path segment) and separation-of-responsibilities table updated to `routing/` and `translation/`.
+- Source Control guide updated: PR Title section now includes a recommended format (`<type>(<scope>): <brief description in imperative>`), a fourth example and a five-item guidelines list. PR Description section expanded with structured Validation checklist items, a References section and a five-item guidelines list.
+
+### Fixed
+
+- MD036 warnings in Vue Ecosystem guide resolved by converting standalone bold paragraphs used as subheadings to proper Markdown headings.
+- MD040 warning in Vue Conventions guide resolved by adding a language specifier to an unlabelled fenced code block.
+
 ## [1.11.0] - 2026-06-05
 
 ### Changed

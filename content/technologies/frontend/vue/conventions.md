@@ -107,8 +107,8 @@ Configure `tsconfig.json` with strict mode:
 
 Within each feature-set, types are located in the `model/` folder:
 
-```
-📁 features/shopping-cart/shopping-cart/model/
+```text
+📁 features/shopping-cart/model/
 ├── 📄 ShoppingCart.ts        ← main interfaces
 ├── 📄 CartItem.ts
 ├── 📄 CartStatus.ts          ← enums
@@ -124,8 +124,8 @@ Within each feature-set, types are located in the `model/` folder:
 | `stores/` | State shared by multiple components |
 | `logic/` | Pure functions without framework dependencies |
 | `model/` | Types, interfaces and enums for the feature |
-| `router/` | Feature-set route definitions |
-| `translations/` | Localized texts and messages |
+| `routing/` | Feature-set route definitions |
+| `translation/` | Localized texts and messages |
 
 ## Cross Reference
 

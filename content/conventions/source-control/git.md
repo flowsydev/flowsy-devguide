@@ -79,17 +79,36 @@ Pull Requests should make review easier, not merely act as a merge button. A goo
 
 ### Title
 
-Use a concise title that follows the same intent as Conventional Commits when possible:
+Use a concise, actionable title consistent with Conventional Commits.
+
+Recommended format:
+
+```text
+<type>(<scope>): <brief description in imperative>
+```
+
+Examples:
 
 ```text
 docs(ai): expand specs-driven development guidance
 feat(api): add order cancellation endpoint
 fix(db): preserve nullable customer reference during migration
+refactor(auth): simplify token refresh logic
 ```
+
+Guidelines:
+
+- use the same `type` that corresponds to the main commit (`feat`, `fix`, `docs`, `refactor`, `test`, `chore`);
+- use `scope` when it helps locate the affected module, feature, subdomain or package;
+- write the description in imperative, without a trailing period;
+- avoid generic titles like `changes`, `adjustments`, `fix` or `update`;
+- if the PR addresses a specific incident, task or spec, keep the reference in the PR description — do not force the title to carry all the context.
 
 ### Description
 
-Use a stable template that can be adapted to each repository:
+The description should explain what changes, why it changes, how it was validated and what the reviewer should focus on. It should be complete enough to understand the PR without reading the full commit history.
+
+Recommended template:
 
 ```markdown
 ## Purpose
@@ -104,19 +123,30 @@ Briefly explain why this change is needed.
 
 ## Validation
 
-- Command or test executed
-- Relevant manual check, screenshot or generated evidence
+- [ ] Build executed.
+- [ ] Automated tests executed.
+- [ ] Manual review performed, if applicable.
+- [ ] Documentation updated, if applicable.
 
 ## Risks and Considerations
 
-- Known limitation, migration concern, rollout note or reason this is low risk
+- Known limitation, migration concern, rollout note or reason this is low risk.
+- Use `N/A` if there are no special considerations.
 
 ## References
 
-- Related issue, spec, ADR, contract or documentation page
+- Spec: `docs/specs/<group>/<NNN-slug>/`
+- Backlog: `<ID or link>`
+- Related ADR, contract or requirement: `<ID or link>`
 ```
 
-Use the `Validation` section to report actual evidence, not intentions. If a relevant validation could not be executed, say so explicitly and explain why.
+Guidelines:
+
+- keep the description focused on the change being reviewed, not the full project history;
+- link specs, issues, ADRs, contracts or requirements when they exist;
+- report real validations, not a decorative checklist;
+- mention risks, migrations, configuration changes, flags, permissions or follow-up tasks;
+- if the PR is small, a shorter description is acceptable, but do not omit purpose and validation.
 
 ## Release Flow
 

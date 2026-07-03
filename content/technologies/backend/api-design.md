@@ -6,6 +6,12 @@ This guide is a baseline for APIs built with Flowsy guidance. It is not a REST c
 
 Use [Error Handling](./error-handling.md) for the broader application guidance behind an API error: validation order, domain errors, infrastructure error translation, transaction boundaries, idempotency and side effects. This page focuses on the HTTP contract exposed after those decisions are made.
 
+## Example Names and Real Artifacts
+
+Real protocol and ecosystem artifacts in this page include HTTP methods, HTTP status codes, RFC 9457 Problem Details, RFC 9110 HTTP Semantics, OpenAPI, `application/problem+json`, JSON Pointer and ASP.NET Core Minimal API result types.
+
+Routes, problem URIs, application `code` values and JSON member names such as `/projects/{projectId}`, `project.notFound`, `signedAt` or `scheduledDateTime` are illustrative contract examples. Adapt them to the project's resource model and ubiquitous language.
+
 ## Practical Maturity Baseline
 
 Use the [Richardson Maturity Model](https://martinfowler.com/articles/richardsonMaturityModel.html) as a teaching model:
@@ -159,6 +165,49 @@ Log sensitive operational detail server-side and return a sanitized Problem Deta
 Document successful and known error responses in OpenAPI. Use reusable response or schema components for `application/problem+json` when the tooling supports them.
 
 Do not rely on OpenAPI links as a substitute for runtime hypermedia controls. OpenAPI describes the contract; Richardson Level 3 hypermedia changes what the API returns to clients at runtime.
+
+## Date and Time Contracts
+
+Document the meaning of every temporal field in the API contract. Persistence strategy and API transfer format are separate decisions. A database can store canonical system time internally, but an API must still tell clients whether a field is:
+
+- a global instant;
+- a local date/time;
+- a date only;
+- a time only;
+- a duration.
+
+Expose global instants as ISO 8601 strings with `Z` or an explicit offset:
+
+```json
+{
+  "signedAt": "2026-07-01T16:00:00Z",
+  "confirmedAt": "2026-07-01T10:00:00-06:00"
+}
+```
+
+Do not expose technical timestamps without offset, such as `2026-07-01T10:00:00`, when they represent exact instants.
+
+If the project persists internal values in a canonical system time zone, convert exact instants at the boundary instead of leaking offset-less storage values:
+
+```json
+{
+  "createdAt": "2026-07-02T16:30:00Z",
+  "createdAtTimeZoneId": "America/Mexico_City"
+}
+```
+
+Only include the time-zone identifier for technical timestamps when clients need to understand the reference zone used by the business or audit process. Do not make clients guess that an offset-less value came from a database default zone.
+
+For local business appointments or schedules, model the local value and the time-zone identifier explicitly:
+
+```json
+{
+  "scheduledDateTime": "2026-07-01T10:00:00",
+  "timeZoneId": "America/Mexico_City"
+}
+```
+
+Do not rely on the frontend to guess the right time zone, and do not let the backend silently interpret offset-less strings as server-local time. APIs should also avoid trusting client-provided "current time" values for audit, ordering, expiration or validation rules. Resolve current time on the backend through the application's authoritative clock or trusted server-side source.
 
 ## C# Minimal API Notes
 

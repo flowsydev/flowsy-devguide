@@ -212,6 +212,7 @@ export default withMermaid({
                 collapsed: true,
                 items: [
                   { text: 'General Concepts', link: '/technologies/backend/concepts' },
+                  { text: 'Project Design Baseline', link: '/technologies/backend/project-design-baseline' },
                   { text: 'HTTP API Design', link: '/technologies/backend/api-design' },
                   { text: 'Error Handling', link: '/technologies/backend/error-handling' },
                 ]

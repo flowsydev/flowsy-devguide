@@ -23,6 +23,30 @@ For Spanish identifiers, use compact domain names when articles or prepositions 
 | Store files | `kebab-case` | `shopping-cart.ts` |
 | Route files | `kebab-case` | `shopping-cart-checkout.ts` |
 
+## Example Names and Real Artifacts
+
+This page mixes real Vue, TypeScript and JavaScript artifacts with illustrative project names:
+
+- Real language or ecosystem artifacts include `interface`, `type`, `Date`, `Intl.DateTimeFormat`, `Temporal`, Vue Single-File Components, Pinia, Storybook, props and emits.
+- Sample project names include `ShoppingCartSummary`, `ShoppingCartResponse`, `CartItemViewModel`, `ShoppingCartAdapter`, `useShoppingCart`, `AppointmentRequest` and `shopping-cart.ts`.
+- Folder names such as `components/`, `composables/`, `stores/`, `logic/`, `model/`, `routing/` and `translation/` are recommended conventions for projects using this guide, not framework-mandated names.
+
+Adapt sample domain names to the project's ubiquitous language and keep real framework names unchanged.
+
+## Strict Typing
+
+Configure `tsconfig.json` with strict mode:
+
+```json
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true
+  }
+}
+```
+
 ## Types and Contracts
 
 Explicitly type all contracts; avoid `any` except in justified cases:
@@ -65,9 +89,14 @@ export function toCartItemViewModel(dto: CartItemResponse): CartItemViewModel {
 
 ## Dates and Times
 
-- Consume and send dates in ISO-8601 format with timezone.
-- Convert to local timezone only when rendering.
-- Do not store dates in UI state as `Date` objects without timezone.
+- Treat JavaScript `Date` as an instant. Its internal value is timestamp-like, but formatting usually uses the browser's local time zone.
+- Consume and send global instants as ISO-8601 strings with `Z` or explicit offset.
+- Convert instants to the target presentation time zone only when rendering.
+- Do not treat a database canonical-zone value as a browser-local `Date`. If the backend uses a canonical system time-zone persistence strategy, the API should still send UTC, an explicit offset or a local value plus `timeZoneId`.
+- Do not store ambiguous date/time values in UI state as `Date` objects when they represent local business intent.
+- For local appointments, schedules or future recurring events, keep the local date/time and IANA time-zone identifier together until the backend or domain logic resolves them.
+- Do not use the browser's current offset as a substitute for a real time zone. Future offsets can change because of daylight-saving rules or legal changes.
+- Do not trust the browser clock as the source of truth for creation, signing, expiration, ordering or audit decisions. Ask the backend to resolve those values with the application's authoritative clock.
 
 ```typescript
 // Correct: preserve ISO-8601 string from backend
@@ -79,6 +108,17 @@ const displayDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).fo
 );
 ```
 
+For local business input, model the contract explicitly:
+
+```typescript
+export interface AppointmentRequest {
+  scheduledDateTime: string; // "2026-07-01T10:00:00"
+  timeZoneId: string;        // "America/Mexico_City"
+}
+```
+
+Use modern date/time libraries when the feature has serious time-zone behavior. Prefer `Temporal` when it is available in the target environment or polyfilled deliberately; otherwise evaluate libraries such as Luxon, date-fns-tz or Day.js with the required plugins.
+
 ## Validation and Accessibility
 
 - Validate critical data both on client and server.
@@ -88,20 +128,6 @@ const displayDate = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' }).fo
   - Labels associated with inputs (`<label for="...">` or `aria-label`).
   - Sufficient color contrast (WCAG AA minimum).
   - `aria-*` attributes on interactive components without native HTML semantics.
-
-## Strict Typing
-
-Configure `tsconfig.json` with strict mode:
-
-```json
-{
-  "compilerOptions": {
-    "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true
-  }
-}
-```
 
 ## Type Organization by Module
 

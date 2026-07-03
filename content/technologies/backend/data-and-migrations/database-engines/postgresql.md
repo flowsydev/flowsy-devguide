@@ -2,6 +2,8 @@
 
 Naming and modeling guidelines for PostgreSQL databases in the Flowsy ecosystem.
 
+PostgreSQL object names in this page are examples unless explicitly described as PostgreSQL syntax or built-in behavior. Types and functions such as `timestamptz`, `timestamp without time zone`, `jsonb`, `clock_timestamp()`, `statement_timestamp()` and `transaction_timestamp()` are real PostgreSQL artifacts.
+
 ## General Naming
 
 Use the naming convention adopted by the target database community. For PostgreSQL, use lower `snake_case` consistently and explicitly for all database objects:
@@ -21,9 +23,39 @@ For primary and foreign key column names, keep lower `snake_case` and follow the
 
 ## Temporal Types
 
-- Prefer `timestamp with time zone` (`timestamptz`) for all audit and event fields.
-- Avoid `timestamp without time zone` in data shared between systems or regions.
-- Prefer `clock_timestamp()` when a default or routine needs the actual instant when the function is invoked, not the transaction start instant.
+### Storage Semantics
+
+- Prefer `timestamp with time zone` (`timestamptz`) for audit fields, event fields and values that represent global instants.
+- Understand that `timestamptz` does not store the original time zone or offset. PostgreSQL normalizes the instant and renders it according to the session time zone.
+- Use `timestamp without time zone` for canonical system time-zone values and local business date/time values that should not be interpreted as UTC by themselves.
+- For scheduled events tied to a place, store the local date/time and a separate time-zone identifier, such as `scheduled_at_local timestamp without time zone` plus `time_zone_id text`.
+- Avoid `time with time zone` for business schedules unless the domain has a rare, explicit reason. It often creates more confusion than value because it carries an offset without a date or real time-zone rules.
+
+| Strategy | PostgreSQL Type | Example |
+| --- | --- | --- |
+| UTC instant | `timestamptz` | `created_at timestamptz NOT NULL DEFAULT clock_timestamp()` |
+| Canonical system time zone | `timestamp without time zone` plus global zone configuration | `created_at timestamp without time zone NOT NULL` and `global_config.default_time_zone_id = 'America/Mexico_City'` |
+| Per-entity time zone | `timestamp without time zone` plus row zone | `scheduled_at_local timestamp without time zone NOT NULL`, `time_zone_id text NOT NULL` |
+| Date-only / time-only | `date`, `time without time zone` | `business_date date NOT NULL`, `cutoff_time time NOT NULL` |
+
+### Language and Provider Mapping
+
+PostgreSQL temporal types do not map to every language in the same way. Treat the table below as a starting point and verify the exact behavior of the driver, ORM and version used by the project.
+
+| PostgreSQL Type | Meaning | .NET / Npgsql | Java / JDBC | Python / Psycopg | Node.js / node-postgres |
+| --- | --- | --- | --- | --- | --- |
+| `timestamptz` | Exact instant. PostgreSQL normalizes it and does not preserve the original zone or offset. | UTC `DateTime`, `DateTimeOffset` with UTC offset, or NodaTime `Instant`. | `OffsetDateTime` or `Instant`-oriented application type. | Time-zone-aware `datetime`. | JavaScript `Date` for instants; watch precision and process time-zone assumptions. |
+| `timestamp without time zone` | Date/time without offset. Use for canonical system time or local values. | `DateTime`, usually `Unspecified` for local/canonical values. | `LocalDateTime`. | Naive `datetime`. | Prefer string/custom parser for canonical or local values; `Date` represents an instant and can reinterpret the value. |
+| `date` | Calendar date only. | `DateOnly`. | `LocalDate`. | `date`. | String or date-only library type. |
+| `time without time zone` | Time of day only. | `TimeOnly` or `TimeSpan` according to the provider. | `LocalTime`. | `time`. | String or time-only library type. |
+| `interval` | Duration or calendar-aware amount of time. | `TimeSpan` for simple durations; NodaTime types for richer semantics. | `Duration`, `Period` or framework-specific type according to meaning. | `timedelta` for simple durations. | String or duration library type. |
+
+PostgreSQL `timestamptz` is not a complete equivalent of .NET `DateTimeOffset`. With modern Npgsql, UTC `DateTime` values map naturally to `timestamptz`, local or unspecified `DateTime` values map naturally to `timestamp without time zone`, and `DateTimeOffset` values written to `timestamptz` should represent UTC offsets.
+
+ORMs such as Entity Framework Core, Hibernate, SQLAlchemy, Prisma and Drizzle usually build on the database driver behavior. Use converters, type handlers or explicit parsers when the default mapping loses the project's temporal meaning. Keep provider and ORM behavior covered by integration tests when temporal mapping matters.
+
+### Audit and Domain Columns
+
 - Audit columns should follow the project and domain audit model. Choose actor columns according to what can create or update records: users, applications, service accounts, integrations, devices, tenants or background processes.
 
 Common English examples:
@@ -61,7 +93,9 @@ Use `valid` / `vigente` for simple business validity, or `validity_status` / `es
 
 Do not expose numeric auto-increment primary keys outside backend boundaries. Add `public_id` / `id_publico` with UUID v4 or v7 when records must be referenced from APIs, frontend models or integration contracts.
 
-- When maintaining an event log per entity, use at least:
+### Entity Event Logs
+
+When maintaining an event log per entity, use at least:
 
 ```sql
 event_timestamp   timestamptz NOT NULL DEFAULT clock_timestamp(),
@@ -72,7 +106,11 @@ operation_context jsonb       NULL
 
 These names are the database equivalent of `EventTimestamp`, `EventType`, `Payload` and `OperationContext`.
 
+### Date and Time Functions
+
 Common PostgreSQL date and time functions:
+
+Prefer `clock_timestamp()` when a default or routine needs the actual instant when the function is invoked, not the transaction start instant.
 
 | Function | Description | Use Case |
 | --- | --- | --- |

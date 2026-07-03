@@ -2,7 +2,9 @@
 
 Guide for systems organized by vertical functionality rather than horizontal technical layers. Each feature traverses all layers autonomously, favoring cohesion, change independence and frictionless team collaboration.
 
-This page is technology-agnostic. Use it to decide boundaries, responsibilities and collaboration rules before choosing a framework, language or library. The C# and Minimal API examples are implementation mappings of these concepts, not requirements of Vertical Slice Architecture.
+This page is technology-agnostic. Use it to decide slice boundaries, responsibilities and collaboration rules before choosing a framework, language or library. The C# and Minimal API examples are implementation mappings of these concepts, not requirements of Vertical Slice Architecture.
+
+This page assumes the project has already applied the [Backend Project Design Baseline](../project-design-baseline.md): domain exploration, collaborative discovery, behavior-first design, relevant documentation and risk-based validation. Vertical Slice Architecture organizes those decisions by feature or use case; it is not a replacement for project discovery and design.
 
 ## Principles
 
@@ -30,19 +32,9 @@ These approaches are not mutually exclusive:
 - Use **Vertical Slice** within the application layer to organize use cases by feature.
 - Use **Hexagonal** to isolate the domain from delivery mechanisms when multiple adapters exist (REST, gRPC, messaging, CLI).
 
-## Recommended Strategies
+## Vertical Slice Design Workflow
 
-### 1. Domain Exploration (Collaborative Discovery)
-
-- **Objective**: Understand the business from its protagonists.
-- Conduct [Event Storming](../../../discovery/event-storming.md) sessions with stakeholders (ideally in-person or collaborative online).
-- Map key processes with non-technical participants using simple notation: commands, events, aggregates, read models, rules.
-- Identify Bounded Contexts naturally (not forced).
-- Establish a ubiquitous language for each context.
-- **Tools**: Miro, Excalidraw, Notion, paper and post-its.
-- **Roles**: Facilitator, Business, Technical.
-
-### 2. Initial Design by Vertical Slices
+### 1. Initial Design by Vertical Slices
 
 - **Objective**: Do not design "the system", but a useful and complete feature end-to-end.
 - Select a relevant user story or use case.
@@ -50,23 +42,23 @@ These approaches are not mutually exclusive:
 - Design independently: command or use-case input, application handler, domain behavior, state loading strategy, validation, read model, query and integration events when the scenario requires them.
 - **Direct benefits**: Isolates code by feature, fosters ownership per slice, avoids Git conflicts and unnecessary shared dependencies.
 
-### 3. Modularization by Context and Feature
+### 2. Modularization by Context and Feature
 
 - Organize the solution by contextual modules (e.g. `Inventory`, `Sales`, `Security`).
 - Each slice should be self-contained and not reference slices from other modules directly.
 
-### 4. Event-Oriented Infrastructure
+### 3. Event-Oriented Infrastructure
 
 - Emit events from the Web API (e.g. `OrderPlaced`).
 - Consume events in workers (e.g. `SendConfirmationEmail`).
 - Apply the [Outbox Pattern](../event-driven-architecture/concepts.md) to guarantee reliability.
 - Project events to specific read models.
 
-### 5. Iterative Evolution + End-to-End Tests
+### 4. Iterative Evolution and End-to-End Tests
 
 - Start with a real and functional vertical slice (e.g. place order).
 - Add new features as new slices, not modifying existing ones.
-- Test end-to-end: Command → Domain → Event → Worker → Read model.
+- Test end-to-end: Command -> Domain -> Event -> Worker -> Read model.
 
 ### Benefits
 
@@ -78,18 +70,15 @@ These approaches are not mutually exclusive:
 | Event scalability | New reactions to an event are added without touching the source. |
 | More focused tests | Each feature has its own unit and integration tests. |
 
-## Anti-Patterns
+## Slice-Specific Anti-Patterns
 
-See also: [DDD: Anti-Patterns](../../../discovery/domain-driven-design.md)
+See also [Backend Project Design Baseline: General Anti-Patterns](../project-design-baseline.md#general-anti-patterns) and [DDD: Anti-Patterns](../../../discovery/domain-driven-design.md).
 
-1. **Focusing on CRUD instead of behavior** — Alternative: commands with intent.
-2. **Global and shared domain model** — Alternative: Bounded Contexts and slices.
-3. **Skipping collaborative discovery** — Alternative: Event Storming.
-4. **Designing the database first** — Alternative: design behaviors and events first.
-5. **Overusing generic Helper Services** — Alternative: domain services with clear language.
-6. **Too many cross-module dependencies** — Alternative: events and explicit contracts.
-7. **Anemic classes without behavior** — Alternative: encapsulate rules in entities and State.
-8. **Applying all DDD concepts from day 1** — Alternative: incremental and pragmatic DDD.
+1. **Creating a shared model for every slice**: keep models close to the behavior and promote shared concepts only when the boundary is stable.
+2. **Using slices as thin CRUD folders**: make each slice own a meaningful use case with input, behavior, validation and persistence decisions.
+3. **Adding too many cross-module dependencies**: use events, explicit contracts or application-level orchestration.
+4. **Abstracting handlers, validators or state loaders too early**: allow controlled duplication until real repetition appears across stable behaviors.
+5. **Letting delivery adapters own business rules**: keep protocol mapping at the boundary and domain decisions inside the use case or model.
 
 ## Commands, Queries and Dispatching
 

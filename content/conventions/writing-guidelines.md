@@ -29,6 +29,16 @@ Do not translate stable technical vocabulary just because the surrounding paragr
 
 For Spanish business concepts, use compact forms in identifiers when articles or prepositions are not needed for meaning: `PedidoCliente`, `AsignarDireccionEnvio`, `pedido_cliente`. Use natural forms in visible text: "Pedido de cliente", "Asignar dirección de envío", "Reporte de asignaciones de dirección de envío".
 
+## Example Names and Real Artifacts
+
+When a guide uses names for interfaces, classes, records, DTOs, database objects, routes, packages or files, make the reader's interpretation explicit.
+
+- Mark fictitious or proposed names as examples. Use wording such as "for example", "sample", "proposed", "representative" or "adapt this name to the project".
+- Mark real artifacts from a language, framework or ecosystem as real. For example, clarify when `DateTimeOffset`, `TimeProvider`, `IOptions<T>`, `ILogger<T>`, `record`, `interface`, `Date`, `Intl.DateTimeFormat`, `timestamptz` or `datetimeoffset` are actual platform artifacts.
+- Do not let sample domain names look like required framework APIs. A name such as `CreateShoppingCartCommand`, `IShoppingCartFinder`, `DbTimeProvider`, `ShoppingCartAdapter`, `scheduled_at_local` or `public_id` should be understood as illustrative unless the project explicitly defines it.
+- When a code block mixes real framework types and sample project types, add a short sentence before the block that distinguishes them.
+- Prefer realistic sample names that teach the convention, but avoid implying that every project must copy the exact names.
+
 ## Language-Specific Rules
 
 ### English

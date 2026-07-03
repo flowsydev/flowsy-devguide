@@ -4,6 +4,8 @@ Base guide for relational modeling, schema conventions, keys, integrity and oper
 
 For persistence, constraints, queries and concurrency validation, see [Relational Database Testing](../../testing/database/relational-databases.md). For schema evolution validation, see [Database Migration Testing](../../testing/database/migrations.md).
 
+Read this guide from naming and identity decisions toward operational concerns: object names, keys, public identifiers, date/time semantics, audit columns, Value Objects, migration strategy and engine-specific conventions.
+
 ## Naming
 
 Use a consistent and explicit convention for:
@@ -23,6 +25,12 @@ Use a consistent and explicit convention for:
 When the data model uses Spanish business names, omit articles and prepositions in database identifiers when the meaning remains clear. Prefer `pedido_cliente`, `id_pedido_cliente`, `asignacion_direccion_envio` and `ix_pedido_cliente_direccion_envio_id` over `pedido_de_cliente`, `id_pedido_de_cliente` or `asignacion_de_direccion_de_envio`.
 
 Keep articles and prepositions in user-facing labels, reports and documentation text: "Pedido de cliente", "Asignación de dirección de envío". Preserve them in identifiers only when they are part of an official term or avoid ambiguity, such as `puesta_en_operacion` or `pago_a_proveedor`.
+
+## Example Names and Real Artifacts
+
+Schema names in examples such as `shopping_cart`, `pedido_cliente`, `public_id`, `id_publico`, `created_at`, `creado`, `scheduled_at_local` and `time_zone_id` are illustrative conventions. Adapt them to the project domain and database engine naming style.
+
+Database types and functions such as `BIGINT`, `UUID`, `TIMESTAMPTZ`, `BOOLEAN`, `BIT`, `timestamp without time zone`, `clock_timestamp()`, UUID v4 and UUID v7 refer to real database concepts or common identifier strategies. Engine-specific pages explain how each engine maps those concepts.
 
 ## Primary and Foreign Keys
 
@@ -148,11 +156,59 @@ Keep `public_id` / `id_publico` unique and immutable. The private primary key ca
 
 ## Date and Time
 
-- Use a database type that preserves the intended instant or local date/time semantics.
-- Persist auditable instants in UTC.
-- Prefer database functions that return the actual invocation instant for audit and event defaults. For PostgreSQL examples, use `clock_timestamp()` instead of `now()` when each call must capture the real current time.
-- Store local date/time values only when the domain explicitly needs them, such as schedules, local deadlines or legal time windows.
-- Convert to user-facing time zones in the presentation layer or reporting layer.
+Use column types and names that express the meaning of the value:
+
+| Need | Column Intent | Example Names |
+| --- | --- | --- |
+| Technical audit or event timestamp | Global instant | `created_at`, `updated_at`, `signed_at`, `processed_at`, `expires_at` |
+| Local business appointment or schedule | Local date/time plus time zone | `scheduled_at_local`, `time_zone_id` |
+| Date-only business value | Date without time | `business_date`, `birth_date`, `settlement_date` |
+| Time-only rule | Time of day | `opening_time`, `cutoff_time` |
+| Duration | Elapsed amount of time | `processing_duration`, `session_duration` |
+
+Choose and document the temporal persistence strategy per database boundary:
+
+| Strategy | Meaning in Storage | Example Columns | Good Fit |
+| --- | --- | --- | --- |
+| UTC instant | Value is an exact instant normalized to UTC. | `created_at_utc`, `processed_at_utc`, `event_timestamp_utc` | Distributed systems, event streams, external integrations and exact ordering across systems. |
+| Canonical system time zone | Value is stored without offset in the system's configured reference zone. | `created_at`, `processed_at`, `closed_at` plus `global_config.default_time_zone_id` | Single-zone operations where reports, cutoffs and audit review are expressed in one official business zone. |
+| Per-entity time zone | Value is local to a row, place or business object and the row stores the zone. | `scheduled_at_local`, `time_zone_id` | Facilities, appointments, users, contracts, branches or future local rules that may use different zones. |
+| Offset-preserving | Value preserves the offset received from another source. | `signed_at`, `source_offset` or an engine type such as `datetimeoffset` | Legal evidence, imported events and external signatures where the captured offset matters. |
+| Partial temporal value | Value is not a complete date/time. | `business_date`, `opening_time`, `processing_duration` | Date-only rules, time-of-day rules and elapsed durations. |
+
+Do not mix UTC, canonical-zone and per-entity local semantics in the same column. If a schema uses canonical system time, keep the reference zone explicit and stable:
+
+```sql
+CREATE TABLE global_config (
+    default_time_zone_id text NOT NULL
+);
+
+-- Example value: America/Mexico_City
+```
+
+Use names from the project's ubiquitous language. `global_config` and `default_time_zone_id` are illustrative names; a project may prefer `system_settings`, `operational_time_zone_id`, `business_time_zone_id` or another documented term.
+
+Persist auditable instants in UTC when the project chooses the UTC instant strategy. When the project chooses canonical system time, store audit values in the configured canonical zone and convert them at system boundaries. In either case, avoid mixing different meanings in the same column. Use database functions that return the intended notion of current time. For PostgreSQL examples, use `clock_timestamp()` when each call must capture the actual invocation instant; use a transaction-stable function only when the business rule deliberately needs one timestamp for the whole transaction.
+
+When the database is the application's authoritative clock, keep that decision explicit in the application architecture. Application code can resolve "now" through a central service that queries the database or another trusted server-side source, rather than trusting client clocks or scattered calls to local system time.
+
+Store local date/time values by row only when the domain needs them, such as appointments, schedules, local deadlines, branch hours or legal time windows. If the local value depends on a place, store the IANA time-zone identifier in a separate column:
+
+```sql
+scheduled_at_local timestamp without time zone NOT NULL,
+time_zone_id       text                        NOT NULL
+```
+
+Use suffixes consistently:
+
+- `_at` for instants.
+- `_date` for dates.
+- `_time` for times of day.
+- `_local` for local date/time values.
+- `_utc` only when the team intentionally wants the storage policy visible in the name.
+- `_system` or another project-specific suffix only when the team wants to make canonical system time visible.
+
+Avoid vague names such as `date`, `datetime` or `timestamp` without business context. Convert to user-facing time zones in the presentation or reporting layer.
 
 ## Value Object Modeling
 

@@ -43,7 +43,7 @@ Use this guide when implementing or modifying a backend feature organized as a v
 - Use the HTTP API design baseline for resource-oriented routes, status codes and Problem Details.
 - Place business rules and state validation in the handler, state object or domain model that owns them.
 - Use `record` for commands, queries, results, DTOs and read models.
-- Use `DateTimeOffset` for auditable timestamps and persist instants in UTC.
+- Follow the project's documented date/time strategy. Use `DateTimeOffset` or UTC `DateTime` for UTC instants, `DateTime` for canonical system time-zone values, and `DateTime` plus a time-zone identifier for per-entity local values.
 - Do not expose numeric auto-increment primary keys outside backend boundaries; use `PublicId` for external contracts and explicit `Internal` variants when private IDs are required.
 - Include `ILogger<T>` logging in relevant operations.
 - Consult [Testing C#/.NET](/technologies/testing/csharp-dotnet.md) when the change requires unit, integration or end-to-end tests.

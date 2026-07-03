@@ -542,7 +542,7 @@ Use active-state fields only when the entity needs to record the period in which
 
 | Purpose | English Attribute | Spanish Attribute | Type Guidance | Description |
 | --- | --- | --- | --- | --- |
-| Active-state start | `ActiveFrom` | `ActivoDesde` | Instant, usually `DateTimeOffset` or database timestamp with time zone. | Date and time when the record starts being `Active`. |
+| Active-state start | `ActiveFrom` | `ActivoDesde` | Instant or canonical system-time value according to the project's date/time strategy. | Date and time when the record starts being `Active`. |
 | Active-state end | `ActiveUntil` | `ActivoHasta` | Nullable instant. | Date and time when the record stops being `Active`. |
 
 Active-state fields such as `ActiveFrom`, `ActiveUntil`, `ActivoDesde` and `ActivoHasta` do not apply to every entity. Determine during analysis and design which aggregates need to record the period in which the record itself was active, such as catalog records, configuration records, reference data, published policies or rows that use soft deletion with historical traceability.

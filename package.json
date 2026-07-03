@@ -1,6 +1,6 @@
 {
   "name": "flowsy-devguide",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "description": "Design and development guide for Flowsy solutions, covering conventions, patterns and best practices for backend, frontend, testing and AI-assisted development.",
   "main": "index.js",
   "scripts": {

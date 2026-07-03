@@ -6,6 +6,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.13.0] - 2026-07-03
+
+### Changed
+
+- Backend architecture guidance reorganized with a new project-wide design baseline for domain exploration, documentation-before-implementation, behavior-first modeling, implementation-shape selection and general anti-patterns. Vertical Slice Architecture now focuses on slice-specific workflow, benefits and anti-patterns.
+- Database-engine temporal guidance now includes language and provider mapping tables for PostgreSQL, SQL Server and MySQL/MariaDB, replacing PostgreSQL's .NET-only mapping note with broader driver and ORM guidance.
+- Date and time guidance expanded across backend, C#, HTTP APIs, Vue, relational modeling, PostgreSQL, SQL Server, MySQL/MariaDB and C# testing. The guidance now distinguishes UTC instant, canonical system time-zone, per-entity time-zone, offset-preserving and partial temporal strategies, and recommends an authoritative server-side clock for application decisions.
+- Reading order and example interpretation improved in writing guidelines and key technology pages, clarifying which names are illustrative project examples and which names are real language, framework or database artifacts.
+- Database-engine convention pages refined so temporal storage semantics, provider mapping, audit/domain columns, date/time functions, event logs and SQL routines appear in a clearer reading order.
+
 ## [1.12.0] - 2026-06-20
 
 ### Changed

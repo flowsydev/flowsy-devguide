@@ -1,21 +1,11 @@
-# `ANA-NED-[NNN]` [Need Title]
+---
+title: Need — Moved
+description: Compatibility bridge to the current canonical location.
+type: redirect
+redirect: /documentation/project-artifacts/layers/analysis/templates/need
+canonical: false
+---
 
-## Description
+# Need Moved
 
-Describe the problem or opportunity from the business or stakeholder perspective.
-
-## Context
-
-Describe the current context and why this need arises.
-
-## Impact
-
-Describe the impact if the need is not addressed.
-
-## Source
-
-- Stakeholder, area or process that originates the need.
-
-## Derived Requirements
-
-- [`ANA-REQ-[NNN]`: [Requirement Title]]
+This guide now lives at [Need](/documentation/project-artifacts/layers/analysis/templates/need). Update bookmarks to use the canonical path.

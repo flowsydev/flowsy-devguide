@@ -1,13 +1,16 @@
 ---
 title: Writing Guidelines
 description: Editorial rules for project documentation artifacts, repositories and navigation.
+type: guide
+audience: Authors, maintainers and contributors of documentation.
+canonical: true
 ---
 
 # Writing Guidelines
 
 These guidelines apply to documentation artifacts produced inside projects, documentation sites and code repositories. Use them when writing `README.md`, `AGENTS.md`, guides in `docs/`, specs, ADRs, acceptance criteria, use cases, PBIs, navigation labels and documentation templates.
 
-Before applying these rules, define the project's [Ubiquitous Language](/discovery/ubiquitous-language) so editorial choices, business examples and technical names follow the same domain language strategy.
+Before applying these rules, define the project's [Ubiquitous Language](/foundations/ubiquitous-language) so editorial choices, business examples and technical names follow the same domain language strategy.
 
 ## Base Rules
 
@@ -117,4 +120,4 @@ In code repositories, apply these guidelines also to:
 - specs under `docs/specs/`;
 - ADRs, contracts, operations guides and support documentation.
 
-For repository-specific application, see [Repository Documentation](/conventions/repository-documentation).
+For repository-specific application, see [Repository Documentation](/documentation/repositories/).

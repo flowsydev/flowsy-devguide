@@ -13,9 +13,9 @@ applies_when:
   - the task requires traceable analysis, planning or execution
   - multiple phases or agents collaborate on the same change
 read_first:
-  - /ai-assisted-development/specs-driven-development.md
+  - /documentation/work-specs/
 read_if_implementing:
-  - /discovery/documentation/
+  - /documentation/project-artifacts/
 related_guides:
   - backend-vsa-minimal-api
   - frontend-vue-feature-set
@@ -68,12 +68,12 @@ Use this context guide when the task requires coordinating analysis, planning, e
 - `05.summary.md` consolidates outcome, validation, adjustments and remaining work.
 - When possible, the plan should include unit, integration and end-to-end tests that evidence exercised logic, relevant integrations and critical flows, according to the case.
 - Execution and closure documents should include a representative sample of test output when tests were run.
-- To decide the expected testing level and evidence, consult [Testing](/technologies/testing/).
+- To decide the expected testing level and evidence, consult [Testing](/quality/).
 - If a decision, requirement, contract or criterion emerges with permanent value, link it from the spec and document it in the corresponding disciplinary layer.
 
 ## References
 
-- Spec workflow and templates: [Specs-Driven Development](/ai-assisted-development/specs-driven-development.md).
-- Testing and evidence: [Testing](/technologies/testing/).
-- Durable formal documentation: [Project Documentation](/discovery/documentation/).
+- Spec workflow and templates: [Specs-Driven Development](/documentation/work-specs/).
+- Testing and evidence: [Testing](/quality/).
+- Durable formal documentation: [Project Documentation](/documentation/project-artifacts/).
 - Context guide router: [Agent Context Routing](/ai-assisted-development/agent-routing.md).

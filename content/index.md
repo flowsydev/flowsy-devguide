@@ -11,64 +11,64 @@ hero:
     alt: Flowsy
   actions:
     - theme: brand
-      text: AI-Assisted Development
-      link: /ai-assisted-development/
+      text: Documentation
+      link: /documentation/
     - theme: alt
-      text: Discovery & Design
-      link: /discovery/
+      text: Foundations
+      link: /foundations/
     - theme: alt
-      text: Technologies
-      link: /technologies/
+      text: Engineering
+      link: /engineering/
 
 features:
   - icon: 🗣️
     title: Ubiquitous Language
     details: Start each project by choosing the language of the domain and data model so business concepts stay consistent in documentation, code, tests and database objects.
-    link: /discovery/ubiquitous-language
+    link: /foundations/ubiquitous-language
   - icon: 🧭
-    title: Discovery & Design
+    title: Foundations
     details: Collaborative modeling techniques with Event Storming and Domain-Driven Design to explore the domain and design solutions aligned with the business.
-    link: /discovery/
+    link: /foundations/
   - icon: 🧠
     title: Domain-Driven Design
     details: Pragmatic DDD principles and patterns for modeling complex domains, bounded contexts, entities, aggregates and value objects.
-    link: /discovery/domain-driven-design
+    link: /foundations/domain-modeling/
   - icon: 📄
     title: Project Documentation
     details: Durable documentation practices for requirements, analysis, design records, repository instructions and traceable delivery artifacts.
-    link: /discovery/documentation/
+    link: /documentation/project-artifacts/
   - icon: 🤖
     title: AI-Assisted Development
-    details: Repository guidance for working with agents and skills using clear instructions, scoped permissions and verifiable outputs.
+    details: Repository guidance for working with agents and context guides using clear instructions, scoped permissions and verifiable outputs.
     link: /ai-assisted-development/
   - icon: ✅
-    title: Automated Testing
+    title: Quality
     details: Testing as an early design and delivery practice, not a final implementation step, with unit, integration, end-to-end, database and event-driven system tests.
-    link: /technologies/testing/
+    link: /quality/
   - icon: 🧱
     title: Backend Architecture
     details: Criteria for organizing business behavior with Vertical Slice Architecture, Clean Architecture and domain-focused backend modules.
-    link: /technologies/backend/vertical-slice-architecture/concepts
+    link: /engineering/backend/architecture/vertical-slice-architecture
   - icon: 🌐
     title: Backend and APIs
     details: HTTP API design guidance, backend architecture patterns and C# implementation practices for clear contracts and maintainable services.
-    link: /technologies/backend/api-design
+    link: /engineering/backend/api/http-api-design
   - icon: 🗄️
     title: Data and Persistence
     details: Relational modeling, database-engine conventions, schema integrity and persistence decisions aligned to the domain.
-    link: /technologies/backend/data-and-migrations/relational-modeling
+    link: /engineering/data/relational-modeling
   - icon: 🧬
     title: Database Migrations
     details: Versioned and repeatable migration strategies with domain-aligned SQL artifacts, Evolve, Flyway, Liquibase, DbUp, EF Core, Sqitch and flwdb.
-    link: /technologies/backend/data-and-migrations/migration-concepts
+    link: /engineering/data/migrations/concepts
   - icon: 🧩
     title: Frontend Vue
     details: Feature-set organization in Vue 3 with Composition API, Pinia, composables, Storybook and testing strategy for scalable SPA applications.
-    link: /technologies/frontend/
+    link: /engineering/frontend/
   - icon: 📨
     title: Events and Messaging
     details: Principles and patterns for asynchronous systems with Kafka, Redpanda and RabbitMQ, including Outbox, Saga, DLQ and observability.
-    link: /technologies/backend/event-driven-architecture/concepts
+    link: /engineering/messaging/event-driven-architecture
 ---
 
 ::: tip Reference Guide, Not a Single Answer
@@ -85,7 +85,7 @@ Before creating the first entities, Value Objects, tables, columns, events, APIs
 
 The business language may be English, Spanish or another language by Bounded Context; the important part is that business concepts remain consistent across conversations, documentation, code, tests and data models.
 
-Keep established software design and development terms in English when they are technical vocabulary rather than business language. For example, `CrearPedidoCommand` translates the business action but keeps the technical `Command` suffix; `PedidoClienteRepository` translates the aggregate but keeps the `Repository` pattern name. Start with [Ubiquitous Language](/discovery/ubiquitous-language), then apply the related [Writing Guidelines](/conventions/writing-guidelines).
+Keep established software design and development terms in English when they are technical vocabulary rather than business language. For example, `CrearPedidoCommand` translates the business action but keeps the technical `Command` suffix; `PedidoClienteRepository` translates the aggregate but keeps the `Repository` pattern name. Start with [Ubiquitous Language](/foundations/ubiquitous-language), then apply the related [Writing Guidelines](/conventions/writing-guidelines).
 
 ## Flowsy Ecosystem
 
@@ -275,7 +275,7 @@ Each repository has a different responsibility, but can rely on this guide consi
 - AI agents can use the documentation site as business and design context, and the repository `specs` as operational execution context.
 
 > [!info] Note
-> To learn the recommended structure for documenting `specs`, see [Specs-Driven Development](/ai-assisted-development/specs-driven-development).
+> To learn the recommended structure for documenting `specs`, see [Specs-Driven Development](/documentation/work-specs/).
 
 ### Continuous Research Before Design and Implementation
 

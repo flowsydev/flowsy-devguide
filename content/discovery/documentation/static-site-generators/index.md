@@ -1,20 +1,11 @@
 ---
-layout: section-home
-
-hero:
-  name: "Static Site Generators"
-  text: "Build and deploy documentation sites"
-  tagline: Practical guides for setting up, configuring and deploying documentation sites using static site generators.
-  actions:
-    - theme: brand
-      text: VitePress
-      link: /discovery/documentation/static-site-generators/vitepress
-
-features:
-  - icon: ⚡
-    title: VitePress
-    details: Quick start, configuration, disciplinary structure, layouts, Mermaid diagrams and deployment options for VitePress-based documentation sites.
-    link: /discovery/documentation/static-site-generators/vitepress
+title: Static Site Generators — Moved
+description: Compatibility bridge to the current canonical location.
+type: redirect
+redirect: /documentation/tooling/
+canonical: false
 ---
 
-[← Project Documentation](/discovery/documentation/)
+# Static Site Generators Moved
+
+This guide now lives at [Static Site Generators](/documentation/tooling/). Update bookmarks to use the canonical path.

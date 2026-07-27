@@ -1,12 +1,11 @@
-# `VAL-AC-[NNN]` Acceptance Criteria for [PBI Title]
+---
+title: Acceptance Criteria — Moved
+description: Compatibility bridge to the current canonical location.
+type: redirect
+redirect: /documentation/project-artifacts/layers/validation/templates/acceptance-criteria
+canonical: false
+---
 
-## Criteria
+# Acceptance Criteria Moved
 
-- `VAL-AC-[NNN]-01`: Description of criterion 1
-- `VAL-AC-[NNN]-02`: Description of criterion 2
-- `VAL-AC-[NNN]-03`: Description of criterion 3
-
-## Related Artifacts
-
-- [`DLV-PBI-[NNN]`: PBI]
-- [`TST-[NNN]`: Test Case]
+This guide now lives at [Acceptance Criteria](/documentation/project-artifacts/layers/validation/templates/acceptance-criteria). Update bookmarks to use the canonical path.

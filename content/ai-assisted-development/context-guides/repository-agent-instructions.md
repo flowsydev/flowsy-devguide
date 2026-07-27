@@ -110,6 +110,6 @@ Adapt the text to the repository's real flow. If the project uses another versio
 
 - General guidance: [AI-Assisted Development](/ai-assisted-development/).
 - Context guide router: [Agent Context Routing](/ai-assisted-development/agent-routing.md).
-- Local documentation: [Repository Documentation](/conventions/repository-documentation.md).
+- Local documentation: [Repository Documentation](/documentation/repositories/).
 - Writing rules: [Writing Guidelines](/conventions/writing-guidelines).
-- Specs: [Specs-Driven Development](/ai-assisted-development/specs-driven-development.md).
+- Specs: [Specs-Driven Development](/documentation/work-specs/).

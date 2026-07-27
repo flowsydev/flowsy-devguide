@@ -1,27 +1,11 @@
-# `WRK-TSK-[NNN]` [Task Title]
+---
+title: Task — Moved
+description: Compatibility bridge to the current canonical location.
+type: redirect
+redirect: /documentation/project-artifacts/layers/delivery/templates/task
+canonical: false
+---
 
-## Objective
+# Task Moved
 
-Describe what must be achieved with this task.
-
-## Assignee
-
-- [Name or role]
-
-## Estimate
-
-- [Estimate in hours or points]
-
-## Local Definition of Done
-
-- [ ] Criterion 1
-- [ ] Criterion 2
-
-## Subtasks
-
-- [ ] `WRK-STK-[NNN]-01`: Subtask 1
-- [ ] `WRK-STK-[NNN]-02`: Subtask 2
-
-## Related Artifacts
-
-- [`DLV-PBI-[NNN]`: PBI]
+This guide now lives at [Task](/documentation/project-artifacts/layers/delivery/templates/task). Update bookmarks to use the canonical path.

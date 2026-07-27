@@ -2,7 +2,7 @@
 
 ## Repo
 
-Design and development guide built with VitePress. The main content lives in Markdown under `conventions/`, `discovery/`, `technologies/` and `ai-assisted-development/`.
+Design and development guide built with VitePress. Public content lives under `content/` and is organized into `foundations/`, `documentation/`, `engineering/`, `quality/`, `ai-assisted-development/` and `conventions/`.
 
 Changes should improve clarity, accuracy, structure or practical usefulness for the open source community and for projects that use Flowsy guidance, libraries, tools or templates.
 
@@ -20,7 +20,9 @@ Changes should improve clarity, accuracy, structure or practical usefulness for 
 - Use examples that fit a general community and open source audience. Avoid organization-specific, institutional or private-domain terminology unless a page explicitly discusses a Mexico-specific concept.
 - Write titles, headings and navigation labels in Title Case: capitalize principal words and lowercase short articles, prepositions and conjunctions unless they are the first word or part of a proper name, acronym or technical term.
 - Use emojis only when they add visual, semantic or didactic value. In folder structures, prefer them only when they improve readability.
-- If you add a page, place it in the correct thematic section and register it in `.vitepress/config.ts` when it should appear in navigation.
+- Every new page declares intent, audience and related canonical source according to `content/conventions/documentation-governance.md`.
+- Place new pages in the correct thematic section, register them in `.vitepress/config.ts` and link them from the section landing page.
+- Do not add canonical content under the historical routes `content/discovery/` or `content/technologies/`; those paths keep compatibility bridges only.
 - Update `CHANGELOG.md` when the change is visible to readers of the site.
 - When creating commits, use detailed messages in the predominant language of the repository's documentation following the Conventional Commits format.
 
@@ -35,6 +37,7 @@ npm install
 Minimum validation for documentation or navigation changes:
 
 ```bash
+npm run docs:validate
 npm run docs:build
 ```
 
@@ -64,15 +67,17 @@ Do not use `npm test` as validation: there is currently no implemented test suit
 Read only when the task requires it:
 
 - `README.md`: repository overview and base commands.
-- `ai-assisted-development/agent-routing.md`: minimum context selection by task type.
-- `ai-assisted-development/context-guides/`: focused guidance for backend, frontend, migrations, documentation, specs and repository instructions.
-- `conventions/repository-documentation.md`: repository documentation, README and agent instruction conventions.
-- `conventions/writing-guidelines.md`: editorial rules for durable documentation.
-- `technologies/testing/`: testing strategy and validation evidence guidance.
+- `content/documentation/contributing.md`: flow for new pages and moves.
+- `content/conventions/documentation-governance.md`: taxonomy, metadata, IDs, compatibility and canonical sources.
+- `content/ai-assisted-development/agent-routing.md`: minimum context selection by task type.
+- `content/ai-assisted-development/context-guides/`: focused guidance for backend, frontend, migrations, documentation, specs and repository instructions.
+- `content/conventions/writing-guidelines.md`: editorial rules for durable documentation.
+- `content/quality/`: testing strategy and validation evidence guidance.
 
 ## Care
 
 - Do not include secrets, tokens, credentials or sensitive local paths in versioned files.
 - Do not edit generated artifacts such as `.vitepress/dist/` unless the user explicitly requests it.
+- `docs/` and `specs/` are internal and should remain outside public navigation.
 - Do not modify source repositories used only as references unless the user explicitly asks for that repository to be changed.
 - Preserve existing user changes in the working tree. If a file already has unrelated edits, work around them rather than reverting them.

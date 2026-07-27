@@ -12,13 +12,13 @@ applies_when:
   - the task changes tables, indexes, constraints, routines or seed data
   - the task mentions a migration tool such as Evolve, Flyway, Liquibase, DbUp, EF Core, Sqitch, Atlas or flwdb
 read_first:
-  - /technologies/backend/data-and-migrations/database-engines/postgresql
-  - /technologies/backend/data-and-migrations/migration-concepts.md
+  - /engineering/data/database-engines/postgresql
+  - /engineering/data/migrations/concepts
 read_if_implementing:
-  - /technologies/backend/data-and-migrations/tools-and-strategies.md
-  - /technologies/backend/data-and-migrations/cli.md
-  - /technologies/testing/database/migrations.md
-  - /technologies/testing/database/relational-databases.md
+  - /engineering/data/migrations/tools-and-strategies
+  - /engineering/data/migrations/flwdb-cli
+  - /quality/systems/database-migrations
+  - /quality/systems/relational-databases
 related_guides:
   - backend-vsa-minimal-api
   - specs-driven-development
@@ -43,7 +43,7 @@ Use this guide when changing tables, indexes, constraints, routines, seed data o
 - Identify affected schemas, tables, indexes, constraints, routines and seed data.
 - Check rollout constraints: data volume, downtime tolerance, backward compatibility and rollback expectations.
 - Check whether application code, API contracts or reports depend on the changed database shape.
-- Consult [Testing Database Migrations](/technologies/testing/database/migrations.md) and [Relational Database Testing](/technologies/testing/database/relational-databases.md) when the change affects schema behavior or stored routines.
+- Consult [Testing Database Migrations](/quality/systems/database-migrations) and [Relational Database Testing](/quality/systems/relational-databases) when the change affects schema behavior or stored routines.
 
 ## Expected Structure
 
@@ -82,8 +82,8 @@ Follow the repository's migration layout. Common patterns include:
 
 ## References
 
-- Conventions: [PostgreSQL](/technologies/backend/data-and-migrations/database-engines/postgresql).
-- Migration concepts: [Database Migrations](/technologies/backend/data-and-migrations/migration-concepts.md).
-- Tooling: [Migration Tools and Strategies](/technologies/backend/data-and-migrations/tools-and-strategies.md) and [flwdb CLI](/technologies/backend/data-and-migrations/cli.md).
-- Testing: [Database Migrations](/technologies/testing/database/migrations.md), [Relational Databases](/technologies/testing/database/relational-databases.md) and [Integration Tests](/technologies/testing/integration-tests.md).
-- Evidence: [Evidence and Reporting](/technologies/testing/evidence-and-reporting.md).
+- Conventions: [PostgreSQL](/engineering/data/database-engines/postgresql).
+- Migration concepts: [Database Migrations](/engineering/data/migrations/concepts).
+- Tooling: [Migration Tools and Strategies](/engineering/data/migrations/tools-and-strategies) and [flwdb CLI](/engineering/data/migrations/flwdb-cli).
+- Testing: [Database Migrations](/quality/systems/database-migrations), [Relational Databases](/quality/systems/relational-databases) and [Integration Tests](/quality/integration-tests).
+- Evidence: [Evidence and Reporting](/quality/evidence-and-reporting).

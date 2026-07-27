@@ -12,12 +12,11 @@ applies_when:
   - the task mentions feature-set, composable, Pinia, route or Storybook
   - the task creates or changes UI behavior
 read_first:
-  - /technologies/frontend/vue/conventions
-  - /technologies/frontend/vue/conventions
-  - /technologies/frontend/modular-architecture
+  - /engineering/frontend/vue/conventions
+  - /engineering/frontend/modular-architecture
 read_if_implementing:
-  - /technologies/frontend/vue/ecosystem
-  - /technologies/testing/typescript-vue.md
+  - /engineering/frontend/vue/
+  - /quality/stacks/typescript-vue
 related_guides:
   - specs-driven-development
   - project-documentation-artifact
@@ -41,7 +40,7 @@ Use this guide when adding or changing a Vue feature, route, component group, co
 - Keep pages thin; move reusable behavior to composables and shared state to stores only when it has real cross-component value.
 - Use typed props, emits, route params, API DTOs and state models.
 - Preserve the repository's component library, styling conventions and accessibility patterns.
-- Consult [Testing TypeScript and Vue](/technologies/testing/typescript-vue.md) when the change affects behavior, routing, forms, data loading or error handling.
+- Consult [Testing TypeScript and Vue](/quality/stacks/typescript-vue) when the change affects behavior, routing, forms, data loading or error handling.
 
 ## Expected Structure
 
@@ -75,7 +74,7 @@ Use the local convention if the repository already has a different but consisten
 
 ## References
 
-- Architecture: [Frontend Modular Architecture](/technologies/frontend/modular-architecture).
-- Vue practices: [Vue Ecosystem](/technologies/frontend/vue/ecosystem).
-- Conventions: [Vue 3 and TypeScript](/technologies/frontend/vue/conventions).
-- Testing: [TypeScript and Vue](/technologies/testing/typescript-vue.md), [Unit Tests](/technologies/testing/unit-tests.md), [Integration Tests](/technologies/testing/integration-tests.md) and [End-to-End Tests](/technologies/testing/end-to-end-tests.md).
+- Architecture: [Frontend Modular Architecture](/engineering/frontend/modular-architecture).
+- Vue practices: [Vue Ecosystem](/engineering/frontend/vue/).
+- Conventions: [Vue 3 and TypeScript](/engineering/frontend/vue/conventions).
+- Testing: [TypeScript and Vue](/quality/stacks/typescript-vue), [Unit Tests](/quality/unit-tests), [Integration Tests](/quality/integration-tests) and [End-to-End Tests](/quality/end-to-end-tests).

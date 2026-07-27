@@ -1,30 +1,11 @@
-# `DLV-EPC-[NNN]` [Epic Title]
+---
+title: Epic — Moved
+description: Compatibility bridge to the current canonical location.
+type: redirect
+redirect: /documentation/project-artifacts/layers/delivery/templates/epic
+canonical: false
+---
 
-## Expected Outcome
+# Epic Moved
 
-Describe the expected capability and business impact upon completing this epic.
-
-## Scope
-
-Describe what this epic includes.
-
-## Non-Goals
-
-- Exclusion 1
-
-## Metrics
-
-- Metric 1
-
-## Child PBIs
-
-- [`DLV-PBI-[NNN]`: [PBI Title]]
-
-## Risks / Dependencies
-
-- Risk or dependency 1
-
-## Related Artifacts
-
-- [`STR-INI-[NNN]`: Initiative]
-- [`ANA-UC-[NNN]`: Use Case]
+This guide now lives at [Epic](/documentation/project-artifacts/layers/delivery/templates/epic). Update bookmarks to use the canonical path.

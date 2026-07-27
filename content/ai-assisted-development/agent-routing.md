@@ -9,29 +9,35 @@ Context routing helps agents read the right guide for the task without loading t
 
 ## General Rule
 
-Start with the user request and route to the smallest guide that can answer it. Add broader references only when the task crosses boundaries.
+1. Identify the primary intent of the task.
+2. Select a single initial context guide.
+3. Read the references marked as required.
+4. Open complete examples only when implementing or fixing code in that technology.
+5. Record relevant assumptions and validations in the final response or corresponding spec.
 
 ## Routing Matrix
 
-| Intent | Start With |
-| --- | --- |
-| Create or improve repository instructions | [Repository Agent Instructions](./context-guides/repository-agent-instructions.md) |
-| Plan work with requirements, analysis and execution evidence | [Specs-Driven Development](./context-guides/specs-driven-development.md) |
-| Implement a C# backend slice or Minimal API | [Backend VSA with Minimal APIs](./context-guides/backend-vsa-minimal-api.md) |
-| Design or revise HTTP API contracts, status codes or error responses | [Backend VSA with Minimal APIs](./context-guides/backend-vsa-minimal-api.md) + [Official References](./official-references.md) |
-| Implement a Vue feature-set | [Frontend Vue Feature-Set](./context-guides/frontend-vue-feature-set.md) |
-| Change PostgreSQL schemas, routines or migrations | [PostgreSQL and Migrations](./context-guides/postgres-migrations.md) |
-| Create durable project documentation | [Project Documentation](./context-guides/project-documentation-artifact.md) |
-| Choose verification strategy | [Testing](/technologies/testing/) |
+| Task Intent | Initial Context Guide | Read When the Task Mentions |
+| --- | --- | --- |
+| Implement C# backend with Vertical Slice Architecture | [Backend VSA with Minimal APIs](./context-guides/backend-vsa-minimal-api.md) | Minimal APIs, commands, queries, handlers, state, `Features/`, CQRS, MediatR |
+| Design or revise HTTP API contracts, status codes or error responses | [Backend VSA with Minimal APIs](./context-guides/backend-vsa-minimal-api.md) | HTTP API, Problem Details, RFC 9457, status codes, OpenAPI |
+| Implement Vue frontend | [Frontend Vue Feature-Set](./context-guides/frontend-vue-feature-set.md) | Vue, component, composable, Pinia, store, feature-set, Storybook, frontend tests |
+| Create or change PostgreSQL artifacts | [PostgreSQL and Migrations](./context-guides/postgres-migrations.md) | migration, table, column, routine, function, procedure, view, Evolve, Flyway, flwdb |
+| Design or adjust automated tests | [Quality](/quality/) | unit, integration, end-to-end, Vitest, xUnit, Playwright, Testcontainers |
+| Create or adjust agent instructions | [Repository Agent Instructions](./context-guides/repository-agent-instructions.md) | `AGENTS.md`, `CLAUDE.md`, `.github/copilot-instructions.md`, agent instructions |
+| Document requirements, architecture, delivery or validation | [Project Documentation](./context-guides/project-documentation-artifact.md) | need, requirement, use case, business rule, ADR, contract, PBI, acceptance criteria, GWT |
+| Coordinate work with specs for agents | [Specs-Driven Development](./context-guides/specs-driven-development.md) | `docs/specs`, requirements, analysis, plan, execution, summary, phases, evidence |
 
 ## Common Combinations
 
-| Work | Combine |
+| Scenario | Recommended Order |
 | --- | --- |
-| Backend endpoint with database changes | Backend VSA + PostgreSQL and Migrations + Testing |
-| Vue screen backed by a new API contract | Frontend Vue Feature-Set + Backend VSA + Project Documentation |
-| Large refactor or feature delivery | Specs-Driven Development + relevant stack guide + Testing |
-| Repository onboarding improvements | Repository Agent Instructions + Repository Documentation |
+| Backend feature with endpoint, persistence and migration | Backend VSA with Minimal APIs → PostgreSQL and Migrations |
+| Vue screen that consumes an existing API | Frontend Vue Feature-Set → Project Documentation when a PBI or criteria exists |
+| Change requested by a spec | Specs-Driven Development → context guide for the affected technology |
+| Prepare a repository for agent work | Repository Agent Instructions → primary technology context guide |
+| Document a technical decision during implementation | Specs-Driven Development → Project Documentation |
+| Add behavior with business validation | Project Documentation → Backend VSA with Minimal APIs |
 
 ## Progressive Reading Criteria
 

@@ -1,13 +1,14 @@
 {
   "name": "flowsy-devguide",
-  "version": "1.13.0",
+  "version": "1.14.0",
   "description": "Design and development guide for Flowsy solutions, covering conventions, patterns and best practices for backend, frontend, testing and AI-assisted development.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "docs:dev": "vitepress dev",
     "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview"
+    "docs:preview": "vitepress preview",
+    "docs:validate": "node scripts/validate-documentation.mjs"
   },
   "keywords": [],
   "author": "",

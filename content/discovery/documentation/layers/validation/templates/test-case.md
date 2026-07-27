@@ -1,38 +1,11 @@
-# `TST-[NNN]` [Test Case Title]
+---
+title: Test Case — Moved
+description: Compatibility bridge to the current canonical location.
+type: redirect
+redirect: /documentation/project-artifacts/layers/validation/templates/test-case
+canonical: false
+---
 
-## Objective
+# Test Case Moved
 
-Describe what is validated with this test case.
-
-## Preconditions
-
-- Precondition 1
-- Precondition 2
-
-## Test Data
-
-| Data | Value |
-| --- | --- |
-| Data 1 | Value 1 |
-| Data 2 | Value 2 |
-
-## Steps
-
-1. Step 1
-2. Step 2
-3. Step 3
-
-## Expected Result
-
-Describe the expected result when executing the steps.
-
-## Type
-
-- [ ] Manual
-- [ ] Automated
-
-## Related Artifacts
-
-- [`VAL-AC-[NNN]`: Acceptance Criterion]
-- [`VAL-GWT-[NNN]`: GWT Scenario]
-- [`DLV-PBI-[NNN]`: PBI]
+This guide now lives at [Test Case](/documentation/project-artifacts/layers/validation/templates/test-case). Update bookmarks to use the canonical path.

@@ -1,34 +1,11 @@
-# `ARC-ADR-[NNN]` [Decision Title]
+---
+title: Adr — Moved
+description: Compatibility bridge to the current canonical location.
+type: redirect
+redirect: /documentation/project-artifacts/layers/architecture/templates/adr
+canonical: false
+---
 
-## Context
+# Adr Moved
 
-Describe the problem or situation that motivates the decision.
-
-## Decision
-
-Describe the decision made.
-
-## Considered Alternatives
-
-| Alternative | Pros | Cons |
-| --- | --- | --- |
-| Alternative 1 | ... | ... |
-| Alternative 2 | ... | ... |
-
-## Consequences
-
-- Consequence 1
-- Consequence 2
-
-## Status
-
-- [ ] Proposed
-- [ ] Accepted
-- [ ] Deprecated
-- [ ] Replaced by `ARC-ADR-[NNN]`
-
-## Related Artifacts
-
-- [`STR-INI-[NNN]`: Initiative]
-- [`DLV-EPC-[NNN]`: Epic]
-- [`DLV-PBI-[NNN]`: PBI]
+This guide now lives at [Adr](/documentation/project-artifacts/layers/architecture/templates/adr). Update bookmarks to use the canonical path.

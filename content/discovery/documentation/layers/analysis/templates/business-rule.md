@@ -1,27 +1,11 @@
-# `ANA-BR-[NNN]` [Business Rule Title]
+---
+title: Business Rule — Moved
+description: Compatibility bridge to the current canonical location.
+type: redirect
+redirect: /documentation/project-artifacts/layers/analysis/templates/business-rule
+canonical: false
+---
 
-## Statement
+# Business Rule Moved
 
-Describe the domain condition clearly and unambiguously.
-
-## Context
-
-Describe the context or process in which this rule applies.
-
-## Conditions
-
-- Condition 1
-- Condition 2
-
-## Exceptions
-
-- Exception 1 (if applicable)
-
-## Source
-
-- Stakeholder, regulation or process that originates the rule.
-
-## Related Artifacts
-
-- [`ANA-REQ-[NNN]`: Requirement]
-- [`ANA-UC-[NNN]`: Use Case]
+This guide now lives at [Business Rule](/documentation/project-artifacts/layers/analysis/templates/business-rule). Update bookmarks to use the canonical path.

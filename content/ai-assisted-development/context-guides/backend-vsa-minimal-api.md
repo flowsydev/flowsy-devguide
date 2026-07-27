@@ -12,13 +12,13 @@ applies_when:
   - the task mentions Vertical Slice Architecture
   - the task creates or changes endpoints, commands, queries, handlers or state
 read_first:
-  - /technologies/backend/dotnet/csharp
-  - /technologies/backend/vertical-slice-architecture/concepts.md
+  - /engineering/backend/dotnet/csharp
+  - /engineering/backend/architecture/vertical-slice-architecture
 read_if_implementing:
-  - /technologies/backend/api-design.md
-  - /technologies/backend/dotnet/csharp-minimal-apis.md
-  - /technologies/backend/concepts.md
-  - /technologies/testing/csharp-dotnet.md
+  - /engineering/backend/api/http-api-design
+  - /engineering/backend/dotnet/minimal-apis/
+  - /engineering/backend/
+  - /quality/stacks/csharp-dotnet
 related_guides:
   - postgres-migrations
   - specs-driven-development
@@ -43,10 +43,10 @@ Use this guide when implementing or modifying a backend feature organized as a v
 - Use the HTTP API design baseline for resource-oriented routes, status codes and Problem Details.
 - Place business rules and state validation in the handler, state object or domain model that owns them.
 - Use `record` for commands, queries, results, DTOs and read models.
-- Use `DateTimeOffset` for auditable timestamps and persist instants in UTC.
+- Follow the project's documented date/time strategy. Use `DateTimeOffset` or UTC `DateTime` for UTC instants, `DateTime` for canonical system time-zone values, and `DateTime` plus a time-zone identifier for per-entity local values.
 - Do not expose numeric auto-increment primary keys outside backend boundaries; use `PublicId` for external contracts and explicit `Internal` variants when private IDs are required.
 - Include `ILogger<T>` logging in relevant operations.
-- Consult [Testing C#/.NET](/technologies/testing/csharp-dotnet.md) when the change requires unit, integration or end-to-end tests.
+- Consult [Testing C#/.NET](/quality/stacks/csharp-dotnet) when the change requires unit, integration or end-to-end tests.
 
 ## Expected Structure
 
@@ -81,9 +81,9 @@ For queries, use `Queries/[ActionName]/` with `Query`, `QueryResult`, `QueryHand
 
 ## References
 
-- Naming and contracts: [C# Conventions](/technologies/backend/dotnet/csharp).
-- Structure and principles: [VSA Concepts](/technologies/backend/vertical-slice-architecture/concepts.md).
-- Complete examples: [VSA: C# with Minimal APIs](/technologies/backend/dotnet/csharp-minimal-apis.md).
-- Backend baseline and traceability: [Backend Concepts](/technologies/backend/concepts.md).
-- HTTP contracts and errors: [HTTP API Design](/technologies/backend/api-design.md).
-- Testing by stack: [Testing C#/.NET](/technologies/testing/csharp-dotnet.md).
+- Naming and contracts: [C# Conventions](/engineering/backend/dotnet/csharp).
+- Structure and principles: [VSA Concepts](/engineering/backend/architecture/vertical-slice-architecture).
+- Complete examples: [VSA: C# with Minimal APIs](/engineering/backend/dotnet/minimal-apis/).
+- Backend baseline and traceability: [Backend Concepts](/engineering/backend/).
+- HTTP contracts and errors: [HTTP API Design](/engineering/backend/api/http-api-design).
+- Testing by stack: [Testing C#/.NET](/quality/stacks/csharp-dotnet).

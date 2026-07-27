@@ -1,3 +1,11 @@
+---
+title: Source Control with Git
+description: Branch strategy, Pull Requests, versioning and commit messages for Flowsy repositories.
+type: guide
+audience: Development and maintainers.
+canonical: true
+---
+
 # Source Control with Git
 
 Guidelines for Git, branching, commits and versioning in the Flowsy ecosystem.

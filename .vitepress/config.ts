@@ -2,8 +2,8 @@ import { withMermaid } from 'vitepress-plugin-mermaid'
 
 // https://vitepress.dev/reference/site-config
 export default withMermaid({
-  title: "Flowsy DevGuide",
-  description: "Guide for Designing and Developing Solutions",
+  title: 'Flowsy DevGuide',
+  description: 'Guide for Designing and Developing Solutions',
   srcDir: './content',
   vite: {
     build: {
@@ -29,276 +29,252 @@ export default withMermaid({
       src: '/assets/img/flowsy-isotype-three-color.svg?v=transparent',
       alt: 'Flowsy'
     },
-
-    // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      {
-        text: 'AI',
-        items: [
-          { text: 'Overview', link: '/ai-assisted-development/' },
-          { text: 'Agent Context Guides', link: '/ai-assisted-development/context-guides/' },
-        ]
-      },
-      {
-        text: 'Discovery',
-        items: [
-          { text: 'Overview', link: '/discovery/' },
-          { text: 'Ubiquitous Language', link: '/discovery/ubiquitous-language' },
-          { text: 'Project Documentation', link: '/discovery/documentation/' },
-          { text: 'Disciplinary Layers', link: '/discovery/documentation/layers/' },
-          { text: 'Static Site Generators', link: '/discovery/documentation/static-site-generators/' },
-        ]
-      },
-      {
-        text: 'Tech',
-        items: [
-          { text: 'Overview', link: '/technologies/' },
-          { text: 'Testing', link: '/technologies/testing/' },
-          { text: 'Backend', link: '/technologies/backend/concepts' },
-          { text: 'Frontend', link: '/technologies/frontend/' },
-        ]
-      },
-      {
-        text: 'Conventions',
-        items: [
-          { text: 'Overview', link: '/conventions/' },
-          { text: 'Writing Guidelines', link: '/conventions/writing-guidelines' },
-          { text: 'Repository Documentation', link: '/conventions/repository-documentation' },
-          { text: 'Git', link: '/conventions/source-control/git' },
-        ]
-      },
+      { text: 'Foundations', link: '/foundations/' },
+      { text: 'Documentation', link: '/documentation/' },
+      { text: 'Engineering', link: '/engineering/' },
+      { text: 'Quality', link: '/quality/' },
+      { text: 'AI-Assisted Development', link: '/ai-assisted-development/' },
+      { text: 'Conventions', link: '/conventions/' }
     ],
-
-    sidebar: [
-      {
-        text: 'AI-Assisted Development',
-        collapsed: true,
-        items: [
-          { text: 'Overview', link: '/ai-assisted-development/' },
-          { text: 'Best Practices', link: '/ai-assisted-development/best-practices' },
-          { text: 'Agent Context Routing', link: '/ai-assisted-development/agent-routing' },
-          {
-            text: 'Agent Context Guides',
-            collapsed: true,
-            items: [
-              { text: 'Index', link: '/ai-assisted-development/context-guides/' },
-              { text: 'Backend VSA with Minimal APIs', link: '/ai-assisted-development/context-guides/backend-vsa-minimal-api' },
-              { text: 'Frontend Vue Feature-Set', link: '/ai-assisted-development/context-guides/frontend-vue-feature-set' },
-              { text: 'PostgreSQL and Migrations', link: '/ai-assisted-development/context-guides/postgres-migrations' },
-              { text: 'Project Documentation', link: '/ai-assisted-development/context-guides/project-documentation-artifact' },
-              { text: 'Repository Agent Instructions', link: '/ai-assisted-development/context-guides/repository-agent-instructions' },
-              { text: 'Specs-Driven Development', link: '/ai-assisted-development/context-guides/specs-driven-development' },
-            ]
-          },
-          { text: 'Specs-Driven Development', link: '/ai-assisted-development/specs-driven-development' },
-          { text: 'Platform Guidance', link: '/ai-assisted-development/platform-guidance' },
-          { text: 'Official References', link: '/ai-assisted-development/official-references' },
-        ]
-      },
-      {
-        text: 'Discovery & Design',
-        collapsed: true,
-        items: [
-          { text: 'Overview', link: '/discovery/' },
-          {
-            text: 'Domain Discovery',
-            collapsed: true,
-            items: [
-              { text: 'Ubiquitous Language', link: '/discovery/ubiquitous-language' },
-              { text: 'Design Techniques', link: '/discovery/design-techniques' },
-              { text: 'Event Storming', link: '/discovery/event-storming' },
-              { text: 'Domain-Driven Design', link: '/discovery/domain-driven-design' },
-            ]
-          },
-          {
-            text: 'Project Documentation',
-            link: '/discovery/documentation/',
-            items: [
-              {
-                text: 'Disciplinary Layers',
-                link: '/discovery/documentation/layers/',
-                items: [
-                  {
-                    text: 'Strategy',
-                    link: '/discovery/documentation/layers/strategy/',
-                    collapsed: true,
-                    items: [
-                      { text: 'Theme', link: '/discovery/documentation/layers/strategy/templates/theme' },
-                      { text: 'Initiative', link: '/discovery/documentation/layers/strategy/templates/initiative' },
-                    ]
-                  },
-                  {
-                    text: 'Analysis',
-                    link: '/discovery/documentation/layers/analysis/',
-                    collapsed: true,
-                    items: [
-                      { text: 'Need', link: '/discovery/documentation/layers/analysis/templates/need' },
-                      { text: 'Requirement', link: '/discovery/documentation/layers/analysis/templates/requirement' },
-                      { text: 'Use Case', link: '/discovery/documentation/layers/analysis/templates/use-case' },
-                      { text: 'Business Rule', link: '/discovery/documentation/layers/analysis/templates/business-rule' },
-                    ]
-                  },
-                  {
-                    text: 'Architecture',
-                    link: '/discovery/documentation/layers/architecture/',
-                    collapsed: true,
-                    items: [
-                      { text: 'ADR', link: '/discovery/documentation/layers/architecture/templates/adr' },
-                      { text: 'Contract', link: '/discovery/documentation/layers/architecture/templates/contract' },
-                    ]
-                  },
-                  {
-                    text: 'Delivery',
-                    link: '/discovery/documentation/layers/delivery/',
-                    collapsed: true,
-                    items: [
-                      { text: 'Epic', link: '/discovery/documentation/layers/delivery/templates/epic' },
-                      { text: 'PBI / User Story', link: '/discovery/documentation/layers/delivery/templates/pbi' },
-                      { text: 'Task', link: '/discovery/documentation/layers/delivery/templates/task' },
-                    ]
-                  },
-                  {
-                    text: 'Validation',
-                    link: '/discovery/documentation/layers/validation/',
-                    collapsed: true,
-                    items: [
-                      { text: 'Acceptance Criteria', link: '/discovery/documentation/layers/validation/templates/acceptance-criteria' },
-                      { text: 'GWT Scenario', link: '/discovery/documentation/layers/validation/templates/gwt-scenario' },
-                      { text: 'Test Case', link: '/discovery/documentation/layers/validation/templates/test-case' },
-                    ]
-                  },
-                ]
-              },
-              {
-                text: 'Static Site Generators',
-                link: '/discovery/documentation/static-site-generators/',
-                items: [
-                  { text: 'VitePress', link: '/discovery/documentation/static-site-generators/vitepress' },
-                ]
-              },
-            ]
-          },
-        ]
-      },
-      {
-        text: 'Technologies',
-        collapsed: true,
-        items: [
-          { text: 'Overview', link: '/technologies/' },
-          {
-            text: 'Testing',
-            collapsed: true,
-            items: [
-              { text: 'Start', link: '/technologies/testing/' },
-              { text: 'Automated Testing Strategy', link: '/technologies/testing/automated-testing' },
-              { text: 'Unit Tests', link: '/technologies/testing/unit-tests' },
-              { text: 'Integration Tests', link: '/technologies/testing/integration-tests' },
-              { text: 'End-to-End Tests', link: '/technologies/testing/end-to-end-tests' },
-              { text: 'Evidence and Reporting', link: '/technologies/testing/evidence-and-reporting' },
-              { text: 'C#/.NET', link: '/technologies/testing/csharp-dotnet' },
-              { text: 'TypeScript and Vue', link: '/technologies/testing/typescript-vue' },
-              { text: 'Relational Databases', link: '/technologies/testing/database/relational-databases' },
-              { text: 'Database Migration Testing', link: '/technologies/testing/database/migrations' },
-              { text: 'Event-Driven Systems', link: '/technologies/testing/event-driven-systems' },
-            ]
-          },
-          {
-            text: 'Backend',
-            collapsed: true,
-            items: [
-              {
-                text: 'General',
-                collapsed: true,
-                items: [
-                  { text: 'General Concepts', link: '/technologies/backend/concepts' },
-                  { text: 'HTTP API Design', link: '/technologies/backend/api-design' },
-                  { text: 'Error Handling', link: '/technologies/backend/error-handling' },
-                ]
-              },
-              {
-                text: 'Architecture',
-                collapsed: true,
-                items: [
-                  { text: 'Vertical Slice Architecture', link: '/technologies/backend/vertical-slice-architecture/concepts' },
-                  { text: 'Clean Architecture', link: '/technologies/backend/clean-architecture/concepts' },
-                ]
-              },
-              {
-                text: 'Events and Messaging',
-                collapsed: true,
-                items: [
-                  { text: 'Event-Driven Architecture', link: '/technologies/backend/event-driven-architecture/concepts' },
-                  { text: 'Event Sourcing', link: '/technologies/backend/event-sourcing/concepts' },
-                  { text: 'Kafka and Redpanda', link: '/technologies/backend/event-sourcing/kafka-redpanda' },
-                ]
-              },
-              {
-                text: 'Data and Persistence',
-                collapsed: true,
-                items: [
-                  { text: 'Relational Modeling', link: '/technologies/backend/data-and-migrations/relational-modeling' },
-                  {
-                    text: 'Migrations',
-                    collapsed: true,
-                    items: [
-                      { text: 'Migration Concepts', link: '/technologies/backend/data-and-migrations/migration-concepts' },
-                      { text: 'Tools and Strategies', link: '/technologies/backend/data-and-migrations/tools-and-strategies' },
-                      { text: 'flwdb CLI', link: '/technologies/backend/data-and-migrations/cli' },
-                    ]
-                  },
-                  {
-                    text: 'Database Engines',
-                    collapsed: true,
-                    items: [
-                      { text: 'PostgreSQL', link: '/technologies/backend/data-and-migrations/database-engines/postgresql' },
-                      { text: 'SQL Server', link: '/technologies/backend/data-and-migrations/database-engines/sql-server' },
-                      { text: 'MySQL and MariaDB', link: '/technologies/backend/data-and-migrations/database-engines/mysql-mariadb' },
-                    ]
-                  },
-                ]
-              },
-              {
-                text: '.NET',
-                collapsed: true,
-                items: [
-                  { text: 'Lenguaje C#', link: '/technologies/backend/dotnet/csharp' },
-                  { text: 'VSA with Minimal APIs', link: '/technologies/backend/dotnet/csharp-minimal-apis' },
-                  { text: 'Background Services', link: '/technologies/backend/dotnet/csharp-background-services' },
-                ]
-              },
-            ]
-          },
-          {
-            text: 'Frontend',
-            collapsed: true,
-            items: [
-              { text: 'Overview', link: '/technologies/frontend/' },
-              { text: 'Modular Architecture', link: '/technologies/frontend/modular-architecture' },
-              {
-                text: 'Vue',
-                collapsed: true,
-                items: [
-                  { text: 'Vue 3 and TypeScript Conventions', link: '/technologies/frontend/vue/conventions' },
-                  { text: 'Vue Ecosystem', link: '/technologies/frontend/vue/ecosystem' },
-                ]
-              },
-            ]
-          },
-        ]
-      },
-      {
-        text: 'Conventions',
-        collapsed: true,
-        items: [
-          { text: 'Overview', link: '/conventions/' },
-          { text: 'Writing Guidelines', link: '/conventions/writing-guidelines' },
-          { text: 'Repository Documentation', link: '/conventions/repository-documentation' },
-          { text: 'Git', link: '/conventions/source-control/git' },
-        ]
-      },
-    ],
-
+    sidebar: {
+      '/foundations/': [
+        {
+          text: 'Foundations',
+          items: [
+            { text: 'Overview', link: '/foundations/' },
+            { text: 'Ubiquitous Language', link: '/foundations/ubiquitous-language' },
+            {
+              text: 'Domain Discovery',
+              collapsed: false,
+              items: [
+                { text: 'Overview', link: '/foundations/discovery/' },
+                { text: 'Design Techniques', link: '/foundations/discovery/design-techniques' },
+                { text: 'Event Storming', link: '/foundations/discovery/event-storming' }
+              ]
+            },
+            {
+              text: 'Domain Modeling',
+              collapsed: false,
+              items: [
+                { text: 'Overview', link: '/foundations/domain-modeling/' },
+                { text: 'Bounded Contexts', link: '/foundations/domain-modeling/bounded-contexts' },
+                { text: 'Entities and Value Objects', link: '/foundations/domain-modeling/entities-and-value-objects' },
+                { text: 'Aggregates', link: '/foundations/domain-modeling/aggregates' },
+                { text: 'Dynamic Consistency Boundaries', link: '/foundations/domain-modeling/dynamic-consistency-boundaries' }
+              ]
+            }
+          ]
+        }
+      ],
+      '/documentation/': [
+        {
+          text: 'Documentation',
+          items: [
+            { text: 'Overview', link: '/documentation/' },
+            { text: 'Adopting the DevGuide', link: '/documentation/adopting-the-devguide' },
+            { text: 'Contributing', link: '/documentation/contributing' },
+            {
+              text: 'Project Artifacts',
+              collapsed: true,
+              items: [
+                { text: 'Overview', link: '/documentation/project-artifacts/' },
+                { text: 'Organization', link: '/documentation/project-artifacts/organization' },
+                { text: 'Identifiers and Traceability', link: '/documentation/project-artifacts/identifiers-and-traceability' },
+                { text: 'Disciplinary Layers', link: '/documentation/project-artifacts/layers/' },
+                { text: 'Strategy', link: '/documentation/project-artifacts/layers/strategy/' },
+                { text: 'Analysis', link: '/documentation/project-artifacts/layers/analysis/' },
+                { text: 'Architecture', link: '/documentation/project-artifacts/layers/architecture/' },
+                { text: 'Delivery', link: '/documentation/project-artifacts/layers/delivery/' },
+                { text: 'Validation', link: '/documentation/project-artifacts/layers/validation/' }
+              ]
+            },
+            {
+              text: 'Repositories',
+              collapsed: true,
+              items: [
+                { text: 'Overview', link: '/documentation/repositories/' },
+                { text: 'README', link: '/documentation/repositories/readme' },
+                { text: 'Local Documentation', link: '/documentation/repositories/local-documentation' }
+              ]
+            },
+            {
+              text: 'Work Specs',
+              collapsed: true,
+              items: [
+                { text: 'Overview', link: '/documentation/work-specs/' },
+                { text: 'Workflow', link: '/documentation/work-specs/workflow' },
+                { text: 'Document Reference', link: '/documentation/work-specs/document-reference' }
+              ]
+            },
+            {
+              text: 'Documentation Tooling',
+              collapsed: true,
+              items: [
+                { text: 'Overview', link: '/documentation/tooling/' },
+                { text: 'VitePress', link: '/documentation/tooling/vitepress/' },
+                { text: 'Configuration', link: '/documentation/tooling/vitepress/configuration' },
+                { text: 'Layouts and Navigation', link: '/documentation/tooling/vitepress/layouts-and-navigation' },
+                { text: 'Deployment', link: '/documentation/tooling/vitepress/deployment' }
+              ]
+            }
+          ]
+        }
+      ],
+      '/engineering/': [
+        {
+          text: 'Engineering',
+          items: [
+            { text: 'Overview', link: '/engineering/' },
+            {
+              text: 'Cross-Cutting Topics',
+              collapsed: true,
+              items: [
+                { text: 'Overview', link: '/engineering/cross-cutting/' },
+                { text: 'Date and Time', link: '/engineering/cross-cutting/date-and-time' },
+                { text: 'Auditing and Validity', link: '/engineering/cross-cutting/auditing-and-validity' },
+                { text: 'Public Identifiers', link: '/engineering/cross-cutting/identifiers' }
+              ]
+            },
+            {
+              text: 'Backend',
+              collapsed: false,
+              items: [
+                { text: 'Overview', link: '/engineering/backend/' },
+                { text: 'Design Baseline', link: '/engineering/backend/design-baseline' },
+                { text: 'Backend Architectures', link: '/engineering/backend/architecture/' },
+                { text: 'Vertical Slice Architecture', link: '/engineering/backend/architecture/vertical-slice-architecture' },
+                { text: 'Clean Architecture', link: '/engineering/backend/architecture/clean-architecture' },
+                { text: 'HTTP API Design', link: '/engineering/backend/api/http-api-design' },
+                { text: 'Reliability', link: '/engineering/backend/reliability/' },
+                { text: 'Error Handling', link: '/engineering/backend/reliability/error-handling' },
+                { text: 'Validation and Domain Rules', link: '/engineering/backend/reliability/validation-and-domain-rules' },
+                { text: 'Transactional Consistency', link: '/engineering/backend/reliability/transactional-consistency' },
+                { text: '.NET', link: '/engineering/backend/dotnet/' },
+                { text: 'C#', link: '/engineering/backend/dotnet/csharp' },
+                { text: 'Minimal APIs', link: '/engineering/backend/dotnet/minimal-apis/' },
+                { text: 'Feature-Set Structure', link: '/engineering/backend/dotnet/minimal-apis/feature-set-structure' },
+                { text: 'Endpoints and HTTP Results', link: '/engineering/backend/dotnet/minimal-apis/endpoints-and-http-results' },
+                { text: 'Commands and Queries', link: '/engineering/backend/dotnet/minimal-apis/commands-and-queries' },
+                { text: 'State and StateHandler', link: '/engineering/backend/dotnet/minimal-apis/state-and-statehandler' },
+                { text: 'Minimal API Examples', link: '/engineering/backend/dotnet/minimal-apis/examples/' },
+                { text: 'Background Services', link: '/engineering/backend/dotnet/background-services/' }
+              ]
+            },
+            {
+              text: 'Data',
+              collapsed: true,
+              items: [
+                { text: 'Overview', link: '/engineering/data/' },
+                { text: 'Relational Modeling', link: '/engineering/data/relational-modeling' },
+                { text: 'Migrations', link: '/engineering/data/migrations/' },
+                { text: 'Migration Concepts', link: '/engineering/data/migrations/concepts' },
+                { text: 'Tools and Strategies', link: '/engineering/data/migrations/tools-and-strategies' },
+                { text: 'flwdb CLI', link: '/engineering/data/migrations/flwdb-cli' },
+                { text: 'PostgreSQL', link: '/engineering/data/database-engines/postgresql' },
+                { text: 'SQL Server', link: '/engineering/data/database-engines/sql-server' },
+                { text: 'MySQL and MariaDB', link: '/engineering/data/database-engines/mysql-mariadb' }
+              ]
+            },
+            {
+              text: 'Messaging',
+              collapsed: true,
+              items: [
+                { text: 'Overview', link: '/engineering/messaging/' },
+                { text: 'Event-Driven Architecture', link: '/engineering/messaging/event-driven-architecture' },
+                { text: 'Reliable Delivery', link: '/engineering/messaging/reliable-delivery' },
+                { text: 'Event Sourcing', link: '/engineering/messaging/event-sourcing' },
+                { text: 'Kafka and Redpanda', link: '/engineering/messaging/kafka-redpanda-event-store' }
+              ]
+            },
+            {
+              text: 'Frontend',
+              collapsed: true,
+              items: [
+                { text: 'Overview', link: '/engineering/frontend/' },
+                { text: 'Modular Architecture', link: '/engineering/frontend/modular-architecture' },
+                { text: 'Vue', link: '/engineering/frontend/vue/' },
+                { text: 'Vue Conventions', link: '/engineering/frontend/vue/conventions' },
+                { text: 'Components', link: '/engineering/frontend/vue/components' },
+                { text: 'Vue Structure', link: '/engineering/frontend/vue/structure' },
+                { text: 'State and Composables', link: '/engineering/frontend/vue/state-and-composables' },
+                { text: 'UI/API Contracts', link: '/engineering/frontend/vue/ui-api-contracts' },
+                { text: 'Visual Design and Storybook', link: '/engineering/frontend/vue/visual-design-and-storybook' }
+              ]
+            },
+            {
+              text: 'Security',
+              collapsed: true,
+              items: [
+                { text: 'Overview', link: '/engineering/security/' },
+                { text: 'Dependency Safety', link: '/engineering/security/dependency-safety' }
+              ]
+            }
+          ]
+        }
+      ],
+      '/quality/': [
+        {
+          text: 'Quality',
+          items: [
+            { text: 'Overview', link: '/quality/' },
+            { text: 'Automated Testing Strategy', link: '/quality/automated-testing-strategy' },
+            { text: 'Unit Tests', link: '/quality/unit-tests' },
+            { text: 'Integration Tests', link: '/quality/integration-tests' },
+            { text: 'End-to-End Tests', link: '/quality/end-to-end-tests' },
+            { text: 'Evidence and Reporting', link: '/quality/evidence-and-reporting' },
+            {
+              text: 'Stacks',
+              items: [
+                { text: 'Overview', link: '/quality/stacks/' },
+                { text: 'C#/.NET', link: '/quality/stacks/csharp-dotnet' },
+                { text: 'TypeScript and Vue', link: '/quality/stacks/typescript-vue' }
+              ]
+            },
+            {
+              text: 'Systems',
+              items: [
+                { text: 'Overview', link: '/quality/systems/' },
+                { text: 'Relational Databases', link: '/quality/systems/relational-databases' },
+                { text: 'Database Migrations', link: '/quality/systems/database-migrations' },
+                { text: 'Event-Driven Systems', link: '/quality/systems/event-driven-systems' }
+              ]
+            }
+          ]
+        }
+      ],
+      '/ai-assisted-development/': [
+        {
+          text: 'AI-Assisted Development',
+          items: [
+            { text: 'Overview', link: '/ai-assisted-development/' },
+            { text: 'Best Practices', link: '/ai-assisted-development/best-practices' },
+            { text: 'Agent Context Routing', link: '/ai-assisted-development/agent-routing' },
+            { text: 'Context Guides', link: '/ai-assisted-development/context-guides/' },
+            { text: 'Backend VSA with Minimal APIs', link: '/ai-assisted-development/context-guides/backend-vsa-minimal-api' },
+            { text: 'Frontend Vue Feature-Set', link: '/ai-assisted-development/context-guides/frontend-vue-feature-set' },
+            { text: 'PostgreSQL and Migrations', link: '/ai-assisted-development/context-guides/postgres-migrations' },
+            { text: 'Project Documentation', link: '/ai-assisted-development/context-guides/project-documentation-artifact' },
+            { text: 'Repository Agent Instructions', link: '/ai-assisted-development/context-guides/repository-agent-instructions' },
+            { text: 'Specs-Driven Development', link: '/ai-assisted-development/context-guides/specs-driven-development' },
+            { text: 'Platform Guidance', link: '/ai-assisted-development/platform-guidance' },
+            { text: 'Official References', link: '/ai-assisted-development/official-references' }
+          ]
+        }
+      ],
+      '/conventions/': [
+        {
+          text: 'Conventions',
+          items: [
+            { text: 'Overview', link: '/conventions/' },
+            { text: 'Documentation Governance', link: '/conventions/documentation-governance' },
+            { text: 'Writing Guidelines', link: '/conventions/writing-guidelines' },
+            { text: 'Git', link: '/conventions/source-control/git' }
+          ]
+        }
+      ]
+    },
     socialLinks: [
       { icon: 'github', link: 'https://github.com/flowsydev' }
     ]

@@ -1,22 +1,11 @@
-# `STR-THM-[NNN]` [Theme Title]
+---
+title: Theme — Moved
+description: Compatibility bridge to the current canonical location.
+type: redirect
+redirect: /documentation/project-artifacts/layers/strategy/templates/theme
+canonical: false
+---
 
-## Business Outcome
+# Theme Moved
 
-Describe the expected strategic outcome when advancing on this theme.
-
-## Metrics / KPIs
-
-- Metric 1
-- Metric 2
-
-## Scope
-
-Describe the theme scope: products, areas or processes involved.
-
-## Out of Scope
-
-- Exclusion 1
-
-## Related Initiatives
-
-- [`STR-INI-[NNN]`: [Initiative Title]]
+This guide now lives at [Theme](/documentation/project-artifacts/layers/strategy/templates/theme). Update bookmarks to use the canonical path.

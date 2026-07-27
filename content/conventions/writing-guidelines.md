@@ -1,13 +1,16 @@
 ---
 title: Writing Guidelines
 description: Editorial rules for project documentation artifacts, repositories and navigation.
+type: guide
+audience: Authors, maintainers and contributors of documentation.
+canonical: true
 ---
 
 # Writing Guidelines
 
 These guidelines apply to documentation artifacts produced inside projects, documentation sites and code repositories. Use them when writing `README.md`, `AGENTS.md`, guides in `docs/`, specs, ADRs, acceptance criteria, use cases, PBIs, navigation labels and documentation templates.
 
-Before applying these rules, define the project's [Ubiquitous Language](/discovery/ubiquitous-language) so editorial choices, business examples and technical names follow the same domain language strategy.
+Before applying these rules, define the project's [Ubiquitous Language](/foundations/ubiquitous-language) so editorial choices, business examples and technical names follow the same domain language strategy.
 
 ## Base Rules
 
@@ -28,6 +31,16 @@ When showing equivalent examples in multiple languages, use the same business co
 Do not translate stable technical vocabulary just because the surrounding paragraph is in another language. For example, a Spanish business model may still use suffixes such as `Command`, `Repository`, `DTO` or `ViewModel` when those words identify established software concepts.
 
 For Spanish business concepts, use compact forms in identifiers when articles or prepositions are not needed for meaning: `PedidoCliente`, `AsignarDireccionEnvio`, `pedido_cliente`. Use natural forms in visible text: "Pedido de cliente", "Asignar dirección de envío", "Reporte de asignaciones de dirección de envío".
+
+## Example Names and Real Artifacts
+
+When a guide uses names for interfaces, classes, records, DTOs, database objects, routes, packages or files, make the reader's interpretation explicit.
+
+- Mark fictitious or proposed names as examples. Use wording such as "for example", "sample", "proposed", "representative" or "adapt this name to the project".
+- Mark real artifacts from a language, framework or ecosystem as real. For example, clarify when `DateTimeOffset`, `TimeProvider`, `IOptions<T>`, `ILogger<T>`, `record`, `interface`, `Date`, `Intl.DateTimeFormat`, `timestamptz` or `datetimeoffset` are actual platform artifacts.
+- Do not let sample domain names look like required framework APIs. A name such as `CreateShoppingCartCommand`, `IShoppingCartFinder`, `DbTimeProvider`, `ShoppingCartAdapter`, `scheduled_at_local` or `public_id` should be understood as illustrative unless the project explicitly defines it.
+- When a code block mixes real framework types and sample project types, add a short sentence before the block that distinguishes them.
+- Prefer realistic sample names that teach the convention, but avoid implying that every project must copy the exact names.
 
 ## Language-Specific Rules
 
@@ -107,4 +120,4 @@ In code repositories, apply these guidelines also to:
 - specs under `docs/specs/`;
 - ADRs, contracts, operations guides and support documentation.
 
-For repository-specific application, see [Repository Documentation](/conventions/repository-documentation).
+For repository-specific application, see [Repository Documentation](/documentation/repositories/).

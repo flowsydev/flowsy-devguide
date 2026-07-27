@@ -6,6 +6,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.14.0] - 2026-07-26
+
+### Added
+
+- Intent-based public taxonomy with six areas: Foundations, Documentation, Engineering, Quality, AI-Assisted Development and Conventions, each with section landings and path-scoped sidebars.
+- Foundations area with Domain Discovery and progressive Domain Modeling pages (Bounded Contexts, Entities and Value Objects, Aggregates, Dynamic Consistency Boundaries), plus a non-normative DDD reference.
+- Documentation area covering DevGuide adoption, contribution, project artifacts (organization, identifiers and traceability, disciplinary layers), repository documentation, work specs and VitePress tooling progressive guides.
+- Engineering area with Backend, Data, Messaging, Frontend, Security and Cross-Cutting landings; progressive Reliability, Minimal APIs, Vue, migration tools and Reliable Delivery guides; and canonical Date and Time, Auditing and Validity, Public Identifiers and Dependency Safety pages.
+- Quality area promoted from Technologies/Testing, with stack and system profiles under dedicated landings.
+- Documentation governance page, `npm run docs:validate`, compatibility redirect bridges for former `/discovery/` and `/technologies/` routes, and internal `docs/` plus `specs/documentation-architecture/` records for the information-architecture migration.
+
+### Changed
+
+- Project artifact layer pages moved to `/documentation/project-artifacts/...` with frontmatter metadata, including typed templates.
+- Long-form guides retained as `type: reference` behind shorter canonical tours (DDD, repository documentation, specs-driven development, VitePress, error handling, Minimal APIs, Vue ecosystem, migration tools and background services).
+- Outbox/DLQ ownership moved to Reliable Delivery; cross-cutting temporal, audit and public-identifier guidance consolidated under Engineering.
+- Home page, AI context guides, `AGENTS.md` and `README.md` aligned to the new taxonomy; Specs-Driven Development and Repository Documentation canonical homes moved under Documentation, with redirects from prior locations.
+- Database CLI guidance and navigation use `flwdb` (`Flowsy.Cli.Db`) under `/engineering/data/migrations/flwdb-cli`.
+
+## [1.13.0] - 2026-07-03
+
+### Changed
+
+- Backend architecture guidance reorganized with a new project-wide design baseline for domain exploration, documentation-before-implementation, behavior-first modeling, implementation-shape selection and general anti-patterns. Vertical Slice Architecture now focuses on slice-specific workflow, benefits and anti-patterns.
+- Database-engine temporal guidance now includes language and provider mapping tables for PostgreSQL, SQL Server and MySQL/MariaDB, replacing PostgreSQL's .NET-only mapping note with broader driver and ORM guidance.
+- Date and time guidance expanded across backend, C#, HTTP APIs, Vue, relational modeling, PostgreSQL, SQL Server, MySQL/MariaDB and C# testing. The guidance now distinguishes UTC instant, canonical system time-zone, per-entity time-zone, offset-preserving and partial temporal strategies, and recommends an authoritative server-side clock for application decisions.
+- Reading order and example interpretation improved in writing guidelines and key technology pages, clarifying which names are illustrative project examples and which names are real language, framework or database artifacts.
+- Database-engine convention pages refined so temporal storage semantics, provider mapping, audit/domain columns, date/time functions, event logs and SQL routines appear in a clearer reading order.
+
 ## [1.12.0] - 2026-06-20
 
 ### Changed

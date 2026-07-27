@@ -12,10 +12,10 @@ applies_when:
   - the task mentions needs, requirements, use cases, ADRs, contracts, PBIs or validation artifacts
   - the task asks for traceability between discovery, delivery and validation
 read_first:
-  - /discovery/documentation/
+  - /documentation/project-artifacts/
   - /conventions/writing-guidelines
 read_if_implementing:
-  - /conventions/repository-documentation.md
+  - /documentation/repositories/
 related_guides:
   - specs-driven-development
   - repository-agent-instructions
@@ -65,8 +65,8 @@ Use this guide when creating or updating needs, requirements, use cases, busines
 
 ## References
 
-- Documentation model: [Project Documentation](/discovery/documentation/).
+- Documentation model: [Project Documentation](/documentation/project-artifacts/).
 - Writing rules: [Writing Guidelines](/conventions/writing-guidelines).
-- Repository docs: [Repository Documentation](/conventions/repository-documentation.md).
-- Validation documentation: [Validation](/discovery/documentation/layers/validation/).
-- Specs execution records: [Specs-Driven Development](/ai-assisted-development/specs-driven-development.md).
+- Repository docs: [Repository Documentation](/documentation/repositories/).
+- Validation documentation: [Validation](/documentation/project-artifacts/layers/validation/).
+- Specs execution records: [Specs-Driven Development](/documentation/work-specs/).

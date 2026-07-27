@@ -1,110 +1,86 @@
 # Flowsy DevGuide
 
-Design and development guide for **Flowsy** solutions, with guidelines, patterns and best practices for development teams.
-
-The site is built with [VitePress](https://vitepress.dev/) and organized into these main sections:
-
-| Section | Content |
-| --- | --- |
-| **Conventions** | Coding standards for C#, TypeScript, Vue, PostgreSQL and Git |
-| **Discovery & Design** | Event Storming, Domain-Driven Design and templates for requirements documentation |
-| **AI-Assisted Development** | Agent guidance, context routing, specs-driven development and platform references |
-| **Technologies / Backend** | Vertical Slice Architecture, event-driven architecture, database migrations |
-| **Technologies / Frontend** | Modular architecture in Vue 3, Pinia, composables and testing |
-| **Technologies / Testing** | Automated testing strategy for unit, integration, end-to-end, database and event-driven scenarios |
+Cross-cutting design and development guide for Flowsy solutions, built with VitePress. It gathers foundations, documentation, engineering practices, quality, AI-assisted collaboration and shared conventions.
 
 > [!NOTE]
-> This guide is a reference point, not a mandate. The patterns, guidelines and examples documented here represent practices valued by the Flowsy ecosystem, but **each solution has its own needs**. It is each team's responsibility to analyze their context, evaluate alternatives and incorporate only what adds real value to their project. The team's technical judgment always prevails.
+> This guide is a reference, not a mandate. Each team should evaluate the guidance against its domain, constraints, risks and goals.
+
+## Public Areas
+
+| Area | Content |
+| --- | --- |
+| Foundations | Ubiquitous Language, discovery, Event Storming and domain modeling. |
+| Documentation | Project artifacts, repositories, work specs and documentation tooling. |
+| Engineering | Backend, data, messaging, frontend, security and cross-cutting topics. |
+| Quality | Strategy, levels, evidence and test profiles. |
+| AI-Assisted Development | Best practices, context routing and context guides. |
+| Conventions | Documentation governance, writing guidelines and Git. |
 
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) v18 or higher
 - npm v9 or higher
 
-## Local Development
+## Local Development and Validation
 
 ```bash
-# Install dependencies
 npm install
-
-# Start the development server (hot-reload)
 npm run docs:dev
 ```
 
-The site will be available at `http://localhost:5173`.
-
-## Build and Preview
+Before delivering a documentation change:
 
 ```bash
-# Generate the production build
+npm run docs:validate
 npm run docs:build
-
-# Preview the generated build
-npm run docs:preview
+git diff --check
 ```
+
+The local site uses `http://localhost:5173`. `npm run docs:preview` serves the generated build.
+
+Do not use `npm test`: there is currently no implemented test suite.
 
 ## Repository Structure
 
 ```text
 📁 .
-├── 📁 conventions/        # Style guides and coding conventions
-├── 📁 discovery/          # Modeling techniques and requirements templates
-├── 📁 ai-assisted-development/
-│                         # Agent guidance, context routing and specs-driven development
-├── 📁 technologies/
-│   ├── 📁 backend/        # Architectures, patterns and C# examples
-│   ├── 📁 frontend/       # Modular architecture in Vue 3
-│   └── 📁 testing/        # Automated testing strategy and stack-specific guides
-├── 📁 public/             # Static assets
-├── 📄 index.md            # Site home page
+├── 📁 .vitepress/                  # VitePress configuration and theme
+├── 📁 content/                     # Public site; VitePress srcDir
+│   ├── 📁 foundations/
+│   ├── 📁 documentation/
+│   ├── 📁 engineering/
+│   ├── 📁 quality/
+│   ├── 📁 ai-assisted-development/
+│   ├── 📁 conventions/
+│   └── 📁 public/
+├── 📁 docs/                        # Internal audits and decisions
+├── 📁 specs/                       # Unpublished operational work record
+├── 📁 scripts/                     # Documentation validation
+├── 📄 AGENTS.md
+├── 📄 CHANGELOG.md
 └── 📄 package.json
 ```
 
+Historical routes under `content/discovery/` and `content/technologies/` are compatibility bridges; do not add new canonical content there.
+
 ## How to Contribute
 
-### 1. Clone the repository
+1. Create a branch such as `feature/docs/add-rabbitmq-guide`.
+2. Place content according to its primary intent.
+3. Declare frontmatter according to [Documentation Governance](./content/conventions/documentation-governance.md).
+4. Register new pages in the contextual sidebar and link them from their section landing page.
+5. Keep a bridge when changing a public route.
+6. Update `CHANGELOG.md` for visible changes.
+7. Run documentation validation.
 
-```bash
-git clone <repo-url>
-cd flowsy-devguide
-npm install
-```
-
-### 2. Create a working branch
-
-Follow the convention `feature/<scope>/<short-description>`, for example:
-
-```bash
-git checkout -b feature/docs/add-rabbitmq-guide
-```
-
-Common branch types: `feature/`, `fix/`, `release/`, `hotfix/`.
-
-### 3. Write or edit documentation
-
-- Content files are Markdown (`.md`) with support for [VitePress extensions](https://vitepress.dev/guide/markdown).
-- Place the file in the corresponding thematic section (`conventions/`, `discovery/` or `technologies/`).
-- If you add a new page, register it in `.vitepress/config.ts` in the correct `sidebar`.
-- Verify changes in the development server before committing.
-
-### 4. Commit
-
-Use [Conventional Commits](https://www.conventionalcommits.org/):
-
-```bash
-git commit -m "docs(backend): add RabbitMQ guide with C# examples"
-```
-
-### 5. Open a Pull Request
-
-- Base: `develop`
-- Title following Conventional Commits
-- Briefly describe what is added or fixed and why
+Consult the [Writing Guidelines](./content/conventions/writing-guidelines.md) for editorial rules.
 
 ### General Guidelines
 
 - Write in **English** (it is the language of the entire site).
 - Prefer concrete code examples over abstract descriptions.
 - Keep pages focused: one guide per topic, without mixing concepts from different layers.
+- Keep Flowsy naming consistent: `Flowsy`, `flowsydev`, `flw` / `flw-`, `Flowsy.*`, `flwdb`.
+- For published libraries and tools, prefer NuGet and NPM as the consumption source.
 - When installing dependencies or development tools, prefer stable `latest` versions over channels such as `alpha`, `beta`, `next` or other pre-release tags, unless there is a documented and justified exception.
-- Update [CHANGELOG.md](CHANGELOG.md) if the change is visible to site readers.
+- Do not edit generated artifacts under `.vitepress/dist/` or include secrets, tokens or credentials.

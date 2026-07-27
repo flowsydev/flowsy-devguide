@@ -1,34 +1,11 @@
-# `ANA-REQ-[NNN]` [Requirement Title]
+---
+title: Requirement — Moved
+description: Compatibility bridge to the current canonical location.
+type: redirect
+redirect: /documentation/project-artifacts/layers/analysis/templates/requirement
+canonical: false
+---
 
-## Statement
+# Requirement Moved
 
-Describe clearly and unambiguously what the system must do or comply with.
-
-## Type
-
-- [ ] Functional
-- [ ] Non-functional
-- [ ] Regulatory
-- [ ] Integration
-- [ ] Security
-
-## Rationale
-
-Explain why this requirement is necessary.
-
-## Rule / Constraint
-
-Describe associated rules or constraints, if applicable.
-
-## Source
-
-- Stakeholder, area, regulation or need that originates the requirement.
-
-## Expected Verification
-
-Describe how compliance with the requirement will be verified.
-
-## Related Artifacts
-
-- [`ANA-UC-[NNN]`: Use Case]
-- [`DLV-PBI-[NNN]`: PBI]
+This guide now lives at [Requirement](/documentation/project-artifacts/layers/analysis/templates/requirement). Update bookmarks to use the canonical path.

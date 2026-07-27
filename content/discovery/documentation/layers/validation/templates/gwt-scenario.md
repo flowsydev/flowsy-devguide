@@ -1,20 +1,11 @@
-# `VAL-GWT-[NNN]` [Scenario Title]
+---
+title: Gwt Scenario — Moved
+description: Compatibility bridge to the current canonical location.
+type: redirect
+redirect: /documentation/project-artifacts/layers/validation/templates/gwt-scenario
+canonical: false
+---
 
-## Scenarios
+# Gwt Scenario Moved
 
-### Scenario 1: [Scenario name]
-
-**Given** [initial context / precondition]
-**When** [actor action or event]
-**Then** [expected result / postcondition]
-
-### Scenario 2: [Scenario name]
-
-**Given** [initial context / precondition]
-**When** [actor action or event]
-**Then** [expected result / postcondition]
-
-## Related Artifacts
-
-- [`VAL-AC-[NNN]`: Acceptance Criterion]
-- [`DLV-PBI-[NNN]`: PBI]
+This guide now lives at [Gwt Scenario](/documentation/project-artifacts/layers/validation/templates/gwt-scenario). Update bookmarks to use the canonical path.

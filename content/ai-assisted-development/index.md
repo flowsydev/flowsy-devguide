@@ -1,20 +1,22 @@
 ---
 layout: section-home
+title: AI-Assisted Development
+description: Guidelines for collaborating with agents using focused context, scoped permissions and verifiable specs.
 
 hero:
   name: "AI-Assisted Development"
-  text: "Guidelines for working effectively with AI agents and skills"
-  tagline: General practices for teams and AI assistants to collaborate safely, with focused context, scoped tools and verifiable outcomes across platforms such as Codex, Claude and Copilot.
+  text: "Guidelines for working with agents and context guides"
+  tagline: Practices for collaborating with AI assistants using focused context, scoped permissions, verifiable specs and clear repository instructions.
   actions:
     - theme: brand
       text: Agent Routing
       link: /ai-assisted-development/agent-routing
     - theme: alt
-      text: Official References
-      link: /ai-assisted-development/official-references
-    - theme: alt
       text: Context Guides
       link: /ai-assisted-development/context-guides/
+    - theme: alt
+      text: Best Practices
+      link: /ai-assisted-development/best-practices
 
 features:
   - icon: 🧭
@@ -25,14 +27,14 @@ features:
     title: Agent Context Guides
     details: Use focused operational guides for backend, frontend, migrations, documentation, specs and repository instructions.
     link: /ai-assisted-development/context-guides/
-  - icon: 🔐
+  - icon: ✅
     title: Best Practices
     details: Apply collaboration, security, permission, review and quality criteria when working with agents.
     link: /ai-assisted-development/best-practices
-  - icon: ✅
+  - icon: 📋
     title: Specs-Driven Development
     details: Coordinate requirements, analysis, planning, execution evidence and summaries through versioned specs.
-    link: /ai-assisted-development/specs-driven-development
+    link: /documentation/work-specs/
   - icon: 🛠️
     title: Platform Guidance
     details: Adapt the same principles to GitHub Copilot, Claude Code, OpenAI Codex and equivalent tools.
@@ -55,6 +57,6 @@ These guidelines apply both to developers consulting this site and to AI agents 
 | [Agent Context Guides](./context-guides/) | Read focused guides for backend, frontend, migrations, documentation, specs and repository instructions. |
 | [Best Practices](./best-practices.md) | Apply collaboration, security, permissions, review and quality criteria. |
 | [Repository Agent Instructions](./context-guides/repository-agent-instructions.md) | Create or compact instructions such as `AGENTS.md`, `CLAUDE.md` or `.github/copilot-instructions.md`. |
-| [Specs-Driven Development](./specs-driven-development.md) | Coordinate requirements, analysis, plans, execution evidence and summaries through `docs/specs/`. |
+| [Specs-Driven Development](/documentation/work-specs/) | Coordinate requirements, analysis, plans, execution evidence and summaries through `docs/specs/`. |
 | [Platform Guidance](./platform-guidance.md) | Adapt the guidance to GitHub Copilot, Claude Code, OpenAI Codex and equivalent tools. |
 | [Official References](./official-references.md) | Consult vendor documentation for agents, instructions, skills, subagents and evaluations. |

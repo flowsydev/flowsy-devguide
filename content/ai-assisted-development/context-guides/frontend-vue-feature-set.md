@@ -10,10 +10,12 @@ intent:
 applies_when:
   - the task modifies Vue or TypeScript frontend code
   - the task mentions feature-set, composable, Pinia, route or Storybook
-  - the task creates or changes UI behavior
+  - the task creates or changes UI behavior in a Vue project
 read_first:
-  - /engineering/frontend/vue/conventions
   - /engineering/frontend/modular-architecture
+  - /engineering/frontend/ui-api-contracts
+  - /engineering/frontend/typescript
+  - /engineering/frontend/vue/conventions
 read_if_implementing:
   - /engineering/frontend/vue/
   - /quality/stacks/typescript-vue
@@ -33,10 +35,21 @@ avoid:
 
 Use this guide when adding or changing a Vue feature, route, component group, composable or store.
 
+## Decision Sequence for Agents
+
+1. Identify the owning feature-set and the observable experience to change.
+2. Separate framework-independent decisions about boundaries, UI/API contracts, state and pure rules.
+3. Inspect the repository's structure, components, dependencies and tools.
+4. Apply TypeScript and Vue to implement those decisions.
+5. Verify UI states, accessibility, contracts and tests according to risk.
+
+If the repository expresses these responsibilities with different names, adapt the mapping to its local structure.
+
 ## Minimum Context
 
 - Understand the target feature-set, route and user flow before changing UI code.
 - Identify the API contracts, domain vocabulary and validation/error states involved.
+- Use the HTTP contract directly when it meets the UI's needs; create a ViewModel and adapter only when a real transformation is needed.
 - Keep pages thin; move reusable behavior to composables and shared state to stores only when it has real cross-component value.
 - Use typed props, emits, route params, API DTOs and state models.
 - Preserve the repository's component library, styling conventions and accessibility patterns.
@@ -75,6 +88,8 @@ Use the local convention if the repository already has a different but consisten
 ## References
 
 - Architecture: [Frontend Modular Architecture](/engineering/frontend/modular-architecture).
+- Framework-independent contracts: [UI/API Contracts](/engineering/frontend/ui-api-contracts).
+- Language typing and conventions: [TypeScript for Frontend](/engineering/frontend/typescript).
 - Vue practices: [Vue Ecosystem](/engineering/frontend/vue/).
-- Conventions: [Vue 3 and TypeScript](/engineering/frontend/vue/conventions).
+- Components and reactivity: [Vue 3 Conventions](/engineering/frontend/vue/conventions).
 - Testing: [TypeScript and Vue](/quality/stacks/typescript-vue), [Unit Tests](/quality/unit-tests), [Integration Tests](/quality/integration-tests) and [End-to-End Tests](/quality/end-to-end-tests).

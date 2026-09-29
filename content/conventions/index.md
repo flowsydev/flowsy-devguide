@@ -38,4 +38,4 @@ Technology-specific conventions now live with their implementation areas:
 
 - [C#](/engineering/backend/dotnet/csharp) under Backend .NET.
 - [PostgreSQL](/engineering/data/database-engines/postgresql), [SQL Server](/engineering/data/database-engines/sql-server) and [MySQL and MariaDB](/engineering/data/database-engines/mysql-mariadb) under Data and Migrations.
-- [Vue 3 and TypeScript Conventions](/engineering/frontend/vue/conventions) under Frontend Vue.
+- [TypeScript for Frontend](/engineering/frontend/typescript) and [Vue 3 Conventions](/engineering/frontend/vue/conventions) under Frontend.

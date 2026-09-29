@@ -8,6 +8,8 @@ canonical: true
 
 # VSA Minimal API Examples
 
+Every example keeps its endpoint beside its command or query and handler in the same slice folder. Each endpoint registers its own route. Simple mutations work directly in the command handler; examples that need a decision model use optional concrete `State` and `StateHandler` classes.
+
 Complete examples are kept in the [detailed reference](../minimal-apis-reference):
 
 1. [Create a Shopping Cart](../minimal-apis-reference#example-1-create-a-shopping-cart).

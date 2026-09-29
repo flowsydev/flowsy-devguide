@@ -1,6 +1,6 @@
 ---
 title: Background Services Broad Reference
-description: Hosted service patterns, workers, Outbox publishers and consumers in .NET.
+description: Hosted service patterns, workers and consumers in .NET.
 type: reference
 audience: People implementing .NET background processes.
 canonical: false
@@ -10,7 +10,7 @@ canonicalSource: /engineering/backend/dotnet/background-services/
 # Background Services
 
 > [!IMPORTANT]
-> For Outbox, retries, duplicates and DLQ, use [Reliable Delivery](/engineering/messaging/reliable-delivery) as the normative source. This page keeps .NET worker examples.
+> For producer and relay design, use [Transactional Outbox](/engineering/messaging/outbox). For shared retry, duplicate and DLQ guarantees, use [Reliable Message Delivery](/engineering/messaging/reliable-delivery). This page keeps .NET worker examples.
 
 Implementation of event consumers in .NET using `BackgroundService` and the worker pattern. Recommended for asynchronous processing of events published by the Web API.
 
@@ -156,100 +156,11 @@ public class KafkaSettings
 builder.Services.Configure<KafkaSettings>(builder.Configuration.GetSection("Kafka"));
 ```
 
-## Integration with Outbox Pattern
+## Integration with Transactional Outbox
 
-The Outbox Pattern guarantees that events published to the broker are consistent with database changes.
+A `BackgroundService` can host the relay: claim pending deliveries, publish with the broker's appropriate acceptance signal, and close only those the destination accepted. With several instances, coordinate claims and recover abandoned work. Propagate `CancellationToken` and release resources when the host stops.
 
-### Flow
-
-```
-CommandHandler
-    └── Saves mutation + event to outbox table (same transaction)
-        └── OutboxPublisherWorker (Background Service)
-                └── Reads pending events → publishes to broker → marks as published
-```
-
-### OutboxPublisherWorker
-
-```csharp
-public class OutboxPublisherWorker : BackgroundService
-{
-    private readonly IDbConnectionHub _connectionHub;
-    private readonly IProducer<string, string> _producer;
-    private readonly ILogger<OutboxPublisherWorker> _logger;
-
-    public OutboxPublisherWorker(
-        IDbConnectionHub connectionHub,
-        IOptions<KafkaSettings> settings,
-        ILogger<OutboxPublisherWorker> logger)
-    {
-        _connectionHub = connectionHub;
-        _logger = logger;
-
-        var config = new ProducerConfig
-        {
-            BootstrapServers = settings.Value.BootstrapServers,
-            ClientId = settings.Value.ProducerClientId,
-            Acks = Acks.All,
-            EnableIdempotence = true
-        };
-        _producer = new ProducerBuilder<string, string>(config).Build();
-    }
-
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-    {
-        while (!stoppingToken.IsCancellationRequested)
-        {
-            await PublishPendingEventsAsync(stoppingToken);
-            await Task.Delay(TimeSpan.FromSeconds(2), stoppingToken);
-        }
-    }
-
-    private async Task PublishPendingEventsAsync(CancellationToken cancellationToken)
-    {
-        var db = await _connectionHub.CreateSessionAsync("Main", cancellationToken);
-        var pendingEvents = await db.QueryFromRoutineAsync<OutboxEvent>(
-            "outbox_get_pending",
-            cancellationToken: cancellationToken);
-
-        foreach (var outboxEvent in pendingEvents)
-        {
-            var message = new Message<string, string>
-            {
-                Key = outboxEvent.AggregateId,
-                Value = outboxEvent.Payload
-            };
-
-            await _producer.ProduceAsync(outboxEvent.EventType, message, cancellationToken);
-            await db.ExecuteRoutineAsync(
-                "outbox_mark_published",
-                new { outboxEvent.EventId },
-                cancellationToken);
-
-            _logger.LogInformation("Published: {EventType} {EventId}", outboxEvent.EventType, outboxEvent.EventId);
-        }
-    }
-}
-```
-
-## Idempotence in Consumers
-
-Consumers must be idempotent: processing the same event more than once must not cause incorrect side effects.
-
-Recommended strategy: record `eventId` in a processed events table and verify before executing:
-
-```csharp
-var alreadyProcessed = await db.QuerySingleOrDefaultFromRoutineAsync<bool?>(
-    "processed_event_exists",
-    new { EventId = @event.EventId },
-    cancellationToken);
-
-if (alreadyProcessed is true)
-{
-    _logger.LogWarning("Duplicate event ignored: {EventId}", @event.EventId);
-    return;
-}
-```
+The producer records the business mutation and `OrderPlaced` delivery in one transaction. The consumer records its idempotency key with its durable effect in another local transaction; checking for an ID before writing the effect leaves a race. See [Transactional Outbox](/engineering/messaging/outbox) for relay design and [Reliable Message Delivery](/engineering/messaging/reliable-delivery) for shared guarantees.
 
 ## Cross Reference
 

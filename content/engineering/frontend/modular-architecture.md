@@ -186,4 +186,6 @@ Feature-sets should not couple directly to internal details of other feature-set
 ## Cross Reference
 
 - [Vue Ecosystem](/engineering/frontend/vue/vue-ecosystem-reference) — Vue 3, Pinia, composables and testing in detail.
-- [Vue 3 and TypeScript Conventions](./vue/conventions.md) — Vue-specific naming, types and contracts.
+- [UI/API Contracts](./ui-api-contracts) — direct contracts, ViewModels and adapters across frameworks.
+- [TypeScript for Frontend](./typescript) — typing, contracts and language conventions.
+- [Vue 3 Conventions](./vue/conventions.md) — components, reactivity and framework conventions.

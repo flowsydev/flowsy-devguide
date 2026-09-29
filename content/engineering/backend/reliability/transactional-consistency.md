@@ -20,4 +20,4 @@ Define intentionally which data must change atomically and which effects can com
 6. Commit the transaction.
 7. Execute external effects through a relay or recoverable process.
 
-Use idempotency keys for retryable commands and distinguish that decision from consumer idempotency. For delivery, ordering, duplicates and DLQ, see [Reliable Delivery](/engineering/messaging/reliable-delivery).
+Use idempotency keys for retryable commands and distinguish that decision from consumer idempotency. For the transactional record and relay, see [Transactional Outbox](/engineering/messaging/outbox); for delivery, duplicates and DLQ guarantees, see [Reliable Message Delivery](/engineering/messaging/reliable-delivery).

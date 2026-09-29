@@ -11,6 +11,8 @@ canonicalSource: /engineering/backend/architecture/vertical-slice-architecture
 
 A command expresses an intention that may change state. A query extracts data without introducing business effects.
 
+Each command or query owns a slice folder. Keep its `[ActionName]Endpoint.cs` in that folder with the command or query and its handler. The `[ActionName]Command.cs` or `[ActionName]Query.cs` file may contain the input, result and handler together. Register routes through each endpoint's `Map(RouteGroupBuilder)` method.
+
 Validators cover shape and simple input rules. Preconditions and invariants live in the use case or appropriate model. A simple mutation may run directly in the handler; a complex mutation may use [State and StateHandler](./state-and-statehandler).
 
 Mediator (`Flowsy.Mediation` or an equivalent) is optional. Use it when the pipeline, decoupling or cross-cutting behavior adds observable value; direct invocation is valid and must not force a second copy of the use case.

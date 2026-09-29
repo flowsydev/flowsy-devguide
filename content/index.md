@@ -51,7 +51,7 @@ features:
     link: /engineering/backend/architecture/vertical-slice-architecture
   - icon: 🌐
     title: Backend and APIs
-    details: HTTP API design guidance, backend architecture patterns and C# implementation practices for clear contracts and maintainable services.
+    details: HTTP API design and backend architecture guidance, with .NET, C#, Python and FastAPI implementation profiles.
     link: /engineering/backend/api/http-api-design
   - icon: 🗄️
     title: Data and Persistence
@@ -62,8 +62,8 @@ features:
     details: Versioned and repeatable migration strategies with domain-aligned SQL artifacts, Evolve, Flyway, Liquibase, DbUp, EF Core, Sqitch and flwdb.
     link: /engineering/data/migrations/concepts
   - icon: 🧩
-    title: Frontend Vue
-    details: Feature-set organization in Vue 3 with Composition API, Pinia, composables, Storybook and testing strategy for scalable SPA applications.
+    title: Frontend
+    details: Framework-independent architecture and UI/API contracts, with TypeScript and Vue 3 implementation profiles.
     link: /engineering/frontend/
   - icon: 📨
     title: Events and Messaging

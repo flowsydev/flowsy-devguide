@@ -9,6 +9,7 @@ canonical: true
 # Quality Profiles by Stack
 
 - [C#/.NET](./csharp-dotnet)
+- [Python and FastAPI](./python-fastapi)
 - [TypeScript and Vue](./typescript-vue)
 
 Each profile selects local tools and conventions. The general strategy belongs to [Automated Testing Strategy](../automated-testing-strategy).

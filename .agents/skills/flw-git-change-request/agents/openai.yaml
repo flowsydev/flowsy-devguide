@@ -1,0 +1,7 @@
+interface:
+  display_name: "Git Change Request"
+  short_description: "Prepare GitHub pull requests or GitLab merge requests"
+  default_prompt: "Use $flw-git-change-request to verify branches, analyze commits, and prepare or create a change request."
+
+policy:
+  allow_implicit_invocation: true

@@ -6,6 +6,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Python and FastAPI backend and quality profiles, including a gift card redemption example.
+- Canonical Transactional Outbox, UI/API Contracts and TypeScript frontend guides, including relay recovery and frontend adapter decisions.
+- Playwright CLI and Flowsy change request agent skills for repository workflows.
+
+### Changed
+
+- Backend and frontend navigation now separates technology-independent design from implementation profiles.
+- Minimal API examples place each endpoint beside its command or query slice; messaging guidance links shared delivery guarantees to the dedicated Outbox guide.
+- Vue 3 conventions now focus on components, reactivity and state, while the former Vue UI/API route directs readers to the canonical contracts guide.
+- Agent routing and context guides now cover Python, stack-independent backend and frontend work, and canonical HTTP and UI/API contracts.
+
+### Fixed
+
+- Restored the test pyramid illustration and corrected Quality links in agent guidance.
+
 ## [1.14.0] - 2026-07-26
 
 ### Added

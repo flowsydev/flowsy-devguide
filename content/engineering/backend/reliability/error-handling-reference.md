@@ -10,7 +10,7 @@ canonicalSource: /engineering/backend/reliability/
 # Error Handling
 
 > [!IMPORTANT]
-> This page keeps historical examples. Use [Backend Reliability](/engineering/backend/reliability/) for errors, validation and consistency, and [Reliable Delivery](/engineering/messaging/reliable-delivery) for Outbox.
+> This page keeps historical examples. Use [Backend Reliability](/engineering/backend/reliability/) for errors, validation and consistency, and [Transactional Outbox](/engineering/messaging/outbox) for publication derived from a mutation.
 
 Error handling protects the system from partial changes, unclear failures and leaked implementation details. Treat it as part of application design, not as a last-minute `try/catch` concern.
 
@@ -122,7 +122,7 @@ Provider-specific details may appear in logs and telemetry, but sanitize what cr
 
 ## Transaction and Side-Effect Boundaries
 
-For Outbox, retries, duplicates and DLQ, prefer [Reliable Delivery](/engineering/messaging/reliable-delivery) and [Transactional Consistency](./transactional-consistency).
+For coordinated mutation and publication, see [Transactional Outbox](/engineering/messaging/outbox) and [Transactional Consistency](./transactional-consistency). For retries, duplicates and DLQ, see [Reliable Message Delivery](/engineering/messaging/reliable-delivery).
 
 State changes and side effects must have an intentional boundary:
 

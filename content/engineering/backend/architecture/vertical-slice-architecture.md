@@ -10,7 +10,7 @@ canonical: true
 
 Guide for systems organized by vertical functionality rather than horizontal technical layers. Each feature traverses all layers autonomously, favoring cohesion, change independence and frictionless team collaboration.
 
-This page is technology-agnostic. Use it to decide slice boundaries, responsibilities and collaboration rules before choosing a framework, language or library. The C# and Minimal API examples are implementation mappings of these concepts, not requirements of Vertical Slice Architecture.
+This page is technology-agnostic. Use it to decide slice boundaries, responsibilities and collaboration rules before choosing a framework, language or library. The C# with Minimal APIs and Python with FastAPI profiles map these concepts to implementations; neither stack is a requirement of Vertical Slice Architecture.
 
 This page assumes the project has already applied the [Backend Project Design Baseline](/engineering/backend/design-baseline): domain exploration, collaborative discovery, behavior-first design, relevant documentation and risk-based validation. Vertical Slice Architecture organizes those decisions by feature or use case; it is not a replacement for project discovery and design.
 
@@ -59,7 +59,7 @@ These approaches are not mutually exclusive:
 
 - Emit events from the Web API (e.g. `OrderPlaced`).
 - Consume events in workers (e.g. `SendConfirmationEmail`).
-- Apply the [Outbox Pattern](/engineering/messaging/reliable-delivery) to guarantee reliability.
+- Apply the [Transactional Outbox](/engineering/messaging/outbox) when a mutation must produce an external message.
 - Project events to specific read models.
 
 ### 4. Iterative Evolution and End-to-End Tests
@@ -135,19 +135,20 @@ See [Error Handling](/engineering/backend/reliability/error-handling) for the fu
 
 The same slice can be implemented in different stacks:
 
-| Concept | C# / Minimal APIs | Java / Spring | TypeScript / Node |
-| --- | --- | --- | --- |
-| Delivery adapter | `Endpoint` | `Controller` | Route handler or controller |
-| Use-case input | `Command` / `Query` record | Request DTO or command object | Type/interface or command object |
-| Handler | `CommandHandler` / `QueryHandler` | Application service or handler | Use-case function or handler class |
-| State loader | `StateHandler` | Repository/query service | Repository/query service |
-| Validation | FluentValidation validator | Bean Validation or custom validator | Schema validator or custom validator |
-| Persistence | Database library, ORM or SQL gateway | Repository, ORM or SQL gateway | Repository, ORM or SQL gateway |
+| Concept | C# / Minimal APIs | Python / FastAPI | Java / Spring | TypeScript / Node |
+| --- | --- | --- | --- | --- |
+| Delivery adapter | `Endpoint` | Route function in `APIRouter` | `Controller` | Route handler or controller |
+| Use-case input | `Command` / `Query` record | Pydantic schema at the boundary; typed use-case input | Request DTO or command object | Type/interface or command object |
+| Handler | `CommandHandler` / `QueryHandler` | Use-case function or class | Application service or handler | Use-case function or handler class |
+| State loader | `StateHandler` | Slice-local query or adapter | Repository/query service | Repository/query service |
+| Validation | FluentValidation validator | Pydantic constraints and separate domain rules | Bean Validation or custom validator | Schema validator or custom validator |
+| Persistence | Database library, ORM or SQL gateway | SQLAlchemy, SQLModel or Psycopg as appropriate | Repository, ORM or SQL gateway | Repository, ORM or SQL gateway |
 
 Use the stack-specific guides when you need concrete naming, files, libraries or code:
 
 - [C# Minimal APIs — Complete examples](/engineering/backend/dotnet/minimal-apis/)
 - [C# Conventions](/engineering/backend/dotnet/csharp)
+- [Python with FastAPI and PostgreSQL](/engineering/backend/python/vertical-slice-architecture)
 
 ## Example Logical Structure
 

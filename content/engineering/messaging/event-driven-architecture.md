@@ -41,9 +41,9 @@ Multiple instances of the same consumer compete to process messages from the sam
 Messages that repeatedly fail move to a separate queue for analysis and manual reprocessing. Normative guidance for retries, duplicates and DLQ lives in [Reliable Delivery](./reliable-delivery).
 
 
-### Outbox Pattern
+### Transactional Outbox
 
-Guarantees consistency between the database and the message broker by recording events in the same transaction as the domain mutation, then publishing through a recoverable relay. Normative guidance and table examples live in [Reliable Delivery](./reliable-delivery).
+When a validated mutation must emit an integration message, record the pending delivery in the same transaction as the business change and publish later through a relay. Consumers must tolerate duplicates. The sequence, failure cases and relay decisions are in [Transactional Outbox](./outbox).
 
 
 ### Saga / Choreography
@@ -97,7 +97,8 @@ Every event must include standard metadata:
 
 ## Cross Reference
 
-- [Reliable Delivery](./reliable-delivery) — Outbox, retries, idempotency, duplicates and DLQ.
+- [Reliable Message Delivery](./reliable-delivery) — shared guarantees for retries, idempotency, duplicates and DLQ.
+- [Transactional Outbox](./outbox) — coordinated mutation and message publication.
 - [Background Services](/engineering/backend/dotnet/background-services/) — consumer implementation in .NET.
 - [Error Handling](/engineering/backend/reliability/error-handling) — failure taxonomy across boundaries.
 - [Event Sourcing](./event-sourcing) — using events as source of truth.

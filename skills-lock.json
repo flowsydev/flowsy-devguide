@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "playwright-cli": {
+      "source": "microsoft/playwright-cli",
+      "sourceType": "github",
+      "skillPath": "skills/playwright-cli/SKILL.md",
+      "computedHash": "f602822b51bcb6d033749c60731b8f1e80f308222fcb2e4af551905a817c6e08"
+    },
+    "flw-git-change-request": {
+      "source": "flowsydev/flowsy-ai-skills",
+      "sourceType": "github",
+      "skillPath": "skills/flw-git-change-request/SKILL.md",
+      "computedHash": "6f40515222f25d3c0956a07b8d598dd8c92e9e2a4798f974f092b20a17254f53"
+    }
+  }
+}

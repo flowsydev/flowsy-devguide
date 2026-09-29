@@ -12,3 +12,5 @@ canonical: true
 - [Clean Architecture](./clean-architecture) emphasizes dependency boundaries and adapters.
 
 They can combine when each decision solves an observed need. Neither replaces [domain modeling](/foundations/domain-modeling/) or [reliability](../reliability/) practices.
+
+To implement VSA, continue with [Python and FastAPI](../python/vertical-slice-architecture) or [C# and Minimal APIs](../dotnet/minimal-apis/).

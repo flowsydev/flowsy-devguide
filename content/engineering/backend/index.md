@@ -1,6 +1,6 @@
 ---
 title: Backend
-description: Path for designing behavior, contracts, reliability and .NET solutions.
+description: Path for designing behavior, contracts, reliability and .NET or Python solutions.
 type: landing
 audience: Architecture and backend development people.
 canonical: true
@@ -8,7 +8,9 @@ canonical: true
 
 # Backend
 
-Base guidance for backend APIs and services, independent of a specific language or framework. Read from design decisions toward implementation details.
+Start with technology-independent design decisions, then apply them through the implementation profile for your stack.
+
+## Technology-Independent Design
 
 | Need | Start Here |
 | --- | --- |
@@ -16,7 +18,22 @@ Base guidance for backend APIs and services, independent of a specific language 
 | Choose code organization | [Backend Architectures](./architecture/) |
 | Design an HTTP contract | [HTTP API Design](./api/http-api-design) |
 | Model failures, rules or transactions | [Reliability](./reliability/) |
-| Implement with C# and Minimal APIs | [.NET](./dotnet/) |
+
+These pages define responsibilities and decision criteria without requiring a language, framework or library.
+
+## Implementation Profiles
+
+| Ecosystem | Content |
+| --- | --- |
+| [.NET](./dotnet/) | C#, ASP.NET Core Minimal APIs, Vertical Slice Architecture and background services. |
+| [Python](./python/) | Python, FastAPI, PostgreSQL and a complete slice example. |
+
+Profiles map the design decisions to concrete files, APIs and tools.
+
+## Related Areas
+
+| Need | Continue In |
+| --- | --- |
 | Change persistence | [Data](../data/) |
 | Publish or consume events | [Messaging](../messaging/) |
 | Define evidence | [Quality](/quality/) |
@@ -27,7 +44,7 @@ Base guidance for backend APIs and services, independent of a specific language 
 - Avoid generic suffixes that add no semantics.
 - Choose the language of domain contracts according to the project's ubiquitous language.
 - Keep naming consistent inside each Bounded Context.
-- See language-specific guides: [C#](./dotnet/csharp), [Vue 3 and TypeScript](../frontend/vue/conventions).
+- See language-specific guides: [C#](./dotnet/csharp), [Python](./python/), [TypeScript](../frontend/typescript).
 
 ## Shared Modeling Concerns
 

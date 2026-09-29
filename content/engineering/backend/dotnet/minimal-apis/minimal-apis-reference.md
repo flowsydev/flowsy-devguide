@@ -48,12 +48,15 @@ A complete feature-set organizes its slices under a module and submodule path. `
         └── 📄 [ActionName]QueryValidator.cs     ← Validation with FluentValidation (optional)
 ```
 
+Each `[ActionName]/` folder owns its endpoint. The `[ActionName]Endpoint` class registers that slice's route through `Map(RouteGroupBuilder)`. The application composition point calls these methods when configuring the route group; a feature-set route aggregator is unnecessary.
+
 ## Endpoints
 
-Endpoints are the HTTP entry point for each slice. A single static class with a `Map(RouteGroupBuilder)` method registers the route and wires it to its command or query.
+Endpoints are the HTTP entry point for each slice. Each slice contains a static endpoint class with a `Map(RouteGroupBuilder)` method that registers its route and wires it to its command or query.
 
 - Keep endpoints thin — bind input, dispatch to the handler, return a typed result. No business logic or domain rules.
 - Name the file `[ActionName]Endpoint.cs`.
+- Keep the file in the same slice folder as its command or query and handler.
 - Map to HTTP verbs with `MapPost`, `MapGet`, `MapPut` or `MapDelete`.
 - Dispatch through `IMediator`, or inject the handler directly if the project does not use the Mediator pattern.
 - Use `.WithSummary()` for a one-line title and `.WithDescription()` for extended context — preconditions, enforced rules, return behavior and notable failure scenarios. Declare known responses with `.Produces<>()` and `.ProducesValidationProblem()`.
@@ -93,6 +96,7 @@ Commands represent actions that intentionally modify application state, such as 
 
 - Name in **imperative** form using the selected business language: `CreateShoppingCart`, `SuspendUserAccount`, `AddItemToCart`.
 - Files:
+  - `[ActionName]Endpoint.cs` — route registration through `Map(RouteGroupBuilder)` in the command's slice folder.
   - `[ActionName]Command.cs` — `record Command`, `record CommandResult`, `class CommandHandler`.
   - `[ActionName]CommandValidator.cs` — validation with FluentValidation.
   - `[ActionName]State.cs` — optional `class State` and `class StateHandler` when the mutation needs an explicit decision model.
@@ -103,6 +107,7 @@ Queries only extract data. They must not intentionally modify application state 
 
 - Name as **report or screen titles**: `AbandonedCarts`, `SuspendedUsers`.
 - Files:
+  - `[ActionName]Endpoint.cs` — route registration through `Map(RouteGroupBuilder)` in the query's slice folder.
   - `[ActionName]Query.cs` — `record Query`, `record QueryResult`, `class QueryHandler`.
   - `[ActionName]QueryValidator.cs` — optional.
 
@@ -235,7 +240,7 @@ public sealed class OpenShoppingCartStateHandler { ... }
 | --- | --- | --- |
 | Behavior-specific State | `[BehaviorName]State` | `StudentJoinsCourseState` |
 | Shared State | `[AggregateCondition]State` | `OpenShoppingCartState` |
-| StateHandler | `[StateName]Handler` | `StudentJoinsCourseStateHandler` |
+| StateHandler | `[StateName]Handler` | `OpenShoppingCartStateHandler` |
 
 Avoid generic or entity-named suffixes: `StudentStateModel`, `CartStateData`, `ShoppingCartStateHandler`.
 
@@ -564,9 +569,23 @@ public class CreateShoppingCartCommandValidator : AbstractValidator<CreateShoppi
 
 ## Example 2: Add and Remove Items (Shared State)
 
-**Location**: `Features/Sales/OrderPlacement/Commands/ModifyCart/`
+**Shared-state location**: `Features/Sales/OrderPlacement/Commands/ModifyCart/OpenShoppingCartState.cs`
 
-The `AddItemToCart` and `RemoveItemFromCart` actions share the same `State` because they operate on the same aggregate (the open cart).
+`AddItemToShoppingCart` and `RemoveItemFromShoppingCart` remain separate slices. Both use the same decision state because they operate on an open cart. The shared file lives in their closest common folder:
+
+```text
+Commands/ModifyCart/
+├── AddItemToShoppingCart/
+│   ├── AddItemToShoppingCartEndpoint.cs
+│   ├── AddItemToShoppingCartCommand.cs
+│   └── AddItemToShoppingCartCommandValidator.cs
+├── RemoveItemFromShoppingCart/
+│   ├── RemoveItemFromShoppingCartEndpoint.cs
+│   └── RemoveItemFromShoppingCartCommand.cs
+└── OpenShoppingCartState.cs
+```
+
+**Slice location**: `Features/Sales/OrderPlacement/Commands/ModifyCart/AddItemToShoppingCart/`
 
 ### AddItemToShoppingCartEndpoint.cs
 
@@ -687,6 +706,8 @@ public class AddItemToShoppingCartCommandValidator : AbstractValidator<AddItemTo
 ```
 
 ### RemoveItemFromShoppingCartEndpoint.cs
+
+**Slice location**: `Features/Sales/OrderPlacement/Commands/ModifyCart/RemoveItemFromShoppingCart/`
 
 #### With Mediator
 

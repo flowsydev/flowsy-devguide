@@ -80,8 +80,12 @@ Projects that consume historical codes should document their transition; existin
 | Public Identifiers | [Public Identifiers](/engineering/cross-cutting/identifiers) | API, backend, frontend and data. |
 | Errors | [Error Handling](/engineering/backend/reliability/error-handling) | API, architectures, .NET and messaging. |
 | Validation and Invariants | [Validation and Domain Rules](/engineering/backend/reliability/validation-and-domain-rules) | DDD, architectures, data and testing. |
-| Outbox and Reliable Delivery | [Reliable Delivery](/engineering/messaging/reliable-delivery) | EDA, .NET and Quality. |
+| Reliable Delivery | [Reliable Message Delivery](/engineering/messaging/reliable-delivery) | EDA, Outbox, .NET and Quality. |
+| Transactional Outbox | [Transactional Outbox](/engineering/messaging/outbox) | EDA, consistency, .NET and Quality. |
 | Testing Strategy | [Automated Testing Strategy](/quality/automated-testing-strategy) | All stacks and context guides. |
+| Frontend Architecture | [Modular Frontend Architecture](/engineering/frontend/modular-architecture) | TypeScript, Vue and future framework profiles. |
+| UI/API Contracts | [UI/API Contracts](/engineering/frontend/ui-api-contracts) | TypeScript, Vue and future frontend profiles. |
+| TypeScript Frontend | [TypeScript for Frontend](/engineering/frontend/typescript) | Vue and future TypeScript-based profiles. |
 | Editorial Rules | [Writing Guidelines](/conventions/writing-guidelines) | All public and operational Markdown. |
 | Agent Skills | [Context Guides](/ai-assisted-development/context-guides/) | Technical pages through brief references. |
 | Dependency Safety | [Dependency Safety](/engineering/security/dependency-safety) | README and onboarding. |
@@ -93,7 +97,7 @@ Projects that consume historical codes should document their transition; existin
 | Error Handling | Split by practice | Errors, validation, consistency and reliable delivery. |
 | Domain-Driven Design | Split by concept | Bounded Contexts, entities, Aggregates and DCB. |
 | C# with Minimal APIs | Split by implementation and example | Structure, endpoints, commands/queries, state and examples. |
-| Vue Ecosystem | Split by implementation | Components, structure, state, contracts and Storybook. |
+| Frontend and Vue Ecosystem | Separate design from implementation profiles | Framework-independent modular architecture and UI/API contracts; TypeScript, Vue, components, state and Storybook as implementation profiles. |
 | Project Documentation | Split by practice | Organization, IDs and disciplinary layers. |
 | Specs-Driven Development | Split by process | Overview, workflow and document reference. |
 | VitePress | Split by task | Start, configuration, layouts and deployment. |

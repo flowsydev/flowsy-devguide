@@ -10,7 +10,7 @@ canonicalSource: /engineering/frontend/vue/
 # Vue Ecosystem
 
 > [!IMPORTANT]
-> Prefer the progressive Vue path under [Vue](/engineering/frontend/vue/). This page keeps detailed examples.
+> Prefer the progressive [Vue](/engineering/frontend/vue/) path for framework decisions, [TypeScript for Frontend](/engineering/frontend/typescript) for language rules and [UI/API Contracts](/engineering/frontend/ui-api-contracts) for framework-independent adaptation. This page keeps detailed examples.
 
 Guide to using Vue 3 and its tools in the Flowsy ecosystem: Composition API, Pinia, composables, UI/API contracts, Storybook and testing.
 
@@ -320,6 +320,9 @@ export function useCartOperations() {
 ```
 
 ## UI / API Contracts
+
+> [!IMPORTANT]
+> The canonical, framework-independent rule lives in [UI/API Contracts](/engineering/frontend/ui-api-contracts). The TypeScript examples below illustrate its use in Vue.
 
 Not every backend response needs to be mapped to a separate UI model. Applying an adapter layer as a blanket rule adds boilerplate without value. The right decision depends on whether the backend contract and the component's actual needs diverge — and that analysis is most effective when the project has defined and adopted a shared ubiquitous language from day one.
 
@@ -633,5 +636,7 @@ Before closing a Vue feature-set change:
 ## Cross Reference
 
 - [Frontend Modular Architecture](../modular-architecture.md) — folder structure and feature-sets.
-- [Vue 3 and TypeScript Conventions](./conventions.md) — naming, types and contracts.
+- [TypeScript for Frontend](../typescript) — typing, contracts and language conventions.
+- [Vue 3 Conventions](./conventions.md) — components, reactivity and framework conventions.
+- [UI/API Contracts](../ui-api-contracts) — canonical criteria for direct contracts, ViewModels and adapters.
 - [Testing TypeScript and Vue](/quality/stacks/typescript-vue) — frontend testing strategy.

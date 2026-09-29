@@ -1,6 +1,6 @@
 ---
 title: Vue
-description: Progressive path for components, structure, state, contracts, Storybook and testing in Vue 3.
+description: Implementation profile for Vue 3, Composition API, Pinia, components and Storybook.
 type: landing
 audience: People who design or implement Vue 3 applications.
 canonical: true
@@ -10,12 +10,13 @@ canonical: true
 
 ## Progressive Path
 
-1. [Vue 3 and TypeScript Conventions](./conventions).
-2. [Components with Vue 3](./components).
-3. [Vue Structure](./structure).
-4. [State and Composables](./state-and-composables).
-5. [UI/API Contracts](./ui-api-contracts).
-6. [Visual Design and Storybook](./visual-design-and-storybook).
-7. [TypeScript and Vue Testing](/quality/stacks/typescript-vue).
+1. Define framework-independent decisions with [Modular Architecture](../modular-architecture) and [UI/API Contracts](../ui-api-contracts).
+2. Apply [TypeScript for Frontend](../typescript).
+3. Review [Vue 3 Conventions](./conventions).
+4. Design [Components with Vue 3](./components).
+5. Organize the [Vue Structure](./structure).
+6. Choose among local state, [State and Composables](./state-and-composables) and Pinia.
+7. Document visible variants with [Visual Design and Storybook](./visual-design-and-storybook) when useful.
+8. Verify behavior with [TypeScript and Vue Testing](/quality/stacks/typescript-vue).
 
-Skills and the operational summary for agents live in the [Vue Context Guide](/ai-assisted-development/context-guides/frontend-vue-feature-set). The [broad reference](./vue-ecosystem-reference) keeps detailed examples.
+This profile shows how Vue expresses decisions made in framework-independent guides. Skills and the operational summary for agents live in the [Vue Context Guide](/ai-assisted-development/context-guides/frontend-vue-feature-set). The [broad reference](./vue-ecosystem-reference) keeps detailed examples.

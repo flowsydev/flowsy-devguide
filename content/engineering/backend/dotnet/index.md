@@ -8,8 +8,14 @@ canonical: true
 
 # .NET
 
-1. Review [C# Conventions](/engineering/backend/dotnet/csharp).
-2. For behavior-oriented APIs, follow [Minimal APIs](./minimal-apis/).
-3. For recoverable processes, see [Background Services](./background-services/).
+This implementation profile maps technology-independent backend design and reliability decisions to the .NET ecosystem.
 
-Conceptual decisions for architecture, reliability and messaging live in their technology-agnostic areas; these pages explain the .NET application.
+## Progressive Path
+
+1. Identify the design decision in the [Backend Design Baseline](../design-baseline), [Backend Architectures](../architecture/) or [Reliability](../reliability/).
+2. Review [C# Conventions](./csharp).
+3. For behavior-oriented APIs, follow [VSA with Minimal APIs](./minimal-apis/).
+4. For recoverable processes, see [Background Services](./background-services/).
+5. Check the implementation with [C# and .NET Quality](/quality/stacks/csharp-dotnet).
+
+The examples show one concrete way to apply these decisions. Adapt them to the dependencies and conventions of the consuming repository.

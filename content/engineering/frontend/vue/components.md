@@ -9,7 +9,7 @@ canonicalSource: /engineering/frontend/modular-architecture
 
 # Components with Vue 3
 
-Use Vue 3, TypeScript, Composition API and `<script setup>` for new code. Design each component's contract first: `props`, `emits` and slots.
+Use Vue 3, [TypeScript](../typescript), Composition API and `<script setup>` for new code. Design each component's contract first: `props`, `emits` and slots.
 
 ## Rules
 
@@ -20,4 +20,4 @@ Use Vue 3, TypeScript, Composition API and `<script setup>` for new code. Design
 - Keep pages and routes as composition, not as rule concentration.
 - Use `PascalCase` for primary files and `kebab-case` for grouping folders.
 
-Conceptual organization belongs to [Modular Architecture](../modular-architecture) and evidence to [TypeScript and Vue Quality](/quality/stacks/typescript-vue). Detailed examples remain in the [Vue ecosystem reference](./vue-ecosystem-reference#vue-3-composition-api).
+Conceptual organization belongs to [Modular Architecture](../modular-architecture), data adaptation to [UI/API Contracts](../ui-api-contracts) and evidence to [TypeScript and Vue Quality](/quality/stacks/typescript-vue). Detailed examples remain in the [Vue ecosystem reference](./vue-ecosystem-reference#vue-3-composition-api).

@@ -142,24 +142,52 @@ export default withMermaid({
               collapsed: false,
               items: [
                 { text: 'Overview', link: '/engineering/backend/' },
-                { text: 'Design Baseline', link: '/engineering/backend/design-baseline' },
-                { text: 'Backend Architectures', link: '/engineering/backend/architecture/' },
-                { text: 'Vertical Slice Architecture', link: '/engineering/backend/architecture/vertical-slice-architecture' },
-                { text: 'Clean Architecture', link: '/engineering/backend/architecture/clean-architecture' },
-                { text: 'HTTP API Design', link: '/engineering/backend/api/http-api-design' },
-                { text: 'Reliability', link: '/engineering/backend/reliability/' },
-                { text: 'Error Handling', link: '/engineering/backend/reliability/error-handling' },
-                { text: 'Validation and Domain Rules', link: '/engineering/backend/reliability/validation-and-domain-rules' },
-                { text: 'Transactional Consistency', link: '/engineering/backend/reliability/transactional-consistency' },
-                { text: '.NET', link: '/engineering/backend/dotnet/' },
-                { text: 'C#', link: '/engineering/backend/dotnet/csharp' },
-                { text: 'Minimal APIs', link: '/engineering/backend/dotnet/minimal-apis/' },
-                { text: 'Feature-Set Structure', link: '/engineering/backend/dotnet/minimal-apis/feature-set-structure' },
-                { text: 'Endpoints and HTTP Results', link: '/engineering/backend/dotnet/minimal-apis/endpoints-and-http-results' },
-                { text: 'Commands and Queries', link: '/engineering/backend/dotnet/minimal-apis/commands-and-queries' },
-                { text: 'State and StateHandler', link: '/engineering/backend/dotnet/minimal-apis/state-and-statehandler' },
-                { text: 'Minimal API Examples', link: '/engineering/backend/dotnet/minimal-apis/examples/' },
-                { text: 'Background Services', link: '/engineering/backend/dotnet/background-services/' }
+                {
+                  text: 'Technology-Independent Design',
+                  collapsed: false,
+                  items: [
+                    { text: 'Design Baseline', link: '/engineering/backend/design-baseline' },
+                    { text: 'Backend Architectures', link: '/engineering/backend/architecture/' },
+                    { text: 'Vertical Slice Architecture', link: '/engineering/backend/architecture/vertical-slice-architecture' },
+                    { text: 'Clean Architecture', link: '/engineering/backend/architecture/clean-architecture' },
+                    { text: 'HTTP API Design', link: '/engineering/backend/api/http-api-design' },
+                    { text: 'Reliability', link: '/engineering/backend/reliability/' },
+                    { text: 'Error Handling', link: '/engineering/backend/reliability/error-handling' },
+                    { text: 'Validation and Domain Rules', link: '/engineering/backend/reliability/validation-and-domain-rules' },
+                    { text: 'Transactional Consistency', link: '/engineering/backend/reliability/transactional-consistency' }
+                  ]
+                },
+                {
+                  text: 'Implementation Profiles',
+                  collapsed: false,
+                  items: [
+                    {
+                      text: '.NET',
+                      collapsed: true,
+                      items: [
+                        { text: 'Overview', link: '/engineering/backend/dotnet/' },
+                        { text: 'C#', link: '/engineering/backend/dotnet/csharp' },
+                        { text: 'Minimal APIs', link: '/engineering/backend/dotnet/minimal-apis/' },
+                        { text: 'Feature-Set Structure', link: '/engineering/backend/dotnet/minimal-apis/feature-set-structure' },
+                        { text: 'Endpoints and HTTP Results', link: '/engineering/backend/dotnet/minimal-apis/endpoints-and-http-results' },
+                        { text: 'Commands and Queries', link: '/engineering/backend/dotnet/minimal-apis/commands-and-queries' },
+                        { text: 'State and StateHandler', link: '/engineering/backend/dotnet/minimal-apis/state-and-statehandler' },
+                        { text: 'Minimal API Examples', link: '/engineering/backend/dotnet/minimal-apis/examples/' },
+                        { text: 'Detailed Minimal APIs Reference', link: '/engineering/backend/dotnet/minimal-apis/minimal-apis-reference' },
+                        { text: 'Background Services', link: '/engineering/backend/dotnet/background-services/' }
+                      ]
+                    },
+                    {
+                      text: 'Python',
+                      collapsed: true,
+                      items: [
+                        { text: 'Overview', link: '/engineering/backend/python/' },
+                        { text: 'VSA with FastAPI and PostgreSQL', link: '/engineering/backend/python/vertical-slice-architecture' },
+                        { text: 'Gift Card Redemption Example', link: '/engineering/backend/python/assignment-reference' }
+                      ]
+                    }
+                  ]
+                }
               ]
             },
             {
@@ -184,6 +212,7 @@ export default withMermaid({
                 { text: 'Overview', link: '/engineering/messaging/' },
                 { text: 'Event-Driven Architecture', link: '/engineering/messaging/event-driven-architecture' },
                 { text: 'Reliable Delivery', link: '/engineering/messaging/reliable-delivery' },
+                { text: 'Transactional Outbox', link: '/engineering/messaging/outbox' },
                 { text: 'Event Sourcing', link: '/engineering/messaging/event-sourcing' },
                 { text: 'Kafka and Redpanda', link: '/engineering/messaging/kafka-redpanda-event-store' }
               ]
@@ -193,14 +222,33 @@ export default withMermaid({
               collapsed: true,
               items: [
                 { text: 'Overview', link: '/engineering/frontend/' },
-                { text: 'Modular Architecture', link: '/engineering/frontend/modular-architecture' },
-                { text: 'Vue', link: '/engineering/frontend/vue/' },
-                { text: 'Vue Conventions', link: '/engineering/frontend/vue/conventions' },
-                { text: 'Components', link: '/engineering/frontend/vue/components' },
-                { text: 'Vue Structure', link: '/engineering/frontend/vue/structure' },
-                { text: 'State and Composables', link: '/engineering/frontend/vue/state-and-composables' },
-                { text: 'UI/API Contracts', link: '/engineering/frontend/vue/ui-api-contracts' },
-                { text: 'Visual Design and Storybook', link: '/engineering/frontend/vue/visual-design-and-storybook' }
+                {
+                  text: 'Technology-Independent Design',
+                  collapsed: false,
+                  items: [
+                    { text: 'Modular Architecture', link: '/engineering/frontend/modular-architecture' },
+                    { text: 'UI/API Contracts', link: '/engineering/frontend/ui-api-contracts' }
+                  ]
+                },
+                {
+                  text: 'Implementation Profiles',
+                  collapsed: false,
+                  items: [
+                    { text: 'TypeScript', link: '/engineering/frontend/typescript' },
+                    {
+                      text: 'Vue',
+                      collapsed: true,
+                      items: [
+                        { text: 'Overview', link: '/engineering/frontend/vue/' },
+                        { text: 'Vue 3 Conventions', link: '/engineering/frontend/vue/conventions' },
+                        { text: 'Vue 3 Components', link: '/engineering/frontend/vue/components' },
+                        { text: 'Vue Structure', link: '/engineering/frontend/vue/structure' },
+                        { text: 'State and Composables', link: '/engineering/frontend/vue/state-and-composables' },
+                        { text: 'Visual Design and Storybook', link: '/engineering/frontend/vue/visual-design-and-storybook' }
+                      ]
+                    }
+                  ]
+                }
               ]
             },
             {
@@ -229,6 +277,7 @@ export default withMermaid({
               items: [
                 { text: 'Overview', link: '/quality/stacks/' },
                 { text: 'C#/.NET', link: '/quality/stacks/csharp-dotnet' },
+                { text: 'Python and FastAPI', link: '/quality/stacks/python-fastapi' },
                 { text: 'TypeScript and Vue', link: '/quality/stacks/typescript-vue' }
               ]
             },

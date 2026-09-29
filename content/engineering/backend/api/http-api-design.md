@@ -219,18 +219,9 @@ For local business appointments or schedules, model the local value and the time
 
 Do not rely on the frontend to guess the right time zone, and do not let the backend silently interpret offset-less strings as server-local time. APIs should also avoid trusting client-provided "current time" values for audit, ordering, expiration or validation rules. Resolve current time on the backend through the application's authoritative clock or trusted server-side source.
 
-## C# Minimal API Notes
+## Implementation Profiles
 
-For ASP.NET Core Minimal APIs:
-
-- prefer typed results when they make endpoint outcomes explicit;
-- use `Results<T1, TN>` when an endpoint has multiple known response shapes;
-- configure Problem Details through ASP.NET Core services and middleware;
-- use a global exception handler to map domain and application exceptions to Problem Details;
-- keep endpoint handlers thin and avoid repeating domain-error mapping in every endpoint;
-- validate status code, content type and Problem Details shape in integration tests for representative failure paths.
-
-See [C# with Minimal APIs](/engineering/backend/dotnet/minimal-apis/) for implementation examples.
+Apply these contract rules through [Endpoints and HTTP Results with Minimal APIs](/engineering/backend/dotnet/minimal-apis/endpoints-and-http-results) for ASP.NET Core or [VSA with FastAPI and PostgreSQL](/engineering/backend/python/vertical-slice-architecture) for Python.
 
 ## References
 

@@ -18,6 +18,8 @@ Automated tests should make change safer by catching the right failure at the ch
 | Integration | Validate collaboration across real boundaries | Database, HTTP, filesystem, queues, dependency adapters |
 | End-to-End | Validate complete user or consumer journeys | Browser flows, API workflows, external contract scenarios |
 
+![Test pyramid showing the relative emphasis on unit, integration and end-to-end tests](./assets/test-pyramid.svg)
+
 ## Selection Criteria
 
 - Use unit tests when the behavior can be expressed without infrastructure.

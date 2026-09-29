@@ -8,4 +8,4 @@ canonical: false
 
 # Testing Moved
 
-This guide now lives at [Testing](/quality/). Update bookmarks to use the canonical path.
+This guide now lives at [Quality](/quality/). Update bookmarks to use the canonical path.

@@ -2,8 +2,8 @@
 import { h } from 'vue'
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
-import SectionHomeLayout from './SectionHomeLayout.vue'
-import SidebarAutoCollapse from './SidebarAutoCollapse.vue'
+import SectionHomeLayout from './components/SectionHomeLayout.vue'
+import SidebarAutoCollapse from './components/SidebarAutoCollapse.vue'
 import './style.css'
 
 export default {

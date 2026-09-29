@@ -27,7 +27,13 @@ Use test doubles for producer, consumer, clock and repositories when behavior ca
 - Producer publishes to the expected topic with correct key, headers and payload.
 - Consumer processes valid messages.
 - Consumer rejects or routes invalid messages.
-- Outbox publishes once and marks state correctly.
+- The order mutation and `OrderPlaced` Outbox record commit together or roll back together.
+- The relay recovers pending deliveries after a crash and marks a delivery published only after destination acceptance.
+- If the destination accepted a message but recording success failed, republishing the same ID does not duplicate the consumer's effect.
+- An abandoned claim can be recovered without an earlier worker closing another worker's delivery.
+- A scheduled delivery is not published before visibility; an expired delivery follows policy instead of being sent late.
+- Actual attempts, circuit-breaker deferrals and quarantine keep coherent states and counters.
+- Replay from quarantine preserves a link and audit trail; if it creates a new ID, the test also checks business idempotency.
 - Retry and dead-letter flows activate under controlled conditions.
 - Projections update from real events.
 - Transaction boundaries between database and messaging are preserved.
@@ -43,6 +49,8 @@ Reserve E2E for critical asynchronous flows:
 - A business operation requires correlation across API, outbox, broker, consumer and persistence.
 
 Define clear timeouts and observable conditions. Do not use fixed sleeps when you can query state or wait for an event with a limit.
+
+When volume is a risk, test a destination outage under load. Verify that backlog is visible, the relay limits batch size and concurrency, and publication drains after recovery without a retry storm. Preserve backlog age and publication rate measurements alongside request outcomes.
 
 ## Contracts and Versioning
 
@@ -64,5 +72,6 @@ Include `correlationId`, `eventId`, topic, partition, offset and consumer name w
 - [Confluent: Kafka Native Testcontainers](https://developer.confluent.io/confluent-tutorials/kafka-native-testcontainers/kafka/)
 - [Testcontainers: Redpanda Module](https://testcontainers.com/modules/redpanda/)
 - [Event-Driven Architecture](/engineering/messaging/event-driven-architecture)
+- [Transactional Outbox](/engineering/messaging/outbox)
 - [Event Sourcing](/engineering/messaging/event-sourcing)
 - [Integration Tests](../integration-tests)
